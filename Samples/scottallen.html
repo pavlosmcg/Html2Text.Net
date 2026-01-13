@@ -1,0 +1,259 @@
+<html lang="en"><head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>A Software Developer's Guide to HTTP Part I - Resources</title>
+    <link href="/Content/css?v=DhekvVup4Esc7G7SJQGjBl1g49QnNyg8UxWaq4aFWac1" rel="stylesheet">
+
+    <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://feeds.feedburner.com/OdeToCode">
+    <link id="Rsd" rel="EditURI" type="application/rsd+xml" title="RSD" href="/Api/patuxent.ashx">
+</head>
+<body>
+    <header class="container-fluid">
+        <div>
+            <a href="/">
+                <img src="/Images/odetocode3.png" alt="OdeToCode IC Logo"></a>
+        </div>
+    </header>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <ul class="nav">
+                <li><a class="icon-home" href="/" aria-label="Home"></a></li>
+                <li class="divider-vertical hidden-phone"></li>
+                <li><a href="/Articles/List">Articles</a></li>
+                <li class="divider-vertical hidden-phone"></li>
+                <li><a href="/blogs/all">Blog</a></li>
+                <li class="divider-vertical hidden-phone"></li>
+                <li><a href="/videos">Videos</a></li>                
+                <li class="divider-vertical hidden-phone"></li>
+                <li><a href="/home/archives">Archive</a></li>
+                <li class="divider-vertical hidden-phone"></li>
+                <li><a href="/about/scott-allen">About</a></li>
+            </ul>
+        </div>
+    </nav>
+        <div class="container-fluid">
+            <div class="row-fluid">      
+                <div class="span10">
+                    
+
+<h1>A Software Developer's Guide to HTTP Part I - Resources</h1>
+<div class="muted">
+    Thursday, January 12, 2012
+</div>
+<article>
+    <p>HTTP is the protocol that enables us to buy microwave ovens from Amazon.com, reunite with an old friend in a Facebook chat, and watch funny cat videos on YouTube. HTTP is the protocol behind the World Wide Web. It allows a web server from a datacenter in the United States to ship information to an Internet Café in Australia, where a young student can read a web page describing the Ming dynasty in China. </p>
+<p>In this series of articles, we'll look at HTTP from a software developer's perspective. Having a solid understanding of HTTP can help you write better web applications and web services. It can also help you debug applications and services when things go wrong. We'll be covering all the basics including resources, messages, connections, and security as it relates to HTTP. </p>
+<p>We'll start by looking at resources. </p>
+
+<p><strong>The Series:</strong></p>
+<a href="https://odetocode.com/Articles/741.aspx" target="_blank">Part I: Resources (you are here)</a> 
+
+<br><a href="https://odetocode.com/Articles/742.aspx" target="_blank">Part II: Messages</a> 
+
+<br><a href="https://odetocode.com/Articles/743.aspx" target="_blank">Part III: Connections</a> 
+
+<br><a href="https://odetocode.com/Articles/744.aspx" target="_blank">Part IV: Architecture</a> 
+
+<br><a href="https://odetocode.com/Articles/745.aspx" target="_blank">Part V: Security</a> 
+
+<br>
+<p>&nbsp;</p>
+<h2>Resources</h2>
+<p>Perhaps the most familiar part of the web is the HTTP address. When I want to find a recipe for a dish featuring broccoli, which is almost never, then I might open my web browser and enter <a href="http://food.com/">http://food.com</a> in the address bar, so I can go to the food.com web site and search for recipes. My web browser understands this syntax and knows it needs to make an HTTP request to a server named food.com. We'll talk later about what it means to "make an HTTP request" and all the networking details involved. For now, we just want to focus on the address – <a href="http://food.com/">http://food.com</a>.</p>
+<h3></h3>
+<h3>Resource Locators</h3>
+<p>This address I've been referring to (<a href="http://food.com/">http://food.com</a>) is what we call a URL – a uniform resource locator. It represents a specific <em>resource</em> on the web. In this case, the resource is the home page of the food.com web site. Resources are things I want to interact with on the web. Images, pages, files, and videos are all resources. </p>
+<p>There are billions, if not trillions, of places to go on the Internet – in other words, there are trillions of resources. Each resource will have a URL I can use to find it. <a href="http://news.google.com/">http://news.google.com</a> is a different place than <a href="http://news.yahoo.com/">http://news.yahoo.com</a>. Two different names, two different companies, two different web sites, two different URLs. Of course, there will also be different URLs inside the same web site. <a href="http://food.com/recipe/brocolli-salad-10733/">http://food.com/recipe/brocolli-salad-10733/</a> is the URL for a page with a broccoli salad recipe, while <a href="http://food.com/recipe/grilled-cauliflower-19710/">http://food.com/recipe/grilled-cauliflower-19710/</a> is still at food.com, but is a different resource describing a cauliflower recipe. </p>
+<p>We can break this last URL into three parts:</p>
+<ol>
+<li><em>http</em> , the part before the ://, is what we call the <strong>URL scheme</strong>. It describes <em>how</em> to access a particular resource, and in this case it tells the browser to use the HTTP protocol. Again, we'll provide more low level details on this protocol later. We'll also look at a different scheme – https, which is the secure HTTP protocol. You might run into other schemes too, like ftp for the File Transfer Protocol, and mailto for email addresses. </li></ol>
+<p>Everything after the :// will be specific to a particular scheme. So, a legal http URL may not be a legal mailto URL – those two aren't really interchangeable (which makes sense, because they would describe different types of resources).</p>
+<p>&nbsp;</p>
+<p>2. <em>food.com</em> is the <strong>host</strong>. This part literally tells my browser which computer on the Internet is hosting the resource. My computer will use the <a href="http://en.wikipedia.org/wiki/Domain_Name_System" target="_blank">Domain Name System</a> (DNS) to translate food.com into a network address, and then it will know exactly where to send a request. You can also specify the host portion using an <a href="http://en.wikipedia.org/wiki/IP_address" target="_blank">IP address</a>. </p>
+<p>&nbsp;</p>
+<p>3. /recipe/grilled-cauliflower-19710/ is the <strong>URL path</strong>. The food.com host should recognize what specific resource is requested by this path and respond appropriately. </p>
+<p>&nbsp;</p>
+<p>Sometimes a URL will point to a real resource on the host's file system or hard drive. For example, the URL http://food.com/logo.jpg might point to a jpg image file that really exists on the food.com server. However, resources can also be dynamic. The URL http://food.com/recipes/brocolli&nbsp; probably doesn't refer to a real file on the food.com server. Instead, some sort of application is running on the food.com host that will take that request and build a resource using content from a database. The application might be built using ASP.NET, PHP, Perl, Ruby on Rails, or some other web technology that response to incoming requests by sending HTML for a browser to display. </p>
+<p>In fact, these days many web sites try to avoid having any sort of real file name in their URL. For starters, file names are usually associated with a specific technology, like .aspx for Microsoft's ASP.NET technology, but many URLs will outlive the technology used to host and serve them. Secondly, many sites want to place keywords into a URL (like having /recipe/broccolli/ for a broccoli recipe resource). Having these keywords in the URL is a form of search engine optimization (SEO) that will rank the resource higher in search engine results. It's descriptive keywords, not filenames, that are important for URLs these days. </p>
+<p>Some resources will also lead the browser to download additional resources. The food.com home page will include images, JavaScript files, CSS stylesheets, and other resources that will all combine to present the "home page" of food.com. </p>
+<h3></h3>
+<h3>Ports, Query Strings, and Fragments</h3>
+<p>Now that we know about URL schemes, hosts, and paths, let's also look at a URL with a port number:</p>
+<p><a href="http://food.com/recipes/broccoli/">http://food.com:80/recipes/broccoli/</a></p>
+<p>The number 80 represents the <a href="http://en.wikipedia.org/wiki/Port_number" target="_blank"><strong>port number</strong></a> the host is using to listen for HTTP requests. The default port number for http is port 80, so you generally see this port number omitted from a URL. You only need to specify a port number if the server is listening on a port other than port 80, which usually only happens in testing, debugging, or development environments. More on ports later. </p>
+<p>Let's look at another URL.</p>
+<p><a href="http://www.bing.com/search?q=broccoli">http://www.bing.com/search?q=broccoli</a></p>
+<p>Everything after ? (the question mark) is known as the <strong>query</strong>. The query, also called the <em>query string</em>, will contain information for the destination web site to use or interpret. There is no formal standard for how the query string should look, as it is technically up to the application to interpret the values it finds, but you'll see the majority of query strings used to pass name/value pairs in the form <em>name1=value1&amp;name2=value2</em>. </p>
+<p>For example:</p>
+<p>http://foo.com?first=Scott&amp;last=Allen </p>
+<p>has two name value pairs. The first pair has the name "first" and the value "Scott". The second pair is the name "last" with the value "Allen". In our earlier URL (<a href="http://www.bing.com/search?q=broccoli">http://www.bing.com/search?q=broccoli</a>), the Bing search engine will see the name "q" associated with the value "broccoli". It turns out the Bing engine is looking for the value "q" as the search term. We can think of the URL as the URL for the resource that represents the Bing search results for broccoli. </p>
+<p>Finally, one more URL:</p>
+<p>http://server.com?recipe=broccoli#ingredients</p>
+<p>The part after the # sign is known as the <strong>fragment</strong>. The fragment is different than the other pieces we've looked at so far, because unlike the URL path and query string, the fragment is not processed by the server. The fragment is only used on the client and it identifies a particular section of a resource. Specifically, the fragment is typically used to identify a specific HTML element in a page by the element's ID. </p>
+<p>Web browsers will typically align the initial display of a web page such that the top of the element identified by the fragment is at the top of the screen. As an example, the URL <a href="https://odetocode.com/Blogs/scott/archive/2011/11/29/programming-windows-8-the-sublime-to-the-strange.aspx#feedback">https://odetocode.com/Blogs/scott/archive/2011/11/29/programming-windows-8-the-sublime-to-the-strange.aspx#feedback</a> has the fragment value of "feedback". If you follow the URL, your web browser should scroll down the page to show the feedback section of a particular blog post on my blog. Your browser retrieved the entire resource (the blog post), but focused your attention to a specific area – the feedback section. You can imagine the HTML for the blog post looking like the following (with all the text content omitted):</p><pre class="csharpcode"><span class="kwrd">&lt;</span><span class="html">div</span> <span class="attr">id</span><span class="kwrd">="post"</span><span class="kwrd">&gt;</span>
+    ...
+<span class="kwrd">&lt;/</span><span class="html">div</span><span class="kwrd">&gt;</span>
+<span class="kwrd">&lt;</span><span class="html">div</span> <span class="attr">id</span><span class="kwrd">="feedback"</span><span class="kwrd">&gt;</span>
+    ...
+<span class="kwrd">&lt;/</span><span class="html">div</span><span class="kwrd">&gt;</span></pre>
+<style type="text/css">
+
+
+
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<p>The client makes sure the element with an ID of feedback is at the top.</p>
+<p>If we put together everything we've learned so far, we know a URL is broken into the following pieces: </p><pre class="csharpcode"><span class="kwrd">&lt;</span><span class="html">scheme</span><span class="kwrd">&gt;</span>://<span class="kwrd">&lt;</span><span class="html">host</span><span class="kwrd">&gt;</span>:<span class="kwrd">&lt;</span><span class="html">port</span><span class="kwrd">&gt;</span>/&lt;<span class="html">path</span><span class="kwrd">&gt;</span>?<span class="kwrd">&lt;</span><span class="html">query</span><span class="kwrd">&gt;</span>#<span class="kwrd">&lt;</span><span class="html">frag</span><span class="kwrd">&gt;</span></pre>
+<style type="text/css">
+
+
+
+.csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }</style>
+
+<h3>URL Encoding</h3>
+<p>All software developers who work with the web should be aware of character encoding issues with URLs. The official documents describing URLs go to great lengths to make URLs as usable and interoperable as possible. A URL should be as easy to communicate through email as it is to print on a bumper sticker and affix to a 2001 Ford Windstar. For this reason, the Internet standards define <strong>unsafe</strong> characters for URLs. For example, the space character is considered unsafe because space characters can mistakenly appear or disappear when a URL is in printed form (is that one space or two spaces on your business card?). </p>
+<p>Other unsafe characters include "#" (because it is used to delimit a fragment), and "^" (because it isn't always transmitted correctly through all network devices). In fact, <a href="http://www.ietf.org/rfc/rfc3986.txt" target="_blank">RFC 3986</a> (the "law" for URLs), defines the safe characters for URLs to be the alphanumeric characters in <a href="http://en.wikipedia.org/wiki/ASCII" target="_blank">US-ASCII</a>, plus just a few special characters (like ":" and "/"). </p>
+<p>Fortunately, you can still transmit unsafe characters in a URL, but all unsafe characters must be <strong>percent encoded</strong> (a.k.a. URL encoded). %20 is the encoding for a space character (where 20 is the hexadecimal value for the <a href="http://en.wikipedia.org/wiki/ASCII" target="_blank">US-ASCII</a> space character). </p>
+<p>As an example, let's say you wanted to create the URL for a file named "^my resume.txt" on someserver.com. The legal, encoded URL would look like:</p>
+<p>http://someserver.com/%5Emy%20resume.txt</p>
+<p>Both the "^" and space characters have been percent encoded. Most web application frameworks will provide an API for easy URL encoding. On the server side, you should run your dynamically created URLs through an encoding API just in case one of the unsafe characters appears in the URL.</p>
+<h3>Resources and Media Types</h3>
+<p>So far we've focused on URLs and simplified everything else. But, what does it mean when we enter a URL into the browser? Typically it means we want to retrieve or view some resource. There is a tremendous amount of material to view on the web, and later we'll also see how HTTP also enables us to create, delete, and update resources. For now, we'll stay focused on retrieval. </p>
+<p>We haven't been very specific about the types of resources we want to retrieve. There are thousands of different resource types&nbsp;on the Web – images, hypertext documents, XML documents, video, audio, executable applications, and Microsoft Word documents. </p>
+<p>In order for a host to properly serve a resource, and in order for a client to properly display a resource, the parties involved have to be specific and precise about the type of the resource. Is the resource an image? Is the resource a movie? We wouldn't want our web browsers to try and render a PNG image as text, and we wouldn't want them to try and interpret hypertext as an image. </p>
+<p>When a host responds to an HTTP request, it returns a resource and also specifies the <strong>content type</strong> (also known as the media type) of the resource. We'll see the details of how the content type appears in an HTTP message in the next article.</p>
+<p>To specify content types, HTTP relies on the Multipurpose Internet Mail Extensions (<a href="http://en.wikipedia.org/wiki/MIME" target="_blank">MIME</a>) standards.&nbsp; Although MIME was originally designed for email communications, HTTP uses uses MIME standards for the same purpose, which is to label the content in a way that the client browser will know what the content is. </p>
+<p>For example, when a client requests an HTML web page, the host can respond to the HTTP request with some HTML that it labels as "text/html". The "text" part is the primary media type, the "html" is the media subtype. When responding to the request for an image, the host will label the resource with a content type of "image/jpeg" for JPG files, "image/gif" for GIF files, or "image/png" for PNG files. Those content types are standard MIME types and are literally what will appear in the HTTP response. </p>
+<h3>A Quick Note On File Extensions</h3>
+<p>You might think that a browser would rely on the file extension to determine the content type of an incoming resource. So, if my browser requests "frog.jpg" it should treat the resource as a JPG file, and treat "frog.gif" as a GIF file. However, for most browsers the file extension is the <strong>last place</strong> it will go to determine the actual content type. File extensions can be misleading, and just because we requested a JPG file doesn't mean the server has to respond with data encoded into JPG format. Microsoft <a href="http://msdn.microsoft.com/en-us/library/ms775148(v=vs.85).aspx" target="_blank">documents</a> Internet Explorer as first looking at the content type tag specified by the host. If the host didn't provide a content type, IE will scan the first 200 bytes of the response trying to guess the content type. Finally, if IE doesn't find a content type and can't guess the content type, it will fall back on the file extension used in the request for the resource. This is one reason why the content type label is important, but it is far from the only reason. We'll see why in the next section. </p>
+<h3>Content Type Negotiation</h3>
+<p>Although we tend to think of HTTP as something used to serve web pages, it turns out the HTTP specification describes a generic protocol for moving high fidelity information. Part of the job of moving information around is making sure all the parties involved know how to interpret the information, and this is why the media type settings are important. But, media types aren't just for hosts. Client can play a role in what media type a host returns by taking part in a content type negotiation. </p>
+<p>A resource identified by a single URL can have multiple representations. Take, for example, the broccoli recipe we mentioned earlier. The single recipe might have representations in different languages (English versus French versus German). The recipe could even have representations that differ by format (HTML versus PDF versus plain text). It's all the same resource and the same recipe, but different representations. </p>
+<p>The obvious question then is – which representation should the server select? The answer is in the content negotiation mechanism described by the HTTP specification. When a client makes an HTTP request to a URL, the client can specify the media types it will accept. This media types are not only for the host to tag outgoing resources, but also for clients to specify the media type they want to consume. </p>
+<p>The client specifies what it will accept in the outgoing request message. Again, we'll see details of this message in Part II, but imaging a request to <a href="http://food.com/">http://food.com/</a> saying it will accept representations in the German language. It's up to the host at that point to try and fulfill the request. The host might send a textual resource that is still in English, which will probably disappoint a German speaking user, but this is why we call it content negotiation and not content ultimatums. </p>
+<p>Web browsers are sophisticated pieces of software that can deal with many different types of resource representations. Content negotiation is something a user would probably never care about, but for software developers (and especially HTTP web service developers), content negotiation is part of what makes HTTP great. A piece of code written in JavaScript can make a request to the server and ask for a JSON representation. A piece of code written in C++ can make a request to the server and ask for an XML representation. In both cases, if the host can satisfy the request, the information will arrive at the client in an ideal format for parsing and consumption. </p>
+<h3>Where Are We?</h3>
+<p>At this point we've gotten about as far as we can go without getting into the nitty-gritty details of what an HTTP message looks like. We've learned about URL, URL encoding, and content types. It's time to see what these content type specifications look like as they travel across the wire. <a href="https://odetocode.com/Articles/742.aspx">Take a look in Part II</a>.</p>
+</article>
+
+                </div>
+                <div class="span2">
+                    <section class="pagination-centered">
+    <h4 class="courses">
+        <a href="/about/pluralsight">
+            All My Pluralsight Courses
+            <img src="/Images/pluralsight.png" alt="Pluralsight">
+        </a>
+
+    </h4>
+</section>
+<section class="pagination-centered">
+    <a href="/about/scott-allen">
+        <img src="/Images/scott_allen_7.jpg" alt="K.Scott Allen" title="K. Scott Allen">
+    </a>
+    <small>OdeToCode by K. Scott Allen</small>
+</section>
+<div class="chiclets">
+    <div>
+        <a class="" href="http://feeds.feedburner.com/OdeToCode" title="Subscribe to my feed" rel="alternate" type="application/rss+xml">
+            <img src="/Images/feed-icon32x32.png" alt="RSS">
+            Subscribe
+        </a>
+    </div>
+    <div>
+        <a class="" href="http://twitter.com/OdeToCode">
+            <img src="/Images/tweet.png" alt="Follow Me">
+            Twitter
+        </a>
+    </div>
+    <div>
+        <a class="" href="/about/search">
+            <img src="/Images/search2.png" alt="Search">
+            Search
+        </a>
+    </div>
+    <div>
+        <a class="" href="/about/scott-allen">
+            <img src="/Images/contact.png" alt="About">
+            About
+        </a>
+    </div>
+    <div>
+        <a href="https://app.pluralsight.com/library/courses/csharp-fundamentals-dev">
+            <img src="/Images/learn.png" alt="Learn C# Fundamentals">
+            Learn C#
+        </a>
+    </div>
+    <div>
+        <a href="http://app.pluralsight.com/courses/aspdotnet-core-fundamentals">
+            <img src="/Images/learn.png" alt="Learn Web Development with ASP.NET Core">
+            Learn ASP.NET Core
+        </a>
+    </div>
+    <div>
+        <a href="https://app.pluralsight.com/library/courses/developing-dotnet-microsoft-azure-getting-started">
+            <img src="/Images/learn.png" alt="Learn Azure">
+            Learn Azure
+        </a>
+    </div>
+</div>
+
+
+
+                </div>
+            </div>
+        </div>   
+    <footer>
+        (c) OdeToCode LLC 2004 - 2020
+    </footer>
+    <script src="/Scripts/bottom?v=tNzuhgIafbznOftf-EELkS40lXpmth4yjNu3YqAmpoM1"></script>    
+    
+
+
+
+</body></html>
