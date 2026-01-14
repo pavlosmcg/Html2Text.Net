@@ -17,7 +17,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.Empty);
     }
 
@@ -31,7 +30,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.Empty);
     }
 
@@ -46,7 +44,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo(text));
     }
 
@@ -61,7 +58,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("hello"));
     }
 
@@ -76,7 +72,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("blorgfester"));
     }
 
@@ -91,7 +86,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("firstsecondthirdfourth"));
     }
 
@@ -106,7 +100,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("forgotten closing tag..."));
     }
 
@@ -121,7 +114,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("This paragraph is really interesting, so you should read it!"));
     }
 
@@ -136,7 +128,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("This should have whitespace trimmed off"));
     }
 
@@ -151,7 +142,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("Not trimmed, at all over here"));
     }
 
@@ -166,7 +156,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("""
                                        This will be trimmed at the start, but this won't be.
                                        This will be on a new line and trimmed both ends!
@@ -184,7 +173,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("""
                                        Text before a div.
                                        This is inside a div.
@@ -202,7 +190,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("""
                                        This is a paragraph.
 
@@ -221,7 +208,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("""
                                        This is a paragraph.
 
@@ -240,7 +226,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("""
                                        This is a paragraph.
 
@@ -267,7 +252,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("""
                                        Text before a div.
                                        This is inside a div.
@@ -303,7 +287,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("""
                                        John Doe
                                        123 Elm Street
@@ -326,7 +309,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("""
                                        First line
                                        some free text
@@ -345,7 +327,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("""
                                        First line
                                        spaces on the end here
@@ -367,7 +348,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("Container Start inline element Container End"));
     }
 
@@ -386,7 +366,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("First bit, then a middle bit and then the last part. And a whole other line over here."));
     }
 
@@ -401,7 +380,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("framistan bedoulia"));
     }
 
@@ -443,7 +421,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo(capybara));
     }
 
@@ -463,7 +440,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         Assert.That(result, Is.EqualTo("""
                                        let i = 5;
 
@@ -487,7 +463,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         var expected = """
                        let i = 5;
 
@@ -522,7 +497,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         var expected = """
                        private int GetSmallestNonNegative(int a , int b)
                        {
@@ -556,7 +530,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         var expected = """
 
                        some
@@ -579,7 +552,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         var expected = """
                        very interesting
 
@@ -613,7 +585,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         var expected = """
                         - Coffee
                         - Tea
@@ -646,7 +617,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         var expected = """
                        Name	 | Age
                        -----------------
@@ -675,7 +645,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         var expected = """
                    Title
                    
@@ -696,7 +665,6 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        TestContext.WriteLine(result);
         var expected = """
                        Artist The Clash
                        Released 1980
