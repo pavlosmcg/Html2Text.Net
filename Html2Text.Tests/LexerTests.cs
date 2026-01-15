@@ -148,7 +148,7 @@ public class LexerTests
         var input = "<p>blorgfester</p>";
 
         // act
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         // assert
         Assert.That(result.Count, Is.EqualTo(3));
@@ -169,7 +169,7 @@ public class LexerTests
         var input = "<SPan>blorgfester</spAN>";
 
         // act
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         // assert
         Assert.That(
@@ -189,7 +189,7 @@ public class LexerTests
         var input = "<a style=\"123\" attr href='https://wikimediafoundation.org/' >link text</a>";
 
         // act
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         // assert
         Assert.That(
@@ -209,7 +209,7 @@ public class LexerTests
         var input = "<p style=123 another=>paragraph text</p>";
 
         // act
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         // assert
         Assert.That(
@@ -229,7 +229,7 @@ public class LexerTests
         var input = "yadayim <p class=\"foo\">higmar</p>";
 
         // act
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         // assert
         Assert.That(
@@ -250,7 +250,7 @@ public class LexerTests
         var input = "framistan<p class=\"foo\">higmar</p>bedoulia";
 
         // act
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         // assert
         Assert.That(
@@ -272,7 +272,7 @@ public class LexerTests
         var input = "minhag </p>";
 
         // act
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         // assert
         Assert.That(
@@ -289,7 +289,7 @@ public class LexerTests
     {
         var input = "</ForgotToClose";
 
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         Assert.That(
             DisplayTestOutput(result),
@@ -307,7 +307,7 @@ public class LexerTests
     {
         var input = "<div></span>";
 
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         Assert.That(
             DisplayTestOutput(result),
@@ -323,7 +323,7 @@ public class LexerTests
     {
         var input = "</span><div>";
 
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         Assert.That(
             DisplayTestOutput(result),
@@ -335,13 +335,76 @@ public class LexerTests
     }
 
     [Test]
+    [TestCase("< div >")]
+    [TestCase("<div")]
+    [TestCase("<")]
+    [TestCase("<div<>")]
+    [TestCase("<br")]
+    [TestCase("<br/")]
+    [TestCase("<")]
+    [TestCase(">")]
+    [TestCase("<>")]
+    [TestCase("</>")]
+    [TestCase("blorg < fes > ter")]
+    [TestCase("<div?>")]
+    [TestCase("<?div>")]
+    public void GetEnumerator_Returns_TextTokens_WhenInputIsMalformedOpeningTag(string badTag)
+    {
+        string input = $"content {badTag} more content";
+        List<Chunk> result = CollectTestOutput(input);
+
+       Assert.That(result.All(r => r.TokenType == TokenType.Text), Is.True);
+       Assert.That(string.Concat(result.Select(r => r.Content)), Is.EqualTo(input));
+    }
+
+    [Test]
+    [TestCase("</div")]
+    [TestCase("<")]
+    [TestCase("</div<>")]
+    [TestCase("< /div>")]
+    [TestCase("</ div>")]
+    [TestCase("</ div >")]
+    [TestCase("</div/>")]
+    [TestCase("<")]
+    [TestCase(">")]
+    [TestCase("</")]
+    [TestCase("</div?>")]
+    public void GetEnumerator_Returns_TextTokens_WhenInputIsMalformedClosingTag(string badTag)
+    {
+        string input = $"content{badTag}";
+        List<Chunk> result = CollectTestOutput(input);
+
+        Assert.That(result.All(r => r.TokenType == TokenType.Text), Is.True);
+        Assert.That(string.Concat(result.Select(r => r.Content)), Is.EqualTo(input));
+    }
+
+    [Test]
+    [TestCase("self/>")]
+    [TestCase("/>")]
+    [TestCase("</>")]
+    [TestCase("<")]
+    [TestCase(">")]
+    [TestCase("</br>")]
+    [TestCase("</br/>")]
+    [TestCase("<br/?>")]
+    [TestCase("<br?>")]
+    public void GetEnumerator_Returns_TextTokens_WhenInputIsMalformedSelfClosingTag(string badTag)
+    {
+        var input = $"some {badTag} text content";
+        List<Chunk> result = CollectTestOutput(input);
+
+        Assert.That(result.All(r => r.TokenType == TokenType.Text), Is.True);
+        Assert.That(string.Concat(result.Select(r => r.Content)), Is.EqualTo(input));
+    }
+
+    [Test]
     public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_ContainsScriptTagWithTagLikeContent()
     {
         // arrange
         var input = "<script>var a = 1 / 2; b = 3 < c >= 4;</script>";
 
         // act
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         // assert
         Assert.That(
@@ -365,10 +428,11 @@ public class LexerTests
     [TestCase("<!DOCTYPE >", false)]
     public void GetEnumerator_HandlesDoctypeTag(string input, bool expected)
     {
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         if (expected)
         {
+            Assert.That(result[0].TokenType, Is.EqualTo(TokenType.DocType));
             Assert.That(result[0].Length, Is.EqualTo(input.Length));
         }
         else
@@ -397,10 +461,11 @@ public class LexerTests
     [TestCase("<? xml?>", false)]
     public void GetEnumerator_HandlesProcessingInstruction(string input, bool expected)
     {
-        var result = CollectTestOutput(input);
+        List<Chunk> result = CollectTestOutput(input);
 
         if (expected)
         {
+            Assert.That(result[0].TokenType, Is.EqualTo(TokenType.ProcessingInstruction));
             Assert.That(result[0].Length, Is.EqualTo(input.Length));
         }
         else
@@ -408,5 +473,153 @@ public class LexerTests
             Assert.That(result.All(r => r.TokenType == TokenType.Text), Is.True);
             Assert.That(string.Concat(result.Select(r => r.Content)), Is.EqualTo(input));
         }
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInputContainsComments()
+    {
+        // arrange
+        var input = @"<!-- comment --></div>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "Comment:<!-- comment --> @Start:0,Length:16",
+                "Closing:div @Start:16,Length:6",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TextTokens_WhenInputContainsCommentsThatNeverClose()
+    {
+        // arrange
+        var input = @"</p><!-- comment that never closes <p>other stuff</p>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "Closing:p @Start:0,Length:4",
+                "Text:<!-- comment that never closes <p>other stuff</p> @Start:4,Length:49",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TokensSuccessfully_IgnoringNodesInComments()
+    {
+        // arrange
+        var input = "<span>some text<!--a comment </span><p> over some markup </p> --> and more after comment</span>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "Opening:span @Start:0,Length:6",
+                "Text:some text @Start:6,Length:9",
+                "Comment:<!--a comment </span><p> over some markup </p> --> @Start:15,Length:50",
+                "Text: and more after comment @Start:65,Length:23",
+                "Closing:span @Start:88,Length:7",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TextTokens_WhenInputHasInvalidCommentsInsideTags()
+    {
+        // arrange
+        var input = "<span><p <!-- comment inside p tag --> >text inside p tag</p></span>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "Opening:span @Start:0,Length:6",
+                "Text:<p <!-- comment inside p tag --> @Start:6,Length:32",
+                "Text: >text inside p tag @Start:38,Length:19",
+                "Closing:p @Start:57,Length:4",
+                "Closing:span @Start:61,Length:7",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TextTokens_WhenInputHasInvalidCommentStartingInsideTagAndEndingAfterTag()
+    {
+        // arrange
+        var input = "<span><p <!-- >comment  -->text</p></span>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "Opening:span @Start:0,Length:6",
+                "Text:<p <!-- > @Start:6,Length:9",
+                "Text:comment  -->text @Start:15,Length:16",
+                "Closing:p @Start:31,Length:4",
+                "Closing:span @Start:35,Length:7",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_CommentTokens_WhenInputHasCommentsThatEndInsideOpeningTags()
+    {
+        // arrange
+        var input = "<span><!-- comment <p-->>paragraph</p></span>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "Opening:span @Start:0,Length:6",
+                "Comment:<!-- comment <p--> @Start:6,Length:18",
+                "Text:>paragraph @Start:24,Length:10",
+                "Closing:p @Start:34,Length:4",
+                "Closing:span @Start:38,Length:7",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_CommentTokens_WhenInputHasCommentsThatEndInsideClosingTags()
+    {
+        // arrange
+        var input = "<span><p><!-- comment </p-->></span>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "Opening:span @Start:0,Length:6",
+                "Opening:p @Start:6,Length:3",
+                "Comment:<!-- comment </p--> @Start:9,Length:19",
+                "Text:> @Start:28,Length:1",
+                "Closing:span @Start:29,Length:7",
+            }));
     }
 }

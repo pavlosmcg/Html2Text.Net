@@ -140,4 +140,23 @@ internal static class Elements
             StringComparer.OrdinalIgnoreCase,
             "th",
             "td");
+
+    // elements that are expected to be self closing
+    public static string[] SelfClosingNames =
+    [
+        "area",
+        "base",
+        "br",
+        "col",
+        "embed",
+        "hr",
+        "img",
+        "input",
+        "link",
+        "meta",
+        "param",
+        "source",
+        "track",
+        "wbr"
+    ];
 }

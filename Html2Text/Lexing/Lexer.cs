@@ -23,25 +23,7 @@ internal ref struct Lexer
 
     private static bool ShouldBeSelfClosingTag(ReadOnlySpan<char> tagName)
     {
-        string[] selfClosingNames =
-        {
-            "area",
-            "base",
-            "br",
-            "col",
-            "embed",
-            "hr",
-            "img",
-            "input",
-            "link",
-            "meta",
-            "param",
-            "source",
-            "track",
-            "wbr",
-        };
-
-        foreach (string selfClosingName in selfClosingNames)
+        foreach (string selfClosingName in Elements.SelfClosingNames)
         {
             if (tagName.Equals(selfClosingName, StringComparison.OrdinalIgnoreCase))
                 return true;
@@ -91,9 +73,18 @@ internal ref struct Lexer
             {
                 if (TryEndComment())
                 {
+                    Current = new Token
+                    {
+                        TokenType = TokenType.Comment,
+                        StartIndex = _textStart,
+                        Length = _cursor - _textStart,
+                    };
                     _textStart = _cursor;
                     _state = State.OutsideTag;
+                    return true;
                 }
+                _state = State.OutsideTag;
+                continue;
             }
 
             // process tag
@@ -225,11 +216,15 @@ internal ref struct Lexer
 
     private bool TryEndComment()
     {
-        if (_html[_cursor..].StartsWith("-->"))
+        while (_cursor < _html.Length)
         {
-            // skip comments and move past end of "-->"
-            _cursor += 3;
-            return true;
+            if (_html[_cursor..].StartsWith("-->"))
+            {
+                // skip comments and move past end of "-->"
+                _cursor += 3;
+                return true;
+            }
+            _cursor++;
         }
 
         return false;
