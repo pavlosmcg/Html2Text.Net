@@ -156,10 +156,11 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result, Is.EqualTo("""
-                                       This will be trimmed at the start, but this won't be.
-                                       This will be on a new line and trimmed both ends!
-                                       """));
+        Assert.That(result.Replace("\r\n", "\n"),
+            Is.EqualTo("""
+                       This will be trimmed at the start, but this won't be.
+                       This will be on a new line and trimmed both ends!
+                       """.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -173,10 +174,11 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result, Is.EqualTo("""
-                                       Text before a div.
-                                       This is inside a div.
-                                       """));
+        Assert.That(result.Replace("\r\n", "\n"),
+            Is.EqualTo("""
+                       Text before a div.
+                       This is inside a div.
+                       """.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -190,11 +192,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result, Is.EqualTo("""
-                                       This is a paragraph.
+        Assert.That(result.Replace("\r\n", "\n"),
+            Is.EqualTo("""
+                       This is a paragraph.
 
-                                       And some final free text.
-                                       """));
+                       And some final free text.
+                       """.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -208,11 +211,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result, Is.EqualTo("""
-                                       This is a paragraph.
+        Assert.That(result.Replace("\r\n", "\n"),
+            Is.EqualTo("""
+                       This is a paragraph.
 
-                                       And another.
-                                       """));
+                       And another.
+                       """.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -226,11 +230,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result, Is.EqualTo("""
-                                       This is a paragraph.
+        Assert.That(result.Replace("\r\n", "\n"),
+            Is.EqualTo("""
+                       This is a paragraph.
 
-                                       And some final free text.
-                                       """));
+                       And some final free text.
+                       """.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -252,21 +257,22 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result, Is.EqualTo("""
-                                       Text before a div.
-                                       This is inside a div.
-                                       Some stuff between them.
-                                       This is another div.
-                                       Next to another div.
-                                       Some stuff between those.
-                                       And a paragraph here.
+        Assert.That(result.Replace("\r\n", "\n"),
+            Is.EqualTo("""
+                       Text before a div.
+                       This is inside a div.
+                       Some stuff between them.
+                       This is another div.
+                       Next to another div.
+                       Some stuff between those.
+                       And a paragraph here.
 
-                                       This is a div after a paragraph.
-                                       This is a div
-                                       with a paragraph inside.
+                       This is a div after a paragraph.
+                       This is a div
+                       with a paragraph inside.
 
-                                       And some final free text.
-                                       """));
+                       And some final free text.
+                       """.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -287,11 +293,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result, Is.EqualTo("""
-                                       John Doe
-                                       123 Elm Street
-                                       Springfield, IL 62701
-                                       """));
+        Assert.That(result.Replace("\r\n", "\n"),
+            Is.EqualTo("""
+                       John Doe
+                       123 Elm Street
+                       Springfield, IL 62701
+                       """.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -309,11 +316,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result, Is.EqualTo("""
-                                       First line
-                                       some free text
-                                       Last line
-                                       """));
+        Assert.That(result.Replace("\r\n", "\n"),
+            Is.EqualTo("""
+                       First line
+                       some free text
+                       Last line
+                       """.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -327,11 +335,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result, Is.EqualTo("""
-                                       First line
-                                       spaces on the end here
-                                       Last line
-                                       """));
+        Assert.That(result.Replace("\r\n", "\n"),
+            Is.EqualTo("""
+                       First line
+                       spaces on the end here
+                       Last line
+                       """.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -560,7 +569,7 @@ public class RendererTests
                        text here
                        """;
 
-        Assert.That(result, Is.EqualTo(expected));
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -593,7 +602,7 @@ public class RendererTests
                         - Juice
                        """;
 
-        Assert.That(result, Is.EqualTo(expected));
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -624,7 +633,7 @@ public class RendererTests
                        Liv	 | 26
                        """;
 
-        Assert.That(result, Is.EqualTo(expected));
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -651,7 +660,7 @@ public class RendererTests
                    Email message text
                    """;
 
-        Assert.That(result, Is.EqualTo(expected));
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -670,6 +679,6 @@ public class RendererTests
                        Released 1980
                        """;
 
-        Assert.That(result, Is.EqualTo(expected));
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
     }
 }

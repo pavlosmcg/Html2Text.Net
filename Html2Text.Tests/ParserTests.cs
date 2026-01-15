@@ -285,7 +285,7 @@ public class ParserTests
             Assert.That(result, Has.Count.EqualTo(5));
             Assert.That(result[0].Text, Is.EqualTo("bedoulia"));
             Assert.That(result[1].Children?[0].Text, Is.EqualTo("blah"));
-            Assert.That(result[2].Text, Is.EqualTo($"a bit{Environment.NewLine}of    white{Environment.NewLine}space"));
+            Assert.That(result[2].Text?.Replace("\r\n", "\n"), Is.EqualTo($"a bit\nof    white\nspace"));
             Assert.That(result[3].Children?[0].Text, Is.EqualTo("blorgfester"));
             Assert.That(result[4].Text, Is.EqualTo("yadayim"));
         });
