@@ -421,6 +421,8 @@ public class LexerTests
 
     [Test]
     [TestCase("<!DOCTYPE html>", true)]
+    [TestCase("<!doctype html>", true)]
+    [TestCase("<!docTYPE html>", true)]
     [TestCase("<!DOCTYPE html", false)]
     [TestCase("<!DOCTYPE html <", false)]
     [TestCase("<!DOCTYPE html <>", false)]

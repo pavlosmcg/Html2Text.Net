@@ -164,7 +164,7 @@ internal ref struct Lexer
 
     private bool TryEnterDocType()
     {
-        if (_html[_cursor..].StartsWith("<!DOCTYPE ", StringComparison.Ordinal))
+        if (_html[_cursor..].StartsWith("<!DOCTYPE ", StringComparison.OrdinalIgnoreCase))
         {
             _tokenType = TokenType.DocType;
             _state = State.InsideTag;
