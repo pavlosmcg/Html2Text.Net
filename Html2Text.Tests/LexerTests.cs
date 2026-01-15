@@ -63,7 +63,7 @@ public class LexerTests
     }
 
     [Test]
-    public void MoveNext_Returns_False_WhenAllInputHasBeenConsumed()
+    public void MoveNext_Returns_False_WhenInput_HasBeenConsumed()
     {
         // arrange
         var input = "hello";
@@ -87,7 +87,7 @@ public class LexerTests
     }
 
     [Test]
-    public void MoveNext_Returns_True_WithTextToken_WhenInputIsOnlyText()
+    public void MoveNext_Returns_True_WithTextToken_WhenInput_IsOnlyText()
     {
         // arrange
         var input = "blorgfester";
@@ -163,7 +163,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenTokensHaveStrangeCasing()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenTokens_HaveStrangeCasing()
     {
         // arrange
         var input = "<SPan>blorgfester</spAN>";
@@ -183,7 +183,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenTokensHaveAttributes()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenTokens_HaveAttributes()
     {
         // arrange
         var input = "<a style=\"123\" attr href='https://wikimediafoundation.org/' >link text</a>";
@@ -203,7 +203,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenTokensHaveMalformedHtmlAttributes()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenTokens_HaveMalformedHtmlAttributes()
     {
         // arrange
         var input = "<p style=123 another=>paragraph text</p>";
@@ -223,7 +223,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenTextTokensExistBeforeFirstTags()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenTextTokens_ExistBeforeFirstTags()
     {
         // arrange
         var input = "yadayim <p class=\"foo\">higmar</p>";
@@ -244,7 +244,28 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenTextTokensExistAfterFinalTags()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_ContainsSelfClosingTags()
+    {
+        // arrange
+        var input = "<hr/>framistan<br class=\"foo\"/>bedoulia";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "SelfClosing:hr @Start:0,Length:5",
+                "Text:framistan @Start:5,Length:9",
+                "SelfClosing:br @Start:14,Length:17",
+                "Text:bedoulia @Start:31,Length:8",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenTextTokens_ExistAfterFinalTags()
     {
         // arrange
         var input = "framistan<p class=\"foo\">higmar</p>bedoulia";
@@ -266,7 +287,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenOpeningTagsAreMissing()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenOpeningTags_AreMissing()
     {
         // arrange
         var input = "minhag </p>";
@@ -287,28 +308,31 @@ public class LexerTests
     [Test]
     public void GetEnumerator_Returns_TextToken_WhenInput_TagNeverCompletes()
     {
+        // arrange
         var input = "</ForgotToClose";
 
+        // act
         List<Chunk> result = CollectTestOutput(input);
 
+        // assert
         Assert.That(
             DisplayTestOutput(result),
             Is.EqualTo(new[]
             {
                 "Text:</ForgotToClose @Start:0,Length:15",
             }));
-
-        Assert.That(result[0].StartIndex, Is.EqualTo(0));
-        Assert.That(result[0].Length, Is.EqualTo(input.Length));
     }
 
     [Test]
     public void GetEnumerator_Returns_TokensInCorrectOrder_WhenInput_HasOpeningTagNext()
     {
+        // arrange
         var input = "<div></span>";
 
+        // act
         List<Chunk> result = CollectTestOutput(input);
 
+        // assert
         Assert.That(
             DisplayTestOutput(result),
             Is.EqualTo(new[]
@@ -321,16 +345,78 @@ public class LexerTests
     [Test]
     public void GetEnumerator_Returns_TokensInCorrectOrder_WhenInput_HasClosingTagNext()
     {
+        // arrange
         var input = "</span><div>";
 
+        // act
         List<Chunk> result = CollectTestOutput(input);
 
+        // assert
         Assert.That(
             DisplayTestOutput(result),
             Is.EqualTo(new[]
             {
                 "Closing:span @Start:0,Length:7",
                 "Opening:div @Start:7,Length:5",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_SelfClosingTokens_WhenInput_ContainsOpeningTags_ThatShouldBeSelfClosing()
+    {
+        // arrange
+        var input = "<hr>framistan<br>bedoulia";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "SelfClosing:hr @Start:0,Length:4",
+                "Text:framistan @Start:4,Length:9",
+                "SelfClosing:br @Start:13,Length:4",
+                "Text:bedoulia @Start:17,Length:8",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TextTokens_WhenInput_ContainsClosingTags_ThatShouldBeSelfClosing()
+    {
+        // arrange
+        var input = "</br><div>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "Text:</br> @Start:0,Length:5",
+                "Opening:div @Start:5,Length:5",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_SelfClosingTokens_WhenInput_ContainsCustomSelfClosingTags()
+    {
+        // arrange
+        var input = "<a/><b />";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "SelfClosing:a @Start:0,Length:4",
+                "SelfClosing:b @Start:4,Length:5",
             }));
     }
 
@@ -344,11 +430,12 @@ public class LexerTests
     [TestCase("<")]
     [TestCase(">")]
     [TestCase("<>")]
+    [TestCase("< >")]
     [TestCase("</>")]
     [TestCase("blorg < fes > ter")]
     [TestCase("<div?>")]
     [TestCase("<?div>")]
-    public void GetEnumerator_Returns_TextTokens_WhenInputIsMalformedOpeningTag(string badTag)
+    public void GetEnumerator_Returns_TextTokens_WhenInput_IsMalformedOpeningTag(string badTag)
     {
         string input = $"content {badTag} more content";
         List<Chunk> result = CollectTestOutput(input);
@@ -360,6 +447,8 @@ public class LexerTests
     [Test]
     [TestCase("</div")]
     [TestCase("<")]
+    [TestCase("<>")]
+    [TestCase("< >")]
     [TestCase("</div<>")]
     [TestCase("< /div>")]
     [TestCase("</ div>")]
@@ -369,7 +458,7 @@ public class LexerTests
     [TestCase(">")]
     [TestCase("</")]
     [TestCase("</div?>")]
-    public void GetEnumerator_Returns_TextTokens_WhenInputIsMalformedClosingTag(string badTag)
+    public void GetEnumerator_Returns_TextTokens_WhenInput_IsMalformedClosingTag(string badTag)
     {
         string input = $"content{badTag}";
         List<Chunk> result = CollectTestOutput(input);
@@ -388,7 +477,7 @@ public class LexerTests
     [TestCase("</br/>")]
     [TestCase("<br/?>")]
     [TestCase("<br?>")]
-    public void GetEnumerator_Returns_TextTokens_WhenInputIsMalformedSelfClosingTag(string badTag)
+    public void GetEnumerator_Returns_TextTokens_WhenInput_IsMalformedSelfClosingTag(string badTag)
     {
         var input = $"some {badTag} text content";
         List<Chunk> result = CollectTestOutput(input);
@@ -398,7 +487,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_ContainsScriptTagWithTagLikeContent()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInputContainsScriptTag_WithTagLikeContent()
     {
         // arrange
         var input = "<script>var a = 1 / 2; b = 3 < c >= 4;</script>";
@@ -478,7 +567,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenInputContainsComments()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_ContainsComments()
     {
         // arrange
         var input = @"<!-- comment --></div>";
@@ -497,7 +586,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TextTokens_WhenInputContainsCommentsThatNeverClose()
+    public void GetEnumerator_Returns_TextTokens_WhenInput_ContainsCommentsThatNeverClose()
     {
         // arrange
         var input = @"</p><!-- comment that never closes <p>other stuff</p>";
@@ -516,7 +605,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_IgnoringNodesInComments()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_ContainsNodesInComments()
     {
         // arrange
         var input = "<span>some text<!--a comment </span><p> over some markup </p> --> and more after comment</span>";
@@ -538,7 +627,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TextTokens_WhenInputHasInvalidCommentsInsideTags()
+    public void GetEnumerator_Returns_TextTokens_WhenInput_HasInvalidCommentsInsideTags()
     {
         // arrange
         var input = "<span><p <!-- comment inside p tag --> >text inside p tag</p></span>";
@@ -560,7 +649,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TextTokens_WhenInputHasInvalidCommentStartingInsideTagAndEndingAfterTag()
+    public void GetEnumerator_Returns_TextTokens_WhenInput_HasInvalidCommentStartingInsideTagAndEndingAfterTag()
     {
         // arrange
         var input = "<span><p <!-- >comment  -->text</p></span>";
@@ -582,7 +671,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_CommentTokens_WhenInputHasCommentsThatEndInsideOpeningTags()
+    public void GetEnumerator_Returns_CommentTokens_WhenInput_HasCommentsThatEndInsideOpeningTags()
     {
         // arrange
         var input = "<span><!-- comment <p-->>paragraph</p></span>";
@@ -604,7 +693,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_CommentTokens_WhenInputHasCommentsThatEndInsideClosingTags()
+    public void GetEnumerator_Returns_CommentTokens_WhenInput_HasCommentsThatEndInsideClosingTags()
     {
         // arrange
         var input = "<span><p><!-- comment </p-->></span>";
