@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Html2Text.PerfTests", "Html
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Html2Text.Example", "Html2Text.Example\Html2Text.Example.csproj", "{96C3F06B-8C22-4BA8-8A11-BFECC53CC8BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Html2Text.RegressionTests", "Html2Text.RegressionTests\Html2Text.RegressionTests.csproj", "{28FE44AD-0B07-4EC6-8368-594FDB03C671}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{96C3F06B-8C22-4BA8-8A11-BFECC53CC8BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96C3F06B-8C22-4BA8-8A11-BFECC53CC8BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96C3F06B-8C22-4BA8-8A11-BFECC53CC8BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28FE44AD-0B07-4EC6-8368-594FDB03C671}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28FE44AD-0B07-4EC6-8368-594FDB03C671}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28FE44AD-0B07-4EC6-8368-594FDB03C671}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28FE44AD-0B07-4EC6-8368-594FDB03C671}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

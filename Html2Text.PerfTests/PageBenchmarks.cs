@@ -1,5 +1,4 @@
 ﻿using BenchmarkDotNet.Attributes;
-using System.Text;
 
 namespace Html2Text.PerfTests;
 
