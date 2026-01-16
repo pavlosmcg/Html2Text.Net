@@ -5,20 +5,19 @@ namespace Html2Text.PerfTests;
 
 public class PageBenchmarks
 {
-    private string GetTextFromFile(string filename)
-    {
-        using var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-        using var reader = new StreamReader(fileStream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, bufferSize: 1024, leaveOpen: true);
-        var html = reader.ReadToEnd();
-        
-        var rawText = Html2Text.Convert(html);
-        
-        return rawText;
-    }
+    private Dictionary<string, string> _files = null!;
+
+    private static readonly Dictionary<string, string> Files =
+        Directory.GetFiles("Samples", "*.html")
+            .ToDictionary(f => f, File.ReadAllText);
+
+    public IEnumerable<string> FileNames()
+        => Files.Keys;
+
+    [ParamsSource(nameof(FileNames))]
+    public string FileName { get; set; } = null!;
 
     [Benchmark]
-    public string Clampdown() => GetTextFromFile("Samples/clampdown.html");
-
-    [Benchmark]
-    public string StackOverflow() => GetTextFromFile("Samples/stackoverflow.html");
+    public string ParseHtml()
+        => Html2Text.Convert(Files[FileName]);
 }
