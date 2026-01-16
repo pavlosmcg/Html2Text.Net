@@ -1,6 +1,6 @@
 # Html2Text.Net
 
-Just fast HTML -> Text
+Just fast HTML -> Text.
 
 Lightweight, hand rolled, high-performance HTML to plain text conversion for .NET.
 
@@ -8,9 +8,9 @@ This library focuses on extracting the text content of a page as quickly and pre
 
 ## Goals
 
-- **High performance**: designed for low allocations and fast throughput.
-- **Text extraction only**: get the words from the page/document.
-- **No dependencies**: Lightweight, not an embedded browser engine. No dependencies other than .NET itself.
+- High performance: designed for low allocations and fast throughput.
+- Text extraction only: get the words from the page/document.
+- No dependencies: Lightweight, not an embedded browser engine. No dependencies other than .NET itself.
 
 ## Out of scope
 
@@ -51,7 +51,13 @@ string text = Html2Text.Convert(html);
 - Basic block separation is preserved (e.g., paragraphs/headings insert newlines).
 - Whitespace is normalized to produce readable plain text.
 
-Exact behavior is defined by the classes in `Html2Text\Rendering`.
+## Pipeline
+
+```
+HTML document -> Lexer (tokens) -> Parser (AST nodes) -> Renderer (string text)
+```
+
+Basic formatting behaviour is defined in `Html2Text\Rendering`.
 
 ## Performance notes
 
@@ -64,18 +70,28 @@ Benchmarks are in `Html2Text.PerfTests`.
 ## Projects in this repository
 
 - `Html2Text/`: core library
-- `Html2Text.Tests/`: unit tests
 - `Html2Text.Example/`: small example app
-- `Html2Text.PerfTests/`: benchmarks
-- `Samples/`: sample HTML files used for testing/manual inspection
+- `Html2Text.Tests/`: unit tests
+- `Html2Text.RegressionTests/`: regression/acceptance tests
+- `Html2Text.PerfTests/`: performance benchmarking console app
+- `Samples/`: sample HTML files used during development and automated regression testing
 
 ## Build & test commands
 
-Build with: `dotnet build`
+Build with: 
+```
+dotnet build
+```
 
-Run unit tests: `dotnet test`
+Run unit tests and regression tests: 
+```
+dotnet test
+```
 
-Run performance benchmarks: `dotnet run -c Release --project Html2Text.PerfTests`
+Run performance benchmarks: 
+```
+dotnet run -c Release --project Html2Text.PerfTests
+```
 
 ## License
 

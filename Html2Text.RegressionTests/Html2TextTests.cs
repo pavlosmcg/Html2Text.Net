@@ -8,8 +8,7 @@ public class Html2TextTests
         foreach (var file in Directory.GetFiles("Samples", "*.html"))
         {
             yield return new TestCaseData(file)
-                .SetName($"Html2Text_Returns_ExpectedOutputFor({Path.GetFileName(file)})")
-                .SetCategory("Regression");
+                .SetName($"Html2Text_Returns_ExpectedOutputFor({Path.GetFileName(file)})");
         }
     }
 

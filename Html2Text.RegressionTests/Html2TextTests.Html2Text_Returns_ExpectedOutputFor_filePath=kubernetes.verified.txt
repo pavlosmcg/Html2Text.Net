@@ -1,0 +1,118 @@
+﻿Training | Kubernetes
+
+Kubernetes
+ - Documentation
+ - Kubernetes Blog
+ - Training
+ - Careers
+ - Partners
+ - Community
+ - Versions
+ - Release Information v1.35 v1.34 v1.33 v1.32 v1.31
+ - English
+ - বাংলা (Bengali) 中文 (Chinese) Deutsch (German) हिन्दी (Hindi) Italiano (Italian) 日本語 (Japanese) 한국어 (Korean) Polski (Polish)
+
+Kubernetes Training and Certification
+
+Build your cloud native career
+
+Kubernetes is at the core of the cloud native movement. Training and certifications from the Linux Foundation and our training partners lets you invest in your career, learn Kubernetes, and make your cloud native projects successful.
+
+Take a free course on edX
+
+Introduction to Kubernetes
+
+Want to learn Kubernetes? Get an in-depth primer on this powerful system for managing containerized applications.
+
+Go to Course
+Introduction to Cloud Infrastructure Technologies
+
+Learn the fundamentals of building and managing cloud technologies directly from The Linux Foundation, the leader in open source.
+
+Go to Course
+Introduction to Linux
+
+Never learned Linux? Want a refresh? Develop a good working knowledge of Linux using both the graphical interface and command line across the major Linux distribution families.
+
+Go to Course
+
+Learn with the Linux Foundation
+
+The Linux Foundation offers instructor-led and self-paced courses for all aspects of the Kubernetes application development and operations lifecycle.
+
+See Courses
+Get Kubernetes Certified
+
+Kubernetes and Cloud Native Associate (KCNA)
+
+The Kubernetes and Cloud Native Associate (KCNA) exam demonstrates a user’s foundational knowledge and skills in Kubernetes and the wider cloud native ecosystem.
+
+A certified KCNA will confirm conceptual knowledge of the entire cloud native ecosystem, particularly focusing on Kubernetes.
+
+Go to Certification
+Kubernetes and Cloud Native Security Associate (KCSA)
+
+The KCSA is a pre-professional certification designed for candidates interested in advancing to the professional level through a demonstrated understanding of foundational knowledge and skills of security technologies in the cloud native ecosystem.
+
+A certified KCSA will confirm an understanding of the baseline security configuration of Kubernetes clusters to meet compliance objectives.
+
+Go to Certification
+Certified Kubernetes Application Developer (CKAD)
+
+The Certified Kubernetes Application Developer exam certifies that users can design, build, configure, and expose cloud native applications for Kubernetes.
+
+A CKAD can define application resources and use core primitives to build, monitor, and troubleshoot scalable applications and tools in Kubernetes.
+
+Go to Certification
+Certified Kubernetes Administrator (CKA)
+
+The Certified Kubernetes Administrator (CKA) program provides assurance that CKAs have the skills, knowledge, and competency to perform the responsibilities of Kubernetes administrators.
+
+A certified Kubernetes administrator has demonstrated the ability to do basic installation as well as configuring and managing production-grade Kubernetes clusters.
+
+Go to Certification
+Certified Kubernetes Security Specialist (CKS)
+
+The Certified Kubernetes Security Specialist program provides assurance that the holder is comfortable and competent with a broad range of best practices. CKS certification covers skills for securing container-based applications and Kubernetes platforms during build, deployment and runtime.
+
+Candidates for CKS must hold a current Certified Kubernetes Administrator (CKA) certification to demonstrate they possess sufficient Kubernetes expertise before sitting for the CKS.
+
+Go to Certification
+
+Kubestronaut Program: Elevate Your Kubernetes Expertise
+
+The CNCF's Kubestronaut Program celebrates and recognizes exceptional community leaders who have demonstrated a profound commitment to mastering Kubernetes. This prestigious initiative highlights individuals who have consistently invested in their ongoing education and achieved the highest levels of proficiency. To earn the esteemed title of Kubestronaut, individuals must successfully obtain and maintain all five CNCF Kubernetes certifications: Certified Kubernetes Administrator (CKA), Certified Kubernetes Application Developer (CKAD), Certified Kubernetes Security Specialist (CKS), Kubernetes and Cloud Native Associate (KCNA), and Kubernetes and Cloud Native Security Associate (KCSA).
+
+Kubernetes Training Partners
+
+Our network of Kubernetes Training Partners provide training services for Kubernetes and cloud native projects.
+
+© 2026 The Kubernetes Authors | Documentation Distributed under CC BY 4.0
+
+© 2026 The Linux Foundation ®. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our Trademark Usage page
+
+ICP license: 京ICP备17074266号-3
+
+ - Kubernetes
+ - Documentation
+ - Kubernetes Blog
+ - Training
+ - Careers
+ - Partners
+ - Community
+ - Versions
+ - Release Information
+ - v1.35
+ - v1.34
+ - v1.33
+ - v1.32
+ - v1.31
+ - English
+ - বাংলা (Bengali)
+ - 中文 (Chinese)
+ - Deutsch (German)
+ - हिन्दी (Hindi)
+ - Italiano (Italian)
+ - 日本語 (Japanese)
+ - 한국어 (Korean)
+ - Polski (Polish)

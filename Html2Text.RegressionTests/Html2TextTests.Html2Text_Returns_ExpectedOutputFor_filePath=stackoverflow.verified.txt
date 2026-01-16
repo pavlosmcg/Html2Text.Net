@@ -1,0 +1,1492 @@
+﻿c# minimum of two numbers if one or both is greater than 0 - Stack Overflow
+
+By clicking “Sign up”, you agree to our terms of service and acknowledge you have read our privacy policy.
+Sign up with Google
+Sign up with GitHub
+
+OR
+
+Email
+Password
+Sign up
+
+Already have an account? Log in
+
+Skip to main content
+Stack Overflow
+ - About
+ - Products
+ - For Teams
+
+ - Stack Internal Implement a knowledge platform layer to power your enterprise and AI tools.
+ - Stack Data Licensing Get access to top-class technical expertise with trusted & attributed content.
+ - Stack Ads Connect your brand to the world’s most trusted technologist communities.
+ - Releases Keep up-to-date on features we add to Stack Overflow and Stack Internal.
+ - About the company Visit the blog
+
+Loading…
+
+ - current community
+
+   - Stack Overflow
+   - help chat
+   - Meta Stack Overflow
+ - your communities
+
+ - Sign up or log in to customize your list.
+ - more stack exchange communities
+
+ - company blog
+ - Log in
+ - Sign up
+
+Let's set up your homepage Select a few topics you're interested in:
+
+pythonjavascriptc#reactjsjavaandroidhtmlflutterc++node.jstypescriptcssrphpangularnext.jsspring-bootmachine-learningsqlexceliosazuredocker
+Or search from our full list:
+ - javascript
+ - python
+ - java
+ - c#
+ - php
+ - android
+ - html
+ - jquery
+ - c++
+ - css
+ - ios
+ - sql
+ - mysql
+ - r
+ - reactjs
+ - node.js
+ - arrays
+ - c
+ - asp.net
+ - json
+ - python-3.x
+ - .net
+ - ruby-on-rails
+ - sql-server
+ - swift
+ - django
+ - angular
+ - objective-c
+ - excel
+ - pandas
+ - angularjs
+ - regex
+ - typescript
+ - ruby
+ - linux
+ - ajax
+ - iphone
+ - vba
+ - xml
+ - laravel
+ - spring
+ - asp.net-mvc
+ - database
+ - wordpress
+ - string
+ - flutter
+ - postgresql
+ - mongodb
+ - wpf
+ - windows
+ - xcode
+ - amazon-web-services
+ - bash
+ - git
+ - oracle-database
+ - spring-boot
+ - dataframe
+ - azure
+ - firebase
+ - list
+ - multithreading
+ - docker
+ - vb.net
+ - react-native
+ - eclipse
+ - algorithm
+ - powershell
+ - macos
+ - visual-studio
+ - numpy
+ - image
+ - forms
+ - scala
+ - function
+ - vue.js
+ - performance
+ - twitter-bootstrap
+ - selenium
+ - winforms
+ - kotlin
+ - loops
+ - dart
+ - express
+ - hibernate
+ - sqlite
+ - matlab
+ - python-2.7
+ - shell
+ - rest
+ - apache
+ - entity-framework
+ - android-studio
+ - csv
+ - maven
+ - linq
+ - qt
+ - dictionary
+ - unit-testing
+ - asp.net-core
+ - facebook
+ - apache-spark
+ - tensorflow
+ - file
+ - swing
+ - class
+ - unity-game-engine
+ - sorting
+ - date
+ - authentication
+ - go
+ - symfony
+ - t-sql
+ - opencv
+ - matplotlib
+ - .htaccess
+ - google-chrome
+ - for-loop
+ - datetime
+ - codeigniter
+ - perl
+ - http
+ - validation
+ - sockets
+ - google-maps
+ - object
+ - uitableview
+ - xaml
+ - oop
+ - visual-studio-code
+ - if-statement
+ - cordova
+ - ubuntu
+ - web-services
+ - email
+ - android-layout
+ - github
+ - spring-mvc
+ - elasticsearch
+ - kubernetes
+ - selenium-webdriver
+ - ms-access
+ - ggplot2
+ - user-interface
+ - parsing
+ - pointers
+ - google-sheets
+ - c++11
+ - security
+ - machine-learning
+ - google-apps-script
+ - ruby-on-rails-3
+ - templates
+ - flask
+ - nginx
+ - variables
+ - exception
+ - sql-server-2008
+ - gradle
+ - debugging
+ - tkinter
+ - delphi
+ - listview
+ - jpa
+ - asynchronous
+ - web-scraping
+ - haskell
+ - pdf
+ - jsp
+ - ssl
+ - amazon-s3
+ - google-cloud-platform
+ - testing
+ - jenkins
+ - xamarin
+ - wcf
+ - batch-file
+ - generics
+ - npm
+ - ionic-framework
+ - network-programming
+ - unix
+ - recursion
+ - google-app-engine
+ - mongoose
+ - visual-studio-2010
+ - .net-core
+ - android-fragments
+ - assembly
+ - animation
+ - math
+ - svg
+ - rust
+ - session
+ - intellij-idea
+ - hadoop
+ - join
+ - curl
+ - winapi
+ - django-models
+ - laravel-5
+ - next.js
+ - url
+ - heroku
+ - http-redirect
+ - tomcat
+ - google-cloud-firestore
+ - inheritance
+ - webpack
+ - gcc
+ - image-processing
+ - swiftui
+ - keras
+ - asp.net-mvc-4
+ - logging
+ - dom
+ - matrix
+ - pyspark
+ - actionscript-3
+ - button
+ - post
+ - optimization
+ - firebase-realtime-database
+ - jquery-ui
+ - cocoa
+ - web
+ - xpath
+ - iis
+ - d3.js
+ - javafx
+ - firefox
+ - xslt
+ - internet-explorer
+ - caching
+ - select
+ - asp.net-mvc-3
+ - opengl
+ - events
+ - asp.net-web-api
+ - plot
+ - dplyr
+ - encryption
+ - magento
+ - stored-procedures
+ - search
+ - amazon-ec2
+ - ruby-on-rails-4
+ - memory
+ - canvas
+ - multidimensional-array
+ - audio
+ - random
+ - jsf
+ - vector
+ - redux
+ - cookies
+ - input
+ - facebook-graph-api
+ - flash
+ - indexing
+ - xamarin.forms
+ - arraylist
+ - ipad
+ - cocoa-touch
+ - data-structures
+ - video
+ - model-view-controller
+ - azure-devops
+ - serialization
+ - apache-kafka
+ - jdbc
+ - razor
+ - woocommerce
+ - awk
+ - routes
+ - mod-rewrite
+ - servlets
+ - excel-formula
+ - beautifulsoup
+ - filter
+ - iframe
+ - docker-compose
+ - design-patterns
+ - aws-lambda
+ - text
+ - visual-c++
+ - django-rest-framework
+ - cakephp
+ - mobile
+ - android-intent
+ - struct
+ - react-hooks
+ - methods
+ - groovy
+ - mvvm
+ - lambda
+ - ssh
+ - time
+ - checkbox
+ - ecmascript-6
+ - grails
+ - google-chrome-extension
+ - installation
+ - cmake
+ - sharepoint
+ - shiny
+ - spring-security
+ - jakarta-ee
+ - plsql
+ - android-recyclerview
+ - core-data
+ - types
+ - sed
+ - meteor
+ - android-activity
+ - bootstrap-4
+ - activerecord
+ - websocket
+ - replace
+ - graph
+ - group-by
+ - scikit-learn
+ - vim
+ - file-upload
+ - boost
+ - junit
+ - memory-management
+ - sass
+ - async-await
+ - import
+ - deep-learning
+ - error-handling
+ - eloquent
+ - dynamic
+ - soap
+ - dependency-injection
+ - silverlight
+ - layout
+ - apache-spark-sql
+ - charts
+ - deployment
+ - browser
+ - gridview
+ - svn
+ - while-loop
+ - google-bigquery
+ - vuejs2
+ - highcharts
+ - dll
+ - ffmpeg
+ - view
+ - foreach
+ - makefile
+ - plugins
+ - redis
+ - c#-4.0
+ - reporting-services
+ - jupyter-notebook
+ - unicode
+ - merge
+ - reflection
+ - https
+ - server
+ - google-maps-api-3
+ - twitter
+ - oauth-2.0
+ - extjs
+ - terminal
+ - axios
+ - pip
+ - split
+ - cmd
+ - pytorch
+ - encoding
+ - django-views
+ - collections
+ - database-design
+ - hash
+ - netbeans
+ - automation
+ - ember.js
+ - data-binding
+ - build
+ - tcp
+ - pdo
+ - sqlalchemy
+ - apache-flex
+ - entity-framework-core
+ - concurrency
+ - command-line
+ - spring-data-jpa
+ - printing
+ - mysqli
+ - react-redux
+ - java-8
+ - lua
+ - html-table
+ - neo4j
+ - ansible
+ - service
+ - jestjs
+ - parameters
+ - enums
+ - flexbox
+ - material-ui
+ - module
+ - promise
+ - visual-studio-2012
+ - outlook
+ - web-applications
+ - uwp
+ - firebase-authentication
+ - webview
+ - jquery-mobile
+ - utf-8
+ - datatable
+ - python-requests
+ - parallel-processing
+ - colors
+ - drop-down-menu
+ - scipy
+ - scroll
+ - tfs
+ - hive
+ - count
+ - syntax
+ - ms-word
+ - twitter-bootstrap-3
+ - ssis
+ - fonts
+ - rxjs
+ - constructor
+ - google-analytics
+ - file-io
+ - paypal
+ - three.js
+ - powerbi
+ - graphql
+ - cassandra
+ - discord
+ - graphics
+ - compiler-errors
+ - gwt
+ - socket.io
+ - react-router
+ - backbone.js
+ - solr
+ - memory-leaks
+ - url-rewriting
+ - datatables
+ - nlp
+ - terraform
+ - oauth
+ - datagridview
+ - drupal
+ - zend-framework
+ - oracle11g
+ - triggers
+ - knockout.js
+ - neural-network
+ - interface
+ - django-forms
+ - casting
+ - angular-material
+ - jmeter
+ - linked-list
+ - google-api
+ - path
+ - timer
+ - django-templates
+ - arduino
+ - orm
+ - proxy
+ - directory
+ - windows-phone-7
+ - parse-platform
+ - visual-studio-2015
+ - cron
+ - conditional-statements
+ - push-notification
+ - functional-programming
+ - primefaces
+ - pagination
+ - model
+ - jar
+ - xamarin.android
+ - hyperlink
+ - uiview
+ - vbscript
+ - visual-studio-2013
+ - google-cloud-functions
+ - azure-active-directory
+ - gitlab
+ - jwt
+ - download
+ - swift3
+ - sql-server-2005
+ - process
+ - pygame
+ - rspec
+ - configuration
+ - properties
+ - callback
+ - combobox
+ - windows-phone-8
+ - linux-kernel
+ - safari
+ - scrapy
+ - permissions
+ - emacs
+ - x86
+ - clojure
+ - scripting
+ - raspberry-pi
+ - io
+ - scope
+ - azure-functions
+ - compilation
+ - expo
+ - responsive-design
+ - mongodb-query
+ - nhibernate
+ - angularjs-directive
+ - reference
+ - binding
+ - request
+ - bluetooth
+ - dns
+ - architecture
+ - playframework
+ - pyqt
+ - 3d
+ - version-control
+ - discord.js
+ - doctrine-orm
+ - package
+ - f#
+ - rubygems
+ - get
+ - sql-server-2012
+ - autocomplete
+ - tree
+ - openssl
+ - datepicker
+ - kendo-ui
+ - jackson
+ - yii
+ - controller
+ - grep
+ - nested
+ - xamarin.ios
+ - static
+ - null
+ - transactions
+ - statistics
+ - datagrid
+ - active-directory
+ - dockerfile
+ - uiviewcontroller
+ - webforms
+ - sas
+ - discord.py
+ - computer-vision
+ - phpmyadmin
+ - notifications
+ - duplicates
+ - pycharm
+ - mocking
+ - youtube
+ - yaml
+ - nullpointerexception
+ - menu
+ - blazor
+ - sum
+ - plotly
+ - bitmap
+ - visual-studio-2008
+ - asp.net-mvc-5
+ - floating-point
+ - css-selectors
+ - yii2
+ - stl
+ - electron
+ - android-listview
+ - jsf-2
+ - time-series
+ - cryptography
+ - ant
+ - hashmap
+ - character-encoding
+ - stream
+ - msbuild
+ - asp.net-core-mvc
+ - sdk
+ - google-drive-api
+ - jboss
+ - selenium-chromedriver
+ - joomla
+ - devise
+ - navigation
+ - cors
+ - cuda
+ - anaconda
+ - frontend
+ - background
+ - multiprocessing
+ - binary
+ - pyqt5
+ - camera
+ - iterator
+ - linq-to-sql
+ - mariadb
+ - onclick
+ - android-jetpack-compose
+ - ios7
+ - microsoft-graph-api
+ - android-asynctask
+ - rabbitmq
+ - tabs
+ - amazon-dynamodb
+ - laravel-4
+ - environment-variables
+ - insert
+ - uicollectionview
+ - linker
+ - xsd
+ - coldfusion
+ - console
+ - continuous-integration
+ - upload
+ - textview
+ - ftp
+ - opengl-es
+ - operating-system
+ - macros
+ - mockito
+ - localization
+ - formatting
+ - xml-parsing
+ - json.net
+ - type-conversion
+ - vuejs3
+ - data.table
+ - kivy
+ - timestamp
+ - integer
+ - calendar
+ - segmentation-fault
+ - android-ndk
+ - prolog
+ - drag-and-drop
+ - char
+ - crash
+ - jasmine
+ - geometry
+ - automated-tests
+ - azure-pipelines
+ - dependencies
+ - fortran
+ - android-gradle-plugin
+ - itext
+ - mfc
+ - sprite-kit
+ - header
+ - attributes
+ - nosql
+ - firebase-cloud-messaging
+ - format
+ - nuxt.js
+ - odoo
+ - db2
+ - jquery-plugins
+ - event-handling
+ - julia
+ - jenkins-pipeline
+ - leaflet
+ - annotations
+ - flutter-layout
+ - nestjs
+ - keyboard
+ - postman
+ - textbox
+ - arm
+ - visual-studio-2017
+ - stripe-payments
+ - gulp
+ - libgdx
+ - uikit
+ - synchronization
+ - timezone
+ - azure-web-app-service
+ - dom-events
+ - wso2
+ - xampp
+ - crystal-reports
+ - google-sheets-formula
+ - namespaces
+ - aggregation-framework
+ - swagger
+ - android-emulator
+ - uiscrollview
+ - jvm
+ - sequelize.js
+ - chart.js
+ - com
+ - snowflake-cloud-data-platform
+ - subprocess
+ - geolocation
+ - webdriver
+ - garbage-collection
+ - html5-canvas
+ - sql-update
+ - centos
+ - dialog
+ - concatenation
+ - numbers
+ - widget
+ - qml
+ - tuples
+ - set
+ - java-stream
+ - mapreduce
+ - ionic2
+ - smtp
+ - windows-10
+ - rotation
+ - android-edittext
+ - nuget
+ - modal-dialog
+ - spring-data
+ - radio-button
+ - doctrine
+ - http-headers
+ - grid
+ - lucene
+ - sonarqube
+ - xmlhttprequest
+ - listbox
+ - switch-statement
+ - initialization
+ - internationalization
+ - components
+ - boolean
+ - apache-camel
+ - google-play
+ - gdb
+ - serial-port
+ - ios5
+ - ldap
+ - return
+ - youtube-api
+ - pivot
+ - latex
+ - eclipse-plugin
+ - tags
+ - frameworks
+ - containers
+ - c++17
+ - github-actions
+ - subquery
+ - dataset
+ - embedded
+ - asp-classic
+ - foreign-keys
+ - label
+ - uinavigationcontroller
+ - delegates
+ - copy
+ - google-cloud-storage
+ - struts2
+ - migration
+ - protractor
+ - base64
+ - uibutton
+ - queue
+ - find
+ - sql-server-2008-r2
+ - arguments
+ - composer-php
+ - append
+ - jaxb
+ - stack
+ - zip
+ - tailwind-css
+ - cucumber
+ - autolayout
+ - ide
+ - entity-framework-6
+ - iteration
+ - popup
+ - r-markdown
+ - windows-7
+ - vb6
+ - airflow
+ - g++
+ - clang
+ - ssl-certificate
+ - hover
+ - jqgrid
+ - range
+ - gmail
+
+Next You’ll be prompted to create an account to view your personalized homepage.
+
+   - Home
+   - Questions
+   - AI Assist
+   - Tags
+   - Challenges
+   - Chat
+   - Articles
+   - Users
+   - Companies
+   - Collectives
+   - Communities for your favorite technologies. Explore all Collectives
+
+ - Stack Internal
+ - Stack Overflow for Teams is now called Stack Internal. Bring the best of human thought and AI automation together at your work.
+
+ - Try for free Learn more
+ - Stack Internal
+ - Bring the best of human thought and AI automation together at your work. Learn more
+
+Collectives™ on Stack Overflow
+
+Find centralized, trusted content and collaborate around the technologies you use most.
+
+Learn more about Collectives
+Stack Internal
+
+Knowledge at work
+
+Bring the best of human thought and AI automation together at your work.
+
+Explore Stack Internal
+c# minimum of two numbers if one or both is greater than 0
+
+Ask Question
+Asked 14 years, 4 months ago
+Modified 3 years, 7 months ago
+Viewed 23k times
+AD
+This question shows research effort; it is useful and clear
+9
+Save this question.
+Show activity on this post.
+The logic I'm looking for is if either of the numbers are >= 0 (which they don't have to be), then return the minimum of the two that is also greater than 0. The code I've written for it is so ugly that I'm ashamed to post it!
+
+EDIT: Samples 1, -1 => 1 5,6 => 5 -1,-1 => 0
+
+(if both are less than 0, return 0)
+
+ - c#
+
+Share
+Share a link to this question
+Copy linkCC BY-SA 3.0
+Improve this question
+Follow
+Follow this question to receive notifications
+edited Aug 22, 2011 at 17:26
+asked Aug 22, 2011 at 17:20
+probably at the beach
+15.3k1717 gold badges8282 silver badges123123 bronze badges
+3
+ - 1
+ - What do you want to return if the numbers are less than 0? Sample input and expected output for various cases would be helpful.
+ - Jon Skeet
+ - – Jon Skeet
+ - 2011-08-22 17:22:56 +00:00
+ - Commented Aug 22, 2011 at 17:22
+ - 6
+ - how ugly can it be, please post it anyway.
+ - Shamim Hafiz - MSFT
+ - – Shamim Hafiz - MSFT
+ - 2011-08-22 17:23:45 +00:00
+ - Commented Aug 22, 2011 at 17:23
+ - 1
+ - Learning from experience @Richard
+ - Baz1nga
+ - – Baz1nga
+ - 2011-08-22 18:24:36 +00:00
+ - Commented Aug 22, 2011 at 18:24
+
+Add a comment |
+9 Answers 9
+
+Sorted by: Reset to default
+Highest score (default) Trending (recent votes count more) Date modified (newest first) Date created (oldest first)
+This answer is useful
+18
+Save this answer.
+Show activity on this post.
+I'm going to try my psychic powers, and assuming that if both are zero, you want to return 0.
+
+In other words:
+
+Copy
+return x < 0 && y < 0 ? 0
+     : x < 0 ? y
+     : y < 0 ? x
+     : Math.Min(x, y);
+
+
+I'm sure I can do better though...
+
+If they're not both greater than 0, then at least one will be less than zero, so you just care about the greater of them, or 0 if they're both less than zero. Otherwise, we just take the minimum.
+
+Copy
+return x < 0 || y < 0 ? Math.Max(Math.Max(x, y), 0) : Math.Min(x, y);
+
+
+If you don't care much about performance, you could use:
+
+Copy
+new[] { x, y }.Where(z => z > 0)
+              .DefaultIfEmpty() // Make sure there's at least one entry
+              .Min();
+
+
+Frankly none of these are terribly nice, IMO. I'd want a comment with any of them...
+
+Share
+Share a link to this answer
+Copy linkCC BY-SA 3.0
+Improve this answer
+Follow
+Follow this answer to receive notifications
+edited Aug 22, 2011 at 19:46
+answered Aug 22, 2011 at 17:23
+Jon Skeet
+1.5m894894 gold badges9.3k9.3k silver badges9.3k9.3k bronze badges
+Sign up to request clarification or add additional context in comments.
+13 Comments
+
+Add a comment
+
+Niki
+Niki Over a year ago
+You could save one Max call using Math.Max(0, Math.Min(x,y))
+2011-08-22T17:25:44.3Z+00:00
+0
+Reply
+ - Copy link
+
+Marc
+Marc Over a year ago
+@nikie: except x=5, y=-1 returns 0
+2011-08-22T17:26:41.41Z+00:00
+4
+Reply
+ - Copy link
+
+Sarfaraz Nawaz
+Sarfaraz Nawaz Over a year ago
+@hatchet: No, it should return 1 if I understood the question correctly.
+2011-08-22T17:28:49.63Z+00:00
+0
+Reply
+ - Copy link
+
+probably at the beach
+probably at the beach Over a year ago
+@hatchet, yep sorry if it wasn't clear. -1, 1 should return 1
+2011-08-22T17:30:36.903Z+00:00
+0
+Reply
+ - Copy link
+
+StriplingWarrior
+StriplingWarrior Over a year ago
+LOL. When Skeet posts, people upvote. Why bother thinking first?
+2011-08-22T18:10:04.507Z+00:00
+1
+Reply
+ - Copy link
+
+Add a comment | Show 8 more comments
+AD
+This answer is useful
+9
+Save this answer.
+Show activity on this post.
+Is this too ugly?
+
+Copy
+private int GetSmallestNonNegative(int a , int b)
+{
+                                            if (a >= 0 && b >= 0)
+                                            return Math.Min(a,b);
+                                            else if (a >= 0 && b < 0)
+                                            return a;
+                                            else if (a < 0 && b >= 0)
+                                            return b;
+                                            else
+                                            return 0;
+}       
+
+
+Share
+Share a link to this answer
+Copy linkCC BY-SA 3.0
+Improve this answer
+Follow
+Follow this answer to receive notifications
+answered Aug 22, 2011 at 17:40
+sgmoore
+16.1k66 gold badges4646 silver badges7272 bronze badges
+6 Comments
+
+Add a comment
+
+Alxandr
+Alxandr Over a year ago
+How bout Math.Max(Math.Min(a,b), 0)?
+2011-08-22T18:25:04.053Z+00:00
+9
+Reply
+ - Copy link
+
+Baz1nga
+Baz1nga Over a year ago
+I would probably right this code for a prod env too.. Clean and concise.. No head scratching.. +1 from me
+2011-08-22T18:25:41.267Z+00:00
+0
+Reply
+ - Copy link
+
+Jon Skeet
+Jon Skeet Over a year ago
+You don't need the checks for a >= 0 and b >= 0 in the conditions. Basically this is the equivalent of my first solution, but the other way up and using if / else instead of conditionals.
+2011-08-22T19:48:21.34Z+00:00
+1
+Reply
+ - Copy link
+
+Jimmy
+Jimmy Over a year ago
+@Jon: comes down to a question of whether you like the stacked conditional operator I guess.
+2011-08-22T19:55:04.01Z+00:00
+0
+Reply
+ - Copy link
+
+Jon Skeet
+Jon Skeet Over a year ago
+@Jimmy: Agreed. I find it's a nice pattern once you're used to it.
+2011-08-22T20:03:07.173Z+00:00
+0
+Reply
+ - Copy link
+
+Add a comment | Show 1 more comment
+This answer is useful
+5
+Save this answer.
+Show activity on this post.
+I think this is simple, extendable to any number arguments, and reflects the original wording of the question ("minimum of a set of numbers that is also greater than or equal to 0") reasonably well:
+
+Copy
+new[] { a,b,0 }.Where(x => x >= 0).Min();
+
+
+Share
+Share a link to this answer
+Copy linkCC BY-SA 3.0
+Improve this answer
+Follow
+Follow this answer to receive notifications
+edited Aug 22, 2011 at 19:56
+answered Aug 22, 2011 at 19:50
+Jimmy
+91.9k1919 gold badges123123 silver badges139139 bronze badges
+Comments
+
+Add a comment
+
+AD
+This answer is useful
+2
+Save this answer.
+Show activity on this post.
+Copy
+If (a>=0 &&b>=0)
+                                            return Math.Min(a,b);
+
+var min =Math.Max(a,b);
+                                            return min<0 ? 0: min;
+
+
+Share
+Share a link to this answer
+Copy linkCC BY-SA 3.0
+Improve this answer
+Follow
+Follow this answer to receive notifications
+edited Aug 22, 2011 at 17:50
+answered Aug 22, 2011 at 17:28
+Baz1nga
+15.6k33 gold badges3838 silver badges6363 bronze badges
+1 Comment
+
+Add a comment
+
+Baz1nga
+Baz1nga Over a year ago
+Na it's fine.. If it's or then the negative no will be returned
+2011-08-22T17:36:25.963Z+00:00
+1
+Reply
+ - Copy link
+
+This answer is useful
+1
+Save this answer.
+Show activity on this post.
+Copy
+return (a >=0 && b>=0) ? Math.Min(a,b) : (Math.Max(a,b) < 0 ? 0 : Math.Max(a,b));
+
+
+Share
+Share a link to this answer
+Copy linkCC BY-SA 3.0
+Improve this answer
+Follow
+Follow this answer to receive notifications
+answered Aug 22, 2011 at 17:34
+Sarfaraz Nawaz
+364k121121 gold badges682682 silver badges867867 bronze badges
+4 Comments
+
+Add a comment
+
+Baz1nga
+Baz1nga Over a year ago
+Fails when both are negative... Look at my answer
+2011-08-22T17:35:29.037Z+00:00
+0
+Reply
+ - Copy link
+
+hatchet - done with SOverflow
+hatchet - done with SOverflow Over a year ago
+Min isn't sufficient, because only numbers >= 0 can be considered.
+2011-08-22T17:35:55.347Z+00:00
+0
+Reply
+ - Copy link
+
+Baz1nga
+Baz1nga Over a year ago
+That's an exact duplicate if my answer.. :/
+2011-08-22T17:40:55.103Z+00:00
+0
+Reply
+ - Copy link
+
+Sarfaraz Nawaz
+Sarfaraz Nawaz Over a year ago
+@zzzz: Huh? How is it "exact" duplicate? Just because the logic is same?
+2011-08-22T17:49:05.003Z+00:00
+0
+Reply
+ - Copy link
+
+Add a comment
+This answer is useful
+1
+Save this answer.
+Show activity on this post.
+Copy
+return (a >= 0 || b >= 0) ? Math.Min(Math.Max(0,a), Math.Max(0,b)) : 0;
+
+
+(edit) small change for slightly better performance when either are zero
+
+Copy
+return (a > 0 || b > 0) ? Math.Min(Math.Max(0,a), Math.Max(0,b)) : 0;
+
+
+Share
+Share a link to this answer
+Copy linkCC BY-SA 3.0
+Improve this answer
+Follow
+Follow this answer to receive notifications
+edited Aug 22, 2011 at 17:49
+answered Aug 22, 2011 at 17:38
+hatchet - done with SOverflow
+16.3k55 gold badges4949 silver badges5858 bronze badges
+1 Comment
+
+Add a comment
+
+hatchet - done with SOverflow
+hatchet - done with SOverflow Over a year ago
+(but Jon's is still better with only one Max)
+2011-08-22T17:52:01Z+00:00
+0
+Reply
+ - Copy link
+
+This answer is useful
+1
+Save this answer.
+Show activity on this post.
+try (although no beauty):
+
+Copy
+Math.Max (Math.Sign (Math.Max (x,0)), Math.Sign (Math.Max (y, 0))) == 0 ? 0 : ((Math.Sign (Math.Max (x,0)) + Math.Sign (Math.Max (y, 0))) == 2 ? Math.Min (x, y): Math.Max (x, y ))
+
+
+Share
+Share a link to this answer
+Copy linkCC BY-SA 3.0
+Improve this answer
+Follow
+Follow this answer to receive notifications
+edited Aug 22, 2011 at 17:51
+answered Aug 22, 2011 at 17:27
+Yahia
+70.5k99 gold badges117117 silver badges147147 bronze badges
+Comments
+
+Add a comment
+
+This answer is useful
+1
+Save this answer.
+Show activity on this post.
+I hope this will be helpful.
+
+Copy
+Max= ((num1+num2)+Math.Abs(num1-num2))/2
+and Min= ((num1+num2)-Math.Abs(num1-num2))/2
+
+
+Share
+Share a link to this answer
+Copy linkCC BY-SA 3.0
+Improve this answer
+Follow
+Follow this answer to receive notifications
+edited Jul 8, 2012 at 17:53
+Bo Persson
+92.9k3131 gold badges153153 silver badges211211 bronze badges
+answered Jul 8, 2012 at 15:25
+Suvendu Shekhar Giri
+1,40466 gold badges4343 silver badges7272 bronze badges
+Comments
+
+Add a comment
+
+This answer is useful
+0
+Save this answer.
+Show activity on this post.
+Now that we have new C# features, you could use switch expressions and ValueTuple pattern matching to only test each variable once:
+
+Copy
+var ans = (x < 0, y < 0) switch {
+            (true, true) => 0,
+            (false, true) => x,
+            (true, false) => y,
+            (false, false) => Math.Min(x, y)
+        };
+
+
+You could also flip the tests around, depending on which is more important or you think is more readable:
+
+Copy
+var ans = (x >= 0, y >= 0) switch {
+            (false, false) => 0,
+            (true, false) => x,
+            (false, true) => y,
+            (true, true) => Math.Min(x, y)
+        };
+
+
+Share
+Share a link to this answer
+Copy linkCC BY-SA 4.0
+Improve this answer
+Follow
+Follow this answer to receive notifications
+answered May 16, 2022 at 23:24
+NetMage
+27k33 gold badges3939 silver badges5757 bronze badges
+Comments
+
+Add a comment
+
+Your Answer
+
+Thanks for contributing an answer to Stack Overflow!
+
+ - Please be sure to answer the question. Provide details and share your research!
+
+But avoid …
+
+ - Asking for help, clarification, or responding to other answers.
+ - Making statements based on opinion; back them up with references or personal experience.
+
+To learn more, see our tips on writing great answers.
+
+Draft saved
+Draft discarded
+Sign up or log in
+
+Sign up using Google
+Sign up using Email and Password
+Submit
+Post as a guest
+
+Name
+Email
+Required, but never shown
+
+Post Your Answer Discard
+By clicking “Post Your Answer”, you agree to our terms of service and acknowledge you have read our privacy policy.
+
+Start asking to get answers
+
+Find the answer to your question by asking.
+
+Ask question
+Explore related questions
+
+ - c#
+
+See similar questions with these tags.
+
+ - The Overflow Blog
+ - The most dangerous shortcuts in software
+ - A new worst coder has entered the chat: vibe coding without code knowledge
+ - Featured on Meta
+ - Native Ads coming soon to Stack Overflow and Stack Exchange
+ - A proposal for bringing back Community Promotion & Open Source Ads
+ - Modernizing curation: A proposal for The Workshop and The Archive
+ - Stack Overflow chat opening up to all users in January; Stack Exchange chat...
+ - Policy: Generative AI (e.g., ChatGPT) is banned
+
+AD
+AD
+Community activity
+Last 1 hr
+ - Users online activity
+ - 2746 users online
+ - 8 questions
+ - 11 answers
+ - 16 comments
+ - 73 upvotes
+
+Popular tags
+
+phppythonc++githubjava
+Popular unanswered question
+
+VSCode CMake Tools disabling "Configure On Open" doesn't seem to be working
+visual-studio-codecmakesettings
+Ray
+ - 8.9k
+
+1,572 days ago
+Related
+
+1
+comparing to MinValue using <= instead of ==
+2
+C# Minimize if statement
+6
+finding maximum & minimum number from 2 numbers in an array
+0
+Finding the minimum value in c#
+2
+Linq Min() of Non-zero values
+8
+Find minimum and maximum number from array, minimum is always 0
+0
+Get Smallest and Nearest Number to Zero - C#
+2
+Write a program to find the minimum of a sequence of nonnegative numbers entered
+1
+trying to find the biggest negative and smallest positive from given input
+1
+VB.net Find smallest number except 0
+Hot Network Questions
+
+ - Translating "Jesus wept."
+ - Why is analog pre-amplification strictly required for biopotentials instead of direct high-resolution ADC sampling?
+ - People In A Special Room
+ - How to route PCB LED indicators to the outside of an enclosure?
+ - Why do we allow projective representations of symmetries if interferometry can reveal the "global" phase?
+ - How are documents admitted as evidence in civil cases in jurisdictions outside England and Wales?
+ - ek::StdString. An attempt to extend std::string functionalities
+ - What does "equal time commutation relations" mean in the context of Special Relativity?
+ - Release strategy and semantic versioning for shared libraries in a microservices architecture
+ - Predicting particle diffraction pattern (2D scenario) through Schrödinger Equation
+ - Is it possible to be conscious without knowing you are?
+ - Impact of closing the library at the Goddard Space Flight Center
+ - How to make title visible, tcolorbox
+ - Coming to a conclusion because of repeated historical evidence or are you faulty for assuming the conclusion?
+ - What gas is used to fill the fuel tanks of jet liners as the fuel drains?
+ - What is an example of locally finitely presented algebra which is not finitely presented?
+ - What could be wrong with this light fixture?
+ - Is wearing synthetic gloves an explosion risk when refueling at freezing temperatures?
+ - Is this rhythmic notation legit?
+ - Cut and rearrange regular polygons with no overlap with original positions
+ - how do we actually reason/think/comprehend about nothing?
+ - A river flowing from a large mountain lake through a canyon
+ - Simple LED vs LED Bulb
+ - What is stored in dbcache and with what priority?
+
+Question feed
+Subscribe to RSS
+
+Question feed
+To subscribe to this RSS feed, copy and paste this URL into your RSS reader.
+
+lang-cs
+Why are you flagging this comment?
+
+Probable spam.
+This comment promotes a product, service or website while failing to disclose the author's affiliation.
+
+Unfriendly or contains harassment/bigotry/abuse.
+This comment is unkind, insulting or attacks another person or group. Learn more in our Abusive behavior policy.
+
+Not needed.
+This comment is not relevant to the post.
+
+Enter at least 6 characters
+Something else.
+A problem not listed above. Try to be as specific as possible.
+
+Enter at least 6 characters
+
+Flag comment Cancel
+You have 0 flags left today
+
+Hang on, you can't upvote just yet.
+
+You'll need to complete a few actions and gain 15 reputation points before being able to upvote. Upvoting indicates when questions and answers are useful. What's reputation and how do I get it?
+
+Instead, you can save this post to reference later.
+
+Save this post for later Not now
