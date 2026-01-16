@@ -2,21 +2,26 @@
 
 namespace Html2Text.PerfTests;
 
+[ShortRunJob]
+[MemoryDiagnoser]
 public class PageBenchmarks
 {
-    private Dictionary<string, string> _files = null!;
+    private string _html = null!;
 
-    private static readonly Dictionary<string, string> Files =
-        Directory.GetFiles("Samples", "*.html")
-            .ToDictionary(f => f, File.ReadAllText);
-
-    public IEnumerable<string> FileNames()
-        => Files.Keys;
+    public IEnumerable<string?> FileNames()
+        => Directory
+            .GetFiles("Samples", "*.html")
+            .Select(Path.GetFileNameWithoutExtension);
 
     [ParamsSource(nameof(FileNames))]
     public string FileName { get; set; } = null!;
 
+    [GlobalSetup]
+    public void GlobalSetup()
+    {
+        _html = File.ReadAllText($"Samples/{FileName}.html");
+    }
+
     [Benchmark]
-    public string ParseHtml()
-        => Html2Text.Convert(Files[FileName]);
+    public string Convert() => Html2Text.Convert(_html);
 }
