@@ -1,6 +1,8 @@
 # Html2Text.Net
 
 [![CI](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml/badge.svg)](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml)
+[![Benchmarks](https://img.shields.io/badge/benchmarks-charts-blue?logo=chartdotjs)](https://pavlosmcg.github.io/Html2Text.Net/dev/bench/)
+[![License](https://img.shields.io/github/license/pavlosmcg/Html2Text.Net)](LICENSE.txt)
 
 Just fast HTML -> Text.
 
