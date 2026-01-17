@@ -71,7 +71,7 @@ jobs:
 
       - name: Unit test report
         if: always()
-        uses: bibipkins/dotnet-test-reporter@v1
+        uses: bibipkins/dotnet-test-reporter@v1.6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           results_path: TestResults/unit-tests.trx
@@ -101,7 +101,7 @@ jobs:
 
       - name: Regression test report
         if: always()
-        uses: bibipkins/dotnet-test-reporter@v1
+        uses: bibipkins/dotnet-test-reporter@v1.6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           results_path: TestResults/regression-tests.trx
