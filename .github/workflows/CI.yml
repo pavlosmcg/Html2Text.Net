@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.props', '**/*.targets', '**/packages.lock.json', 'global.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build (Release)
+        run: dotnet build --configuration Release --no-restore
+
+      # Upload build outputs so downstream jobs can run with --no-build --no-restore
+      - name: Upload build outputs (bin/obj)
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-outputs
+          if-no-files-found: error
+          retention-days: 3
+          path: |
+            **/bin/**
+            **/obj/**
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Download build outputs
+        uses: actions/download-artifact@v4
+        with:
+          name: build-outputs
+          path: .
+
+      - name: Unit tests (no rebuild)
+        run: dotnet test ./Html2Text.Tests/Html2Text.Tests.csproj --configuration Release --no-build --no-restore
+
