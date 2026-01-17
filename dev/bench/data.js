@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1768685656630,
+  "lastUpdate": 1768685790120,
   "repoUrl": "https://github.com/pavlosmcg/Html2Text.Net",
   "entries": {
     "Benchmark": [
@@ -384,6 +384,102 @@ window.BENCHMARK_DATA = {
             "value": 1120365.8014322917,
             "unit": "ns",
             "range": "± 1136.503613870841"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pavlosmcg@users.noreply.github.com",
+            "name": "pavlosmcg",
+            "username": "pavlosmcg"
+          },
+          "committer": {
+            "email": "pavlosmcg@users.noreply.github.com",
+            "name": "pavlosmcg",
+            "username": "pavlosmcg"
+          },
+          "distinct": true,
+          "id": "170c478166f9e73abcfe43c22be6ce9301d785bb",
+          "message": "Use correct version",
+          "timestamp": "2026-01-18T10:34:24+13:00",
+          "tree_id": "644cfa0431e91d9e72cb596660d5aa7d0cf3be10",
+          "url": "https://github.com/pavlosmcg/Html2Text.Net/commit/170c478166f9e73abcfe43c22be6ce9301d785bb"
+        },
+        "date": 1768685789745,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"clampdown\")",
+            "value": 3546937.9283854165,
+            "unit": "ns",
+            "range": "± 3555.042503178681"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"email1\")",
+            "value": 47394.78651936849,
+            "unit": "ns",
+            "range": "± 149.0688799160846"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"email2\")",
+            "value": 178233.79109700522,
+            "unit": "ns",
+            "range": "± 251.05819420429742"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"email3\")",
+            "value": 186400.22029622397,
+            "unit": "ns",
+            "range": "± 689.5166566201883"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"email4\")",
+            "value": 51086.43408203125,
+            "unit": "ns",
+            "range": "± 68.0240312780993"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"email5\")",
+            "value": 73799.20100911458,
+            "unit": "ns",
+            "range": "± 247.65436866771708"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"kubernetes\")",
+            "value": 346111.6110026042,
+            "unit": "ns",
+            "range": "± 258.1879545434186"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"rejewski\")",
+            "value": 5097430.700520833,
+            "unit": "ns",
+            "range": "± 17924.912238735727"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"sciphus\")",
+            "value": 139731.7998046875,
+            "unit": "ns",
+            "range": "± 74.78029353107577"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"scottallen\")",
+            "value": 371645.9879557292,
+            "unit": "ns",
+            "range": "± 247.25065584420398"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"stackoverflow\")",
+            "value": 5447998.625,
+            "unit": "ns",
+            "range": "± 102816.48816621414"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"udhr\")",
+            "value": 1180993.7493489583,
+            "unit": "ns",
+            "range": "± 2638.4730015789596"
           }
         ]
       }
