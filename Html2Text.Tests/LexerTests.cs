@@ -159,12 +159,11 @@ public class LexerTests
         Assert.That(result.Count, Is.EqualTo(3));
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Opening:p @Start:0,Length:3",
                 "Text:blorgfester @Start:3,Length:11",
-                "Closing:p @Start:14,Length:4",
-            }));
+                "Closing:p @Start:14,Length:4"
+            ]));
     }
 
     [Test]
@@ -179,12 +178,11 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Opening:SPan @Start:0,Length:6",
                 "Text:blorgfester @Start:6,Length:11",
-                "Closing:spAN @Start:17,Length:7",
-            }));
+                "Closing:spAN @Start:17,Length:7"
+            ]));
     }
 
     [Test]
@@ -199,12 +197,11 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Opening:a @Start:0,Length:61",
                 "Text:link text @Start:61,Length:9",
-                "Closing:a @Start:70,Length:4",
-            }));
+                "Closing:a @Start:70,Length:4"
+            ]));
     }
 
     [Test]
@@ -219,12 +216,11 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Opening:p @Start:0,Length:22",
                 "Text:paragraph text @Start:22,Length:14",
-                "Closing:p @Start:36,Length:4",
-            }));
+                "Closing:p @Start:36,Length:4"
+            ]));
     }
 
     [Test]
@@ -239,13 +235,12 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Text:yadayim  @Start:0,Length:8",
                 "Opening:p @Start:8,Length:15",
                 "Text:higmar @Start:23,Length:6",
-                "Closing:p @Start:29,Length:4",
-            }));
+                "Closing:p @Start:29,Length:4"
+            ]));
     }
 
     [Test]
@@ -260,13 +255,12 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "SelfClosing:hr @Start:0,Length:5",
                 "Text:framistan @Start:5,Length:9",
                 "SelfClosing:br @Start:14,Length:17",
-                "Text:bedoulia @Start:31,Length:8",
-            }));
+                "Text:bedoulia @Start:31,Length:8"
+            ]));
     }
 
     [Test]
@@ -281,14 +275,13 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Text:framistan @Start:0,Length:9",
                 "Opening:p @Start:9,Length:15",
                 "Text:higmar @Start:24,Length:6",
                 "Closing:p @Start:30,Length:4",
-                "Text:bedoulia @Start:34,Length:8",
-            }));
+                "Text:bedoulia @Start:34,Length:8"
+            ]));
     }
 
     [Test]
@@ -303,11 +296,10 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Text:minhag  @Start:0,Length:7",
-                "Closing:p @Start:7,Length:4",
-            }));
+                "Closing:p @Start:7,Length:4"
+            ]));
     }
 
     [Test]
@@ -322,10 +314,9 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
-                "Text:</ForgotToClose @Start:0,Length:15",
-            }));
+            Is.EqualTo([
+                "Text:</ForgotToClose @Start:0,Length:15"
+            ]));
     }
 
     [Test]
@@ -340,11 +331,10 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Opening:div @Start:0,Length:5",
-                "Closing:span @Start:5,Length:7",
-            }));
+                "Closing:span @Start:5,Length:7"
+            ]));
     }
 
     [Test]
@@ -359,11 +349,10 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Closing:span @Start:0,Length:7",
-                "Opening:div @Start:7,Length:5",
-            }));
+                "Opening:div @Start:7,Length:5"
+            ]));
     }
 
     [Test]
@@ -378,13 +367,12 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "SelfClosing:hr @Start:0,Length:4",
                 "Text:framistan @Start:4,Length:9",
                 "SelfClosing:br @Start:13,Length:4",
-                "Text:bedoulia @Start:17,Length:8",
-            }));
+                "Text:bedoulia @Start:17,Length:8"
+            ]));
     }
 
     [Test]
@@ -399,11 +387,10 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Text:</br> @Start:0,Length:5",
-                "Opening:div @Start:5,Length:5",
-            }));
+                "Opening:div @Start:5,Length:5"
+            ]));
     }
 
     [Test]
@@ -418,27 +405,10 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "SelfClosing:a @Start:0,Length:4",
-                "SelfClosing:b @Start:4,Length:5",
-            }));
-    }
-
-    // TODO tag names must be followed by whitespace '/>' or '>' to be valid
-    [Test]
-    [TestCase("<div!>")]
-    [TestCase("<div@>")]
-    [TestCase("<div#>")]
-    [TestCase("<div.>")]
-    [TestCase("<div=\"value\">")]
-    [TestCase("<div\"value\">")]
-    public void GetEnumerator_Returns_TextTokens_WhenInput_IsOpeningTag_WithInvalidCharacters(string badTag)
-    {
-        string input = $"content {badTag} more content";
-        List<Chunk> result = CollectTestOutput(input);
-        Assert.That(result.All(r => r.TokenType == TokenType.Text), Is.True);
-        Assert.That(string.Concat(result.Select(r => r.Content)), Is.EqualTo(input));
+                "SelfClosing:b @Start:4,Length:5"
+            ]));
     }
 
     [Test]
@@ -456,6 +426,12 @@ public class LexerTests
     [TestCase("blorg < fes > ter")]
     [TestCase("<div?>")]
     [TestCase("<?div>")]
+    [TestCase("<div!>")]
+    [TestCase("<div@>")]
+    [TestCase("<div#>")]
+    [TestCase("<div.>")]
+    [TestCase("<div=\"value\">")]
+    [TestCase("<div\"value\">")]
     public void GetEnumerator_Returns_TextTokens_WhenInput_IsMalformedOpeningTag(string badTag)
     {
         string input = $"content {badTag} more content";
@@ -479,6 +455,12 @@ public class LexerTests
     [TestCase(">")]
     [TestCase("</")]
     [TestCase("</div?>")]
+    [TestCase("</div!>")]
+    [TestCase("</div@>")]
+    [TestCase("</div#>")]
+    [TestCase("</div.>")]
+    [TestCase("</div=\"value\">")]
+    [TestCase("</div\"value\">")]
     public void GetEnumerator_Returns_TextTokens_WhenInput_IsMalformedClosingTag(string badTag)
     {
         string input = $"content{badTag}";
@@ -498,6 +480,12 @@ public class LexerTests
     [TestCase("</br/>")]
     [TestCase("<br/?>")]
     [TestCase("<br?>")]
+    [TestCase("<self!/>")]
+    [TestCase("<self@/>")]
+    [TestCase("<self#/>")]
+    [TestCase("<self./>")]
+    [TestCase("<self=\"value\"/>")]
+    [TestCase("<self\"value\"/>")]
     public void GetEnumerator_Returns_TextTokens_WhenInput_IsMalformedSelfClosingTag(string badTag)
     {
         var input = $"some {badTag} text content";
@@ -519,14 +507,13 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Opening:script @Start:0,Length:8",
                 "Text:var a = 1 / 2; b = 3  @Start:8,Length:21",
                 "Text:< c > @Start:29,Length:5",
                 "Text:= 4; @Start:34,Length:4",
-                "Closing:script @Start:38,Length:9",
-            }));
+                "Closing:script @Start:38,Length:9"
+            ]));
     }
 
     [Test]
@@ -541,14 +528,13 @@ public class LexerTests
         // assert
         Assert.That(
             DisplayTestOutput(result),
-            Is.EqualTo(new[]
-            {
+            Is.EqualTo([
                 "Opening:script",
                 "Text:&&b&&0",
                 "Text:<b",
                 "Text:.length=5",
-                "Closing:script",
-            }));
+                "Closing:script"
+            ]));
     }
 
     [Test]
@@ -620,12 +606,11 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
-                "Comment:<!-- comment --> @Start:0,Length:16",
-                "Closing:div @Start:16,Length:6",
-            }));
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Comment:<!-- comment -->",
+                "Closing:div"
+            ]));
     }
 
     [Test]
@@ -639,12 +624,11 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
-                "Closing:p @Start:0,Length:4",
-                "Text:<!-- comment that never closes <p>other stuff</p> @Start:4,Length:49",
-            }));
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Closing:p",
+                "Text:<!-- comment that never closes <p>other stuff</p>"
+            ]));
     }
 
     [Test]
@@ -658,15 +642,14 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
-                "Opening:span @Start:0,Length:6",
-                "Text:some text @Start:6,Length:9",
-                "Comment:<!--a comment </span><p> over some markup </p> --> @Start:15,Length:50",
-                "Text: and more after comment @Start:65,Length:23",
-                "Closing:span @Start:88,Length:7",
-            }));
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Opening:span",
+                "Text:some text",
+                "Comment:<!--a comment </span><p> over some markup </p> -->",
+                "Text: and more after comment",
+                "Closing:span"
+            ]));
     }
 
     [Test]
@@ -680,15 +663,14 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
-                "Opening:span @Start:0,Length:6",
-                "Text:<p <!-- comment inside p tag --> @Start:6,Length:32",
-                "Text: >text inside p tag @Start:38,Length:19",
-                "Closing:p @Start:57,Length:4",
-                "Closing:span @Start:61,Length:7",
-            }));
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Opening:span",
+                "Text:<p <!-- comment inside p tag -->",
+                "Text: >text inside p tag",
+                "Closing:p",
+                "Closing:span"
+            ]));
     }
 
     [Test]
@@ -702,15 +684,14 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
-                "Opening:span @Start:0,Length:6",
-                "Text:<p <!-- > @Start:6,Length:9",
-                "Text:comment  -->text @Start:15,Length:16",
-                "Closing:p @Start:31,Length:4",
-                "Closing:span @Start:35,Length:7",
-            }));
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Opening:span",
+                "Text:<p <!-- >",
+                "Text:comment  -->text",
+                "Closing:p",
+                "Closing:span"
+            ]));
     }
 
     [Test]
@@ -724,15 +705,14 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
-                "Opening:span @Start:0,Length:6",
-                "Comment:<!-- comment <p--> @Start:6,Length:18",
-                "Text:>paragraph @Start:24,Length:10",
-                "Closing:p @Start:34,Length:4",
-                "Closing:span @Start:38,Length:7",
-            }));
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Opening:span",
+                "Comment:<!-- comment <p-->",
+                "Text:>paragraph",
+                "Closing:p",
+                "Closing:span"
+            ]));
     }
 
     [Test]
@@ -746,14 +726,13 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutputWithPositions(result),
-            Is.EqualTo(new[]
-            {
-                "Opening:span @Start:0,Length:6",
-                "Opening:p @Start:6,Length:3",
-                "Comment:<!-- comment </p--> @Start:9,Length:19",
-                "Text:> @Start:28,Length:1",
-                "Closing:span @Start:29,Length:7",
-            }));
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Opening:span",
+                "Opening:p",
+                "Comment:<!-- comment </p-->",
+                "Text:>",
+                "Closing:span"
+            ]));
     }
 }
