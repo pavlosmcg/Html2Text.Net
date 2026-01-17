@@ -4,6 +4,8 @@ namespace Html2Text.PerfTests;
 
 [ShortRunJob]
 [MemoryDiagnoser]
+[JsonExporterAttribute.Full]
+[JsonExporterAttribute.FullCompressed]
 public class PageBenchmarks
 {
     private string _html = null!;

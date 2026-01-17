@@ -1,5 +1,7 @@
 # Html2Text.Net
 
+[![CI](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml/badge.svg)](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml)
+
 Just fast HTML -> Text.
 
 Lightweight, hand rolled, high-performance HTML to plain text conversion for .NET.
