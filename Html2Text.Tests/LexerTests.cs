@@ -26,9 +26,14 @@ public class LexerTests
         return results;
     }
 
-    internal IEnumerable<string> DisplayTestOutput(List<Chunk> result)
+    internal IEnumerable<string> DisplayTestOutputWithPositions(List<Chunk> result)
     {
         return result.Select(r => $"{r.TokenType}:{r.Content} @Start:{r.StartIndex},Length:{r.Length}");
+    }
+
+    internal IEnumerable<string> DisplayTestOutput(List<Chunk> result)
+    {
+        return result.Select(r => $"{r.TokenType}:{r.Content}");
     }
 
     [Test]
@@ -153,7 +158,7 @@ public class LexerTests
         // assert
         Assert.That(result.Count, Is.EqualTo(3));
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:p @Start:0,Length:3",
@@ -173,7 +178,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:SPan @Start:0,Length:6",
@@ -193,7 +198,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:a @Start:0,Length:61",
@@ -213,7 +218,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:p @Start:0,Length:22",
@@ -233,7 +238,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Text:yadayim  @Start:0,Length:8",
@@ -254,7 +259,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "SelfClosing:hr @Start:0,Length:5",
@@ -275,7 +280,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Text:framistan @Start:0,Length:9",
@@ -297,7 +302,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Text:minhag  @Start:0,Length:7",
@@ -316,7 +321,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Text:</ForgotToClose @Start:0,Length:15",
@@ -334,7 +339,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:div @Start:0,Length:5",
@@ -353,7 +358,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Closing:span @Start:0,Length:7",
@@ -372,7 +377,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "SelfClosing:hr @Start:0,Length:4",
@@ -393,7 +398,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Text:</br> @Start:0,Length:5",
@@ -412,12 +417,28 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "SelfClosing:a @Start:0,Length:4",
                 "SelfClosing:b @Start:4,Length:5",
             }));
+    }
+
+    // TODO tag names must be followed by whitespace '/>' or '>' to be valid
+    [Test]
+    [TestCase("<div!>")]
+    [TestCase("<div@>")]
+    [TestCase("<div#>")]
+    [TestCase("<div.>")]
+    [TestCase("<div=\"value\">")]
+    [TestCase("<div\"value\">")]
+    public void GetEnumerator_Returns_TextTokens_WhenInput_IsOpeningTag_WithInvalidCharacters(string badTag)
+    {
+        string input = $"content {badTag} more content";
+        List<Chunk> result = CollectTestOutput(input);
+        Assert.That(result.All(r => r.TokenType == TokenType.Text), Is.True);
+        Assert.That(string.Concat(result.Select(r => r.Content)), Is.EqualTo(input));
     }
 
     [Test]
@@ -487,7 +508,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenInputContainsScriptTag_WithTagLikeContent()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInputContainsScriptTag_WithAngleBrackets()
     {
         // arrange
         var input = "<script>var a = 1 / 2; b = 3 < c >= 4;</script>";
@@ -497,7 +518,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:script @Start:0,Length:8",
@@ -505,6 +526,28 @@ public class LexerTests
                 "Text:< c > @Start:29,Length:5",
                 "Text:= 4; @Start:34,Length:4",
                 "Closing:script @Start:38,Length:9",
+            }));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInputContainsScriptTag_WithTagLikeContent()
+    {
+        // arrange
+        var input = "<script>&&b&&0<b.length=5</script>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo(new[]
+            {
+                "Opening:script",
+                "Text:&&b&&0",
+                "Text:<b",
+                "Text:.length=5",
+                "Closing:script",
             }));
     }
 
@@ -577,7 +620,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Comment:<!-- comment --> @Start:0,Length:16",
@@ -596,7 +639,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Closing:p @Start:0,Length:4",
@@ -615,7 +658,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:span @Start:0,Length:6",
@@ -637,7 +680,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:span @Start:0,Length:6",
@@ -659,7 +702,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:span @Start:0,Length:6",
@@ -681,7 +724,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:span @Start:0,Length:6",
@@ -703,7 +746,7 @@ public class LexerTests
 
         // assert
         Assert.That(
-            DisplayTestOutput(result),
+            DisplayTestOutputWithPositions(result),
             Is.EqualTo(new[]
             {
                 "Opening:span @Start:0,Length:6",

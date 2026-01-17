@@ -1,8 +1,6 @@
 ﻿using System;
 using Html2Text.Parsing;
 using Html2Text.Rendering;
-using System.IO;
-using System.Text;
 
 namespace Html2Text;
 

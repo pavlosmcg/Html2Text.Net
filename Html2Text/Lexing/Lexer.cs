@@ -244,6 +244,16 @@ internal ref struct Lexer
 
     private (bool IsMatch, bool AbandonTag) TryCompleteTag(ReadOnlySpan<char> tagName)
     {
+        // tag names must be followed by whitespace, '/>', '?>, or '>' to be valid
+        char afterName = _cursor < _html.Length ? _html[_cursor] : char.MinValue;
+        if (!(char.IsWhiteSpace(afterName)
+            || afterName == '>'
+            || afterName == '/'
+            || afterName == '?'))
+        {
+            return (IsMatch: false, AbandonTag: true);
+        }
+
         bool containsBadChars = false;
 
         while (_cursor < _html.Length && _html[_cursor] != '>')
