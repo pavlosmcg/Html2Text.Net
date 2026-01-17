@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\html2text\Html2Text.csproj" />
+    <ProjectReference Include="..\Html2Text\Html2Text.csproj" />
   </ItemGroup>
 
 </Project>
