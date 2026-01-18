@@ -134,8 +134,9 @@ internal static class Parser
         }
 
         // do replacement after decoding, which can apparently cause these spaces to appear
+        // relevant unit test: "blorgfester&nbsp;framistan"
         // so basically we may have had more of them appear in addition to those detected earlier
-        if (needsUnicodeSpacesReplacing)
+        if (needsDecoding || needsUnicodeSpacesReplacing)
         {
             char[] buffer = new char[result.Length];
 

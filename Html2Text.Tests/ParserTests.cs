@@ -106,10 +106,10 @@ public class ParserTests
     }
 
     [Test]
-    [TestCase("\u00A0", " ")] // nbsp -> space
-    [TestCase("\u2009", " ")] // thin space -> space
-    [TestCase("\u200B", "")] // zero width space -> remove
-    [TestCase("\u00AD", "")] // soft hyphen -> remove
+    [TestCase("\u00A0", " ")]   // nbsp -> space
+    [TestCase("\u2009", " ")]   // thin space -> space
+    [TestCase("\u200B", "")]    // zero width space -> remove
+    [TestCase("\u00AD", "")]    // soft hyphen -> remove
     public void ParseHtml_Returns_NodeWithSpacesReplaced_WhenInput_IsTextWithSpecialUnicodeSpaces(string input, string expectedReplacement)
     {
         // act
