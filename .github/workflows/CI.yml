@@ -96,7 +96,6 @@ jobs:
         run: |
           dotnet test ./Html2Text.RegressionTests/Html2Text.RegressionTests.csproj \
             --configuration Release --no-build --no-restore \
-            -v normal \
             --logger "trx;LogFileName=regression-tests.trx" \
             --results-directory ./TestResults
 

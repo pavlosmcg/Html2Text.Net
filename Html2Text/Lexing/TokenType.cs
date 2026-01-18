@@ -8,5 +8,4 @@ internal enum TokenType
     SelfClosing,
     DocType,
     ProcessingInstruction,
-    Comment
 }

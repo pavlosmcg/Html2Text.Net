@@ -1,4 +1,4 @@
-﻿c# minimum of two numbers if one or both is greater than 0 - Stack Overflow
+c# minimum of two numbers if one or both is greater than 0 - Stack Overflow
 
 By clicking “Sign up”, you agree to our terms of service and acknowledge you have read our privacy policy.
 Sign up with Google
@@ -1490,3 +1490,46 @@ You'll need to complete a few actions and gain 15 reputation points before being
 Instead, you can save this post to reference later.
 
 Save this post for later Not now
+
+Stack Overflow
+
+ - Questions
+ - Help
+ - Chat
+
+Business
+
+ - Stack Internal
+ - Stack Data Licensing
+ - Stack Ads
+
+Company
+
+ - About
+ - Press
+ - Work Here
+ - Legal
+ - Privacy Policy
+ - Terms of Service
+ - Contact Us
+ - Cookie Settings
+ - Cookie Policy
+
+Stack Exchange Network
+
+ - Technology
+ - Culture & recreation
+ - Life & arts
+ - Science
+ - Professional
+ - Business
+ - API
+ - Data
+
+ - Blog
+ - Facebook
+ - Twitter
+ - LinkedIn
+ - Instagram
+
+Site design / logo © 2026 Stack Exchange Inc; user contributions licensed under CC BY-SA . rev 2025.12.22.38265

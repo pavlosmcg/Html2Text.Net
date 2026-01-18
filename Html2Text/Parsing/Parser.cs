@@ -20,11 +20,6 @@ internal static class Parser
 
         void AddNode(Node node)
         {
-            if (IsIgnoredElement(node))
-            {
-                return;
-            }
-
             if (nodeStack.TryPeek(out Node? parentNode))
             {
                 AddToParent(parentNode, node);
@@ -120,11 +115,5 @@ internal static class Parser
         {
             parentNode.Children.Add(childNode);
         }
-    }
-
-    private static bool IsIgnoredElement(Node node)
-    {
-        return !string.IsNullOrEmpty(node.TagName) &&
-               Elements.IgnoredElements.Contains(node.TagName);
     }
 }

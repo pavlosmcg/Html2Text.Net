@@ -496,31 +496,23 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenInputContainsScriptTag_WithAngleBrackets()
+    public void MoveNext_Returns_False_WhenInput_ContainsOnlyScriptElement()
     {
         // arrange
-        var input = "<script>var a = 1 / 2; b = 3 < c >= 4;</script>";
+        var unit = new Lexer("<script>var a = 1 / 2; b = 3 < c >= 4;</script>");
 
         // act
-        List<Chunk> result = CollectTestOutput(input);
+        var result = unit.MoveNext();
 
         // assert
-        Assert.That(
-            DisplayTestOutputWithPositions(result),
-            Is.EqualTo([
-                "Opening:script @Start:0,Length:8",
-                "Text:var a = 1 / 2; b = 3  @Start:8,Length:21",
-                "Text:< c > @Start:29,Length:5",
-                "Text:= 4; @Start:34,Length:4",
-                "Closing:script @Start:38,Length:9"
-            ]));
+        Assert.That(result, Is.False);
     }
 
     [Test]
-    public void GetEnumerator_Returns_TokensSuccessfully_WhenInputContainsScriptTag_WithTagLikeContent()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_ContainsScriptThatNeverCloses()
     {
         // arrange
-        var input = "<script>&&b&&0<b.length=5</script>";
+        var input = "before<script>unterminated";
 
         // act
         List<Chunk> result = CollectTestOutput(input);
@@ -529,11 +521,112 @@ public class LexerTests
         Assert.That(
             DisplayTestOutput(result),
             Is.EqualTo([
-                "Opening:script",
-                "Text:&&b&&0",
-                "Text:<b",
-                "Text:.length=5",
-                "Closing:script"
+                "Text:before",
+            ]));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_ContainsScriptTagWithTagLikeContent()
+    {
+        // arrange
+        var input = "text before<script>&&b&&0<b.length=5</script>text after";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Text:text before",
+                "Text:text after",
+            ]));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_ContainsScriptTagWithActualTagsInContent()
+    {
+        // arrange
+        var input = "<script>parentElement.innerHTML += '<b>Appended text.</b>';</script><div>node after script</div>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Opening:div",
+                "Text:node after script",
+                "Closing:div"
+            ]));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_ContainsUnexpectedIgnoredClosingTag()
+    {
+        // arrange
+        var input = "<thing></script></thing>";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Opening:thing",
+                "Closing:thing",
+            ]));
+    }
+
+    [Test]
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_ContainsSelfClosingIgnoredElements()
+    {
+        // arrange
+        var input = "<one><meta/><two><meta /><three><meta><four><meta ><five><meta abc=\"123\" >";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Opening:one",
+                "Opening:two",
+                "Opening:three",
+                "Opening:four",
+                "Opening:five",
+            ]));
+    }
+
+    [Test]
+    [TestCase("script")]
+    [TestCase("style")]
+    [TestCase("template")]
+    [TestCase("noscript")]
+    [TestCase("canvas")]
+    [TestCase("svg")]
+    [TestCase("iframe")]
+    [TestCase("object")]
+    public void GetEnumerator_Returns_TextTokens_WhenInput_ContainsElementsToIgnore(string tagName)
+    {
+        // we're saying contents of ignored elements are always skipped, so tags inside script/style are not parsed as tags
+        // ignored region doesn't stop until it finds the proper closing tag of the same name, case ignored
+
+        // arrange
+        var input = $"before<{tagName}>any content <p>whatsoever here</p> will be ignored</{tagName}>after";
+
+        // act
+        List<Chunk> result = CollectTestOutput(input);
+
+        // assert
+        Assert.That(
+            DisplayTestOutput(result),
+            Is.EqualTo([
+                "Text:before",
+                "Text:after",
             ]));
     }
 
@@ -608,7 +701,6 @@ public class LexerTests
         Assert.That(
             DisplayTestOutput(result),
             Is.EqualTo([
-                "Comment:<!-- comment -->",
                 "Closing:div"
             ]));
     }
@@ -617,7 +709,7 @@ public class LexerTests
     public void GetEnumerator_Returns_TextTokens_WhenInput_ContainsCommentsThatNeverClose()
     {
         // arrange
-        var input = @"</p><!-- comment that never closes <p>other stuff</p>";
+        var input = "</p> stuff before <!-- comment that never closes <p>other stuff</p>";
 
         // act
         List<Chunk> result = CollectTestOutput(input);
@@ -627,7 +719,7 @@ public class LexerTests
             DisplayTestOutput(result),
             Is.EqualTo([
                 "Closing:p",
-                "Text:<!-- comment that never closes <p>other stuff</p>"
+                "Text: stuff before "
             ]));
     }
 
@@ -646,7 +738,6 @@ public class LexerTests
             Is.EqualTo([
                 "Opening:span",
                 "Text:some text",
-                "Comment:<!--a comment </span><p> over some markup </p> -->",
                 "Text: and more after comment",
                 "Closing:span"
             ]));
@@ -695,7 +786,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_CommentTokens_WhenInput_HasCommentsThatEndInsideOpeningTags()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_HasCommentsThatEndInsideOpeningTags()
     {
         // arrange
         var input = "<span><!-- comment <p-->>paragraph</p></span>";
@@ -708,7 +799,6 @@ public class LexerTests
             DisplayTestOutput(result),
             Is.EqualTo([
                 "Opening:span",
-                "Comment:<!-- comment <p-->",
                 "Text:>paragraph",
                 "Closing:p",
                 "Closing:span"
@@ -716,7 +806,7 @@ public class LexerTests
     }
 
     [Test]
-    public void GetEnumerator_Returns_CommentTokens_WhenInput_HasCommentsThatEndInsideClosingTags()
+    public void GetEnumerator_Returns_TokensSuccessfully_WhenInput_HasCommentsThatEndInsideClosingTags()
     {
         // arrange
         var input = "<span><p><!-- comment </p-->></span>";
@@ -730,7 +820,6 @@ public class LexerTests
             Is.EqualTo([
                 "Opening:span",
                 "Opening:p",
-                "Comment:<!-- comment </p-->",
                 "Text:>",
                 "Closing:span"
             ]));

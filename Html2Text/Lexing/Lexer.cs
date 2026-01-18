@@ -6,9 +6,11 @@ internal ref struct Lexer
 {
     private ReadOnlySpan<char> _html;
     private int _cursor;
-    private int _textStart = 0;
+    private int _tokenStart = 0;
     private State _state = State.OutsideTag;
     private TokenType _tokenType = TokenType.Text;
+
+    private ReadOnlySpan<char> RemainingHtml => _html[_cursor..];
 
     public Lexer(ReadOnlySpan<char> html)
     {
@@ -40,131 +42,89 @@ internal ref struct Lexer
     {
         OutsideTag,
         InsideTag,
-        InsideComment,
     }
 
     public bool MoveNext()
     {
-        while (_cursor < _html.Length)
+        while (true)
         {
-            // outside any tag, cruising along in text
-            if (_state == State.OutsideTag)
+            if (_cursor >= _html.Length)
             {
-                int tagStart = _cursor;
+                // emit trailing text (if any)
+                return TryEmitToken(TokenType.Text);
+            }
 
-                if (TryEnterClosingTag()
-                    || TryEnterComment()
-                    || TryEnterDocType()
-                    || TryEnterProcessingInstruction()
-                    || TryEnterOpeningTag())
+            switch (_state)
+            {
+                case State.OutsideTag:
                 {
-                    // emit any text before token start
-                    if (tagStart > _textStart)
+                    // keep scanning until we see '<'
+                    if (_html[_cursor] != '<')
                     {
-                        bool canEmitText = TryEmitTextUpTo(tagStart);
-                        _textStart = tagStart; // in case reading this tag goes wrong
-                        return canEmitText;
+                        _cursor++;
+                        continue;
                     }
-                }
-            }
 
-            // finish comments first
-            if (_state == State.InsideComment)
-            {
-                if (TryEndComment())
+                    // if we have found the start of a tag, flush any text before it
+                    if (TryEmitToken(TokenType.Text)) return true;
+
+                    // no pending text, try to consume tag now that we are at '<'
+                    if (TrySkipComment()) continue;
+                    if (TryEnterDocType()) continue;
+                    if (TryEnterProcessingInstruction()) continue;
+                    if (TryEnterClosingTag()) continue;
+
+                    // must be an opening tag if it's not any of the above
+                    EnterOpeningTag();
+                    continue;
+                }
+
+                case State.InsideTag:
                 {
-                    Current = new Token
+                    ReadOnlySpan<char> tagName = GetTagName();
+                    bool isValidTag = TryCompleteTag(tagName);
+                    _state = State.OutsideTag;
+
+                    if (!isValidTag)
                     {
-                        TokenType = TokenType.Comment,
-                        StartIndex = _textStart,
-                        Length = _cursor - _textStart,
-                    };
-                    _textStart = _cursor;
-                    _state = State.OutsideTag;
-                    return true;
-                }
-                _state = State.OutsideTag;
-                continue;
-            }
+                        // abandon tag, treat as text
+                        return TryEmitToken(TokenType.Text);
+                    }
 
-            // process tag
-            if (_state == State.InsideTag)
-            {
-                // read the tag name
-                ReadOnlySpan<char> tagName = GetTagName();
-
-                // cursor is now past the name
-                (bool isComplete, bool abandonTag) = TryCompleteTag(tagName);
-                if (isComplete)
-                {
-                    Current = new Token
+                    // If ignored and opening (not self-closing), skip content + closing tag, and emit nothing
+                    if (IsIgnoredTag(tagName))
                     {
-                        TagName = tagName,
-                        TokenType = _tokenType,
-                        StartIndex = _textStart,
-                        Length = _cursor - _textStart,
-                    };
-                    _textStart = _cursor;
-                    _state = State.OutsideTag;
-                    return true;
-                }
+                        SkipIgnoredContent(tagName);
+                        continue;
+                    }
 
-                if (abandonTag)
-                {
-                    // invalid tag, abandon and return span as text
-                    bool canEmitText = TryEmitTextUpTo(_cursor);
-                    _textStart = _cursor;
-                    _state = State.OutsideTag;
-                    return canEmitText;
+                    // Emit valid tag
+                    return TryEmitToken(_tokenType, tagName);
                 }
             }
-
-            _cursor++;
         }
-
-        // we have reached the end of the document if we still
-        // have characters remaining, return them as text now
-        if (TryEmitTextUpTo(_html.Length))
-        {
-            _textStart = _html.Length;
-            return true;
-        }
-        return false;
     }
 
-    private bool TryEmitTextUpTo(int index)
+    private bool TryEmitToken(TokenType type, ReadOnlySpan<char> tagName = default)
     {
-        if (index <= _textStart)
-        {
+        if (_cursor <= _tokenStart)
             return false;
-        }
 
         Current = new Token
         {
-            StartIndex = _textStart,
-            Length = index - _textStart,
-            TokenType = TokenType.Text
+            TokenType = type,
+            TagName = tagName,
+            StartIndex = _tokenStart,
+            Length = _cursor - _tokenStart
         };
 
+        _tokenStart = _cursor;
         return true;
-    }
-
-    private bool TryEnterComment()
-    {
-        if (_html[_cursor..].StartsWith("<!--", StringComparison.Ordinal))
-        {
-            _tokenType = TokenType.Comment;
-            _state = State.InsideComment;
-            _cursor += 4; // advance past '<!--'
-            return true;
-        }
-
-        return false;
     }
 
     private bool TryEnterDocType()
     {
-        if (_html[_cursor..].StartsWith("<!DOCTYPE ", StringComparison.OrdinalIgnoreCase))
+        if (RemainingHtml.StartsWith("<!DOCTYPE ", StringComparison.OrdinalIgnoreCase))
         {
             _tokenType = TokenType.DocType;
             _state = State.InsideTag;
@@ -177,7 +137,7 @@ internal ref struct Lexer
 
     private bool TryEnterProcessingInstruction()
     {
-        if (_html[_cursor..].StartsWith("<?", StringComparison.Ordinal))
+        if (RemainingHtml.StartsWith("<?", StringComparison.Ordinal))
         {
             _tokenType = TokenType.ProcessingInstruction;
             _state = State.InsideTag;
@@ -190,7 +150,7 @@ internal ref struct Lexer
 
     private bool TryEnterClosingTag()
     {
-        if (_html[_cursor..].StartsWith("</", StringComparison.Ordinal))
+        if (RemainingHtml.StartsWith("</", StringComparison.Ordinal))
         {
             _tokenType = TokenType.Closing;
             _state = State.InsideTag;
@@ -201,33 +161,11 @@ internal ref struct Lexer
         return false;
     }
 
-    private bool TryEnterOpeningTag()
+    private void EnterOpeningTag()
     {
-        if (_html[_cursor..][0] == '<')
-        {
-            _tokenType = TokenType.Opening;
-            _state = State.InsideTag;
-            _cursor += 1; // advance past '<' so that we are at the tag name
-            return true;
-        }
-
-        return false;
-    }
-
-    private bool TryEndComment()
-    {
-        while (_cursor < _html.Length)
-        {
-            if (_html[_cursor..].StartsWith("-->"))
-            {
-                // skip comments and move past end of "-->"
-                _cursor += 3;
-                return true;
-            }
-            _cursor++;
-        }
-
-        return false;
+        _tokenType = TokenType.Opening;
+        _state = State.InsideTag;
+        _cursor += 1; // advance past '<' so that we are at the tag name
     }
 
     private ReadOnlySpan<char> GetTagName()
@@ -242,7 +180,7 @@ internal ref struct Lexer
         return _html[nameStart.._cursor];
     }
 
-    private (bool IsMatch, bool AbandonTag) TryCompleteTag(ReadOnlySpan<char> tagName)
+    private bool TryCompleteTag(ReadOnlySpan<char> tagName)
     {
         // tag names must be followed by whitespace, '/>', '?>, or '>' to be valid
         char afterName = _cursor < _html.Length ? _html[_cursor] : char.MinValue;
@@ -251,7 +189,7 @@ internal ref struct Lexer
             || afterName == '/'
             || afterName == '?'))
         {
-            return (IsMatch: false, AbandonTag: true);
+            return false;
         }
 
         bool containsBadChars = false;
@@ -270,7 +208,7 @@ internal ref struct Lexer
         if (_cursor == _html.Length)
         {
             // reached the end of the document without finding '>'
-            return (IsMatch: false, AbandonTag: true);
+            return false;
         }
 
         char previous = _cursor - 1 >= 0 ? _html[_cursor - 1] : char.MinValue;
@@ -280,7 +218,7 @@ internal ref struct Lexer
         if (containsBadChars || tagName.IsEmpty)
         {
             // abandon tag to be treated as text up to _cursor
-            return (IsMatch: false, AbandonTag: true);
+            return false;
         }
 
         // check for tag that should have been self-closing
@@ -288,7 +226,7 @@ internal ref struct Lexer
         {
             if (_tokenType == TokenType.Closing) // invalid tag e.g. </br>, </img>
             {
-                return (IsMatch: false, AbandonTag: true);
+                return false;
             }
 
             _tokenType = TokenType.SelfClosing;
@@ -303,7 +241,7 @@ internal ref struct Lexer
             }
             else if (_tokenType == TokenType.Closing) // not valid e.g. </div/> or </img/>
             {
-                return (IsMatch: false, AbandonTag: true);
+                return false;
             }
         }
 
@@ -312,18 +250,101 @@ internal ref struct Lexer
         {
             if (previous != '?') // processing instruction can't end with just '>', must be '?>'
             {
-                return (IsMatch: false, AbandonTag: true);
+                return false;
             }
         }
         else // not a processing instruction
         {
             if (previous == '?') // e.g. </?> or <div?>
             {
-                return (IsMatch: false, AbandonTag: true);
+                return false;
             }
         }
 
-        // now we have a valid tag ending
-        return (IsMatch: true, AbandonTag: false);
+        // now we have a valid tag!
+        return true;
+    }
+
+    private bool TrySkipComment()
+    {
+        if (!RemainingHtml.StartsWith("<!--", StringComparison.Ordinal))
+        {
+            return false;
+        }
+        _cursor += 4; // advance past '<!--'
+
+        while (_cursor + 2 < _html.Length)
+        {
+            if (_html[_cursor] == '-' &&
+                _html[_cursor + 1] == '-' &&
+                _html[_cursor + 2] == '>')
+            {
+                // skip comments and move past end of "-->"
+                _cursor += 3;
+                _tokenStart = _cursor;
+                return true;
+            }
+            _cursor++;
+        }
+
+        // EOF with no end of comment, treat as comment to EOF
+        _cursor = _html.Length;
+        _tokenStart = _cursor;
+        return true;
+    }
+
+    private bool IsIgnoredTag(ReadOnlySpan<char> tagName)
+    {
+        foreach (var ignored in Elements.IgnoredElements)
+            if (tagName.Equals(ignored, StringComparison.OrdinalIgnoreCase))
+                return true;
+        return false;
+    }
+
+    private void SkipIgnoredContent(ReadOnlySpan<char> tagName)
+    {
+        if (_tokenType == TokenType.Closing || _tokenType == TokenType.SelfClosing)
+        {
+            // closing or self-closing tag, do not emit any content
+            // set start of next token to current cursor
+            _tokenStart = _cursor;
+            return;
+        }
+
+        if (_tokenType != TokenType.Opening) return;
+
+        // _cursor is just past the end of the opening tag
+        // move forward to find matching </tagName>
+        while (_cursor + 2 + tagName.Length < _html.Length)
+        {
+            if (_html[_cursor] == '<' &&
+                _html[_cursor + 1] == '/' &&
+                _html.Slice(_cursor + 2, tagName.Length).Equals(tagName, StringComparison.OrdinalIgnoreCase))
+            {
+                // skip past '</tagName'
+                _cursor += 2 + tagName.Length;
+
+                // allow whitespace before '>' ? (HTML allows it for some reason)
+                while (_cursor < _html.Length && char.IsWhiteSpace(_html[_cursor]))
+                {
+                    _cursor++;
+                }
+
+                // found the end
+                if (_cursor < _html.Length && _html[_cursor] == '>')
+                {
+                    _cursor += 1; // move past '>'
+                    _tokenStart = _cursor;
+                    return;
+                }
+            }
+
+            // not at the closing tag yet, keep moving
+            _cursor++;
+        }
+
+        // EOF without closing tag
+        _cursor = _html.Length;
+        _tokenStart = _cursor;
     }
 }

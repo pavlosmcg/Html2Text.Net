@@ -1,28 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace Html2Text;
 
 internal static class Elements
 {
-    // elements we ignore when parsing the tree of nodes
-    public static readonly ImmutableHashSet<string> IgnoredElements =
-        ImmutableHashSet.Create(
-            StringComparer.OrdinalIgnoreCase,
-            "script",
-            "style",
-            "template",
-            "meta",
-            "link",
-            "base",
-            "noscript",
-            "canvas",
-            "svg",
-            "iframe",
-            "object",
-            "embed");
-
     // only the following are expected as direct child elements of a true data table
     public static readonly ImmutableHashSet<string> TableChildElements =
         ImmutableHashSet.Create(
@@ -158,5 +140,22 @@ internal static class Elements
         "source",
         "track",
         "wbr"
+    ];
+
+    // elements to ignore entirely along with their content
+    public static string[] IgnoredElements =
+    [
+        "script",
+        "style",
+        "template",
+        "meta",
+        "link",
+        "base",
+        "noscript",
+        "canvas",
+        "svg",
+        "iframe",
+        "object",
+        "embed"
     ];
 }
