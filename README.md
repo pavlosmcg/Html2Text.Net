@@ -8,8 +8,6 @@
 
 Lightweight, hand rolled, high-performance HTML to plain text conversion for .NET.
 
-This library focuses on extracting the text content of a page as quickly and predictably as possible. No attempt is undertaken to interpret layout, CSS, visibility, or rendering rules, other than applying some basic formatting for readability to table headings and table data rows to make them look nice in plain text.
-
 ## Usage
 
 Simple as possible:
