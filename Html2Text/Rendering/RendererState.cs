@@ -19,9 +19,11 @@ internal struct RendererState
     public int VerbatimTagDepth { get; set; } = 0;
     public int ListNestingDepth { get; set; } = 0;
     public int TableNestingDepth { get; set; } = 0;
+    public bool InsideTableCell { get; set; } = false;
+    public bool InsideTableCaption { get; set; } = false;
 
     // formatting helpers based on context
-    public bool InsideVerbatimBlock => VerbatimTagDepth > 0;
-    public bool InsideList => ListNestingDepth > 0;
-    public bool InsideTable => TableNestingDepth == 1;  // we only format top level tables
+    public bool RenderingVerbatimBlock => VerbatimTagDepth > 0;
+    public bool RenderingList => ListNestingDepth > 0;
+    public bool RenderingTable => TableNestingDepth > 0;
 }

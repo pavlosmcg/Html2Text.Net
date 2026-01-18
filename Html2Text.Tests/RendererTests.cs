@@ -627,14 +627,218 @@ public class RendererTests
 
         // assert
         var expected = """
-                       Name	 | Age
-                       -----------------
-                       Paul	 | 34
-                       Liv	 | 26
+                       | Name | Age |
+                       | ---- | --- |
+                       | Paul | 34  |
+                       | Liv  | 26  |
                        """;
 
         Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
     }
+
+    [Test]
+    public void GetText_Returns_TextWithTableFormatting_WhenInput_TableHasIndentedCellText()
+    {
+        var html = """
+                   <table>
+                     <thead>
+                       <tr><th>Item</th><th>Notes</th></tr>
+                     </thead>
+                     <tbody>
+                       <tr>
+                         <td>
+                           Foo
+                         </td>
+                         <td>
+                           Hello     world
+                         </td>
+                       </tr>
+                     </tbody>
+                   </table>
+                   """;
+
+        List<Node> nodes = Parser.ParseHtml(html);
+
+        var result = Renderer.GetText(nodes);
+
+        var expected = """
+                       | Item | Notes       |
+                       | ---- | ----------- |
+                       | Foo  | Hello world |
+                       """;
+
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+    }
+
+    [Test]
+    public void GetText_Returns_TextWithTableFormatting_WhenInput_TableHasBrInCell()
+    {
+        var html = """
+                   <table>
+                     <thead>
+                       <tr><th>Address</th></tr>
+                     </thead>
+                     <tbody>
+                       <tr><td>15 Yemen Road<br/>Yemen</td></tr>
+                     </tbody>
+                   </table>
+                   """;
+
+        List<Node> nodes = Parser.ParseHtml(html);
+
+        var result = Renderer.GetText(nodes);
+
+        var expected = """
+                       | Address             |
+                       | ------------------- |
+                       | 15 Yemen Road Yemen |
+                       """;
+
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+    }
+
+    [Test]
+    public void GetText_Returns_TableWithEmptyCells_WhenInput_TableRowHasFewerColumnsThanHeader()
+    {
+        var html = """
+                   <table>
+                     <thead>
+                       <tr><th>Name</th><th>Age</th><th>City</th></tr>
+                     </thead>
+                     <tbody>
+                       <tr><td>Paul</td><td>34</td></tr>
+                       <tr><td>Liv</td><td>26</td><td>Yemen</td></tr>
+                     </tbody>
+                   </table>
+                   """;
+
+        List<Node> nodes = Parser.ParseHtml(html);
+
+        var result = Renderer.GetText(nodes);
+
+        var expected = """
+                       | Name | Age | City  |
+                       | ---- | --- | ----- |
+                       | Paul | 34  |       |
+                       | Liv  | 26  | Yemen |
+                       """;
+
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+    }
+
+    [Test]
+    public void GetText_Returns_TableWithRegularTextContent_WhenInput_TableHasStrongAndEm()
+    {
+        var html = """
+                   <table>
+                     <thead>
+                       <tr><th>Item</th><th>Status</th></tr>
+                     </thead>
+                     <tbody>
+                       <tr><td><strong>Foo</strong></td><td><em>Ok</em></td></tr>
+                     </tbody>
+                   </table>
+                   """;
+
+        List<Node> nodes = Parser.ParseHtml(html);
+
+        var result = Renderer.GetText(nodes);
+
+        var expected = """
+                       | Item | Status |
+                       | ---- | ------ |
+                       | Foo  | Ok     |
+                       """;
+
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+    }
+
+    [Test]
+    public void GetText_ReturnsMultipleTables_WhenInput_ContainsTwoDataTables()
+    {
+        var html = """
+                   <div>before</div>
+                   <table>
+                     <thead>
+                       <tr><th>A</th></tr>
+                     </thead>
+                     <tbody>
+                       <tr><td>1</td></tr>
+                     </tbody>
+                   </table>
+
+                   <p>between</p>
+
+                   <table>
+                     <thead>
+                       <tr><th>B</th></tr>
+                     </thead>
+                     <tbody>
+                       <tr><td>2</td></tr>
+                     </tbody>
+                   </table>
+                   <div>after</div>
+                   """;
+
+        List<Node> nodes = Parser.ParseHtml(html);
+
+        var result = Renderer.GetText(nodes);
+
+        var expected = """
+                       before
+                       | A |
+                       | - |
+                       | 1 |
+
+                       between
+
+                       | B |
+                       | - |
+                       | 2 |
+                       
+                       after
+                       """;
+
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+    }
+
+    [Test]
+    public void GetText_ReturnsFormattedTable_WhenInput_HasDataTableWithCaption_ButNoHeaderAndBody()
+    {
+        var html = """
+                   <table>
+                     <caption>Monthly savings</caption>
+                     <tr>
+                       <th>Month</th>
+                       <th>Savings</th>
+                     </tr>
+                     <tr>
+                       <td>January</td>
+                       <td>£100</td>
+                     </tr>
+                     <tr>
+                       <td>February</td>
+                       <td>£50</td>
+                     </tr>
+                   </table>
+                   """;
+
+        List<Node> nodes = Parser.ParseHtml(html);
+
+        var result = Renderer.GetText(nodes);
+
+        var expected = """
+                       Monthly savings
+                       
+                       | Month    | Savings |
+                       | -------- | ------- |
+                       | January  | £100    |
+                       | February | £50     |
+                       """;
+
+        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+    }
+
 
     [Test]
     public void GetText_Returns_TextWithoutTableFormatting_WhenInput_AttemptsToUseTableForLayout()

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Html2Text.Rendering.Tables;
 
 namespace Html2Text.Rendering;
 
@@ -14,28 +15,21 @@ internal static class Renderer
             return string.Empty;
         }
 
-        var resultBuilder = new StringBuilder();
+        var documentBuilder = new StringBuilder();
         var workStack = new Stack<RenderWorkItem>();
         var state = new RendererState();
+        TableBuilder? tableBuilder = null;
 
         var root = new Node { TagName = "#document", Children = nodes };
         workStack.Push(new RenderWorkItem(RenderWorkType.BeforeTag, root));
 
-
         void QueueSpace()
         {
-            if (state.AtDocumentStart) return;
-
-            if (!state.HasPendingNewLines && !state.AtLineStart)
-            {
-                state.PendingSpace = true;
-            }
+            state.PendingSpace = true;
         }
 
         void QueueNewLines(int count)
         {
-            if (state.AtDocumentStart) return;
-
             state.PendingNewLines = Math.Max(state.PendingNewLines, count);
         }
 
@@ -43,7 +37,7 @@ internal static class Renderer
         {
             while (state.HasPendingNewLines)
             {
-                resultBuilder.AppendLine();
+                AppendNewline();
                 state.PendingNewLines--;
                 state.AtLineStart = true;
                 state.PendingSpace = false;
@@ -51,9 +45,42 @@ internal static class Renderer
 
             if (state.PendingSpace)
             {
-                resultBuilder.Append(' ');
+                if (!state.AtLineStart) AppendOutput(' ');
                 state.PendingSpace = false;
             }
+        }
+
+        void AppendNewline()
+        {
+            if (state.RenderingTable && state.InsideTableCell)
+            {
+                // flatten line breaks in tables
+                tableBuilder?.Append(' ');
+            }
+            else if (!state.AtDocumentStart)
+            {
+                // newlines when not at start of doc
+                documentBuilder.AppendLine();
+            }
+        }
+
+        void AppendOutput(char c)
+        {
+            if (state.RenderingTable && state.InsideTableCaption)
+            {
+                tableBuilder?.AppendToCaption(c);
+            }
+            else if (state.RenderingTable && state.InsideTableCell)
+            {
+                tableBuilder?.Append(c);
+            }
+            else
+            {
+                documentBuilder.Append(c);
+                state.AtDocumentStart = false;
+            }
+
+            state.AtLineStart = false;
         }
 
         while (workStack.TryPop(out RenderWorkItem? item))
@@ -93,22 +120,45 @@ internal static class Renderer
             // entering a table
             if (DataTableDetector.IsDataTable(item.Node))
             {
+                if (!state.RenderingTable)
+                {
+                    // if we are moving from document mode to table mode, emit pending
+                    // whitespace before the TableBuilder starts capturing output
+                    FlushPendingWhitespace();
+                    tableBuilder = new TableBuilder();
+                }
+
                 state.TableNestingDepth++;
             }
 
-            // table column separator (only for top-level tables)
-            if (state.InsideTable &&
-                !state.AtLineStart &&
-                !state.HasPendingNewLines &&
-                IsTableItem(item.Node.TagName))
+            // inside a real data table
+            if (state.RenderingTable)
             {
-                resultBuilder.Append("\t |");
-            }
+                // check for caption
+                if (IsTagNameEqual(item.Node.TagName, "caption"))
+                {
+                    state.InsideTableCaption = true;
+                }
 
-            // request space before table items
-            if (IsTableItem(item.Node.TagName))
+                // start a new row
+                if (IsTagNameEqual(item.Node.TagName, "tr"))
+                {
+                    tableBuilder?.AppendRow();
+                }
+                // add a cell
+                else if (IsTableCell(item.Node.TagName, out bool isHeader))
+                {
+                    tableBuilder?.AppendCell(isHeader);
+                    state.InsideTableCell = true;
+                }
+            }
+            else
             {
-                QueueSpace();
+                // queue space for layout table cells
+                if (IsTableCell(item.Node.TagName, out _))
+                {
+                    QueueSpace();
+                }
             }
 
             // add to stack to process after children
@@ -129,23 +179,16 @@ internal static class Renderer
             string text = item.Node.Text ?? string.Empty;
             
             // special handling for hr tag
-            if (IsTag(item.Node, "hr"))
+            if (IsTagNameEqual(item.Node.TagName, "hr"))
             {
                 QueueNewLines(2);
                 text = new string('-', Constants.HorizontalRuleWidth);
             }
 
-            // only for top-level tables, render a separator line for table head
-            if (state.InsideTable &&
-            IsTag(item.Node, "thead"))
-            {
-                text = new string('-', 17);
-            }
-
             // text node writing time
             foreach (char character in text)
             {
-                if (!state.InsideVerbatimBlock && char.IsWhiteSpace(character))
+                if (!state.RenderingVerbatimBlock && char.IsWhiteSpace(character))
                 {
                     QueueSpace();
                     continue;
@@ -153,15 +196,19 @@ internal static class Renderer
 
                 FlushPendingWhitespace();
 
-                if (state.AtLineStart && state.InsideList)
+                if (state.AtLineStart && state.RenderingList)
                 {
-                    resultBuilder.Append(new string(' ', (state.ListNestingDepth - 1) * 2));
-                    resultBuilder.Append(" - ");
+                    int listIndent = (state.ListNestingDepth - 1) * 2;
+                    for (int i = 0; i < listIndent; i++)
+                    {
+                        AppendOutput(' ');
+                    }
+                    AppendOutput(' ');
+                    AppendOutput('-');
+                    AppendOutput(' ');
                 }
 
-                resultBuilder.Append(character);
-                state.AtDocumentStart = false;
-                state.AtLineStart = false;
+                AppendOutput(character);
             }
 
             // check for verbatim tag finish
@@ -176,10 +223,29 @@ internal static class Renderer
                 state.ListNestingDepth = Math.Max(0, state.ListNestingDepth - 1);
             }
 
+            // finish table caption
+            if (state.RenderingTable && IsTagNameEqual(item.Node.TagName, "caption"))
+            {
+                state.InsideTableCaption = false;
+            }
+
+            // finishing table cell
+            if (state.RenderingTable && IsTableCell(item.Node.TagName, out _))
+            {
+                state.InsideTableCell = false;
+            }
+
             // exiting a table
             if (DataTableDetector.IsDataTable(item.Node))
             {
                 state.TableNestingDepth = Math.Max(0, state.TableNestingDepth - 1);
+
+                if (!state.RenderingTable && tableBuilder != null)
+                {
+                    // we are now outside the table, render it with the table builder
+                    documentBuilder.Append(tableBuilder.Build());
+                    tableBuilder = null;
+                }
             }
 
             // block element required new lines before next element
@@ -189,19 +255,19 @@ internal static class Renderer
             }
 
             // paragraph-like elements require a newline and a clear blank line after them
-            if (RequiresBlankLineAfter(item.Node.TagName, state.InsideList))
+            if (RequiresBlankLineAfter(item.Node.TagName, state.RenderingList))
             {
                 QueueNewLines(2);
             }
         }
 
-        return resultBuilder.ToString();
+        return documentBuilder.ToString();
     }
 
-    private static bool IsTag(Node node, string name)
+    private static bool IsTagNameEqual(string? tagName, string otherTagName)
     {
-        return node.TagName != null &&
-               node.TagName.Equals(name, StringComparison.OrdinalIgnoreCase);
+        return tagName != null &&
+               tagName.Equals(otherTagName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsBlockElement(string? tagName)
@@ -234,9 +300,11 @@ internal static class Renderer
                Elements.ListElements.Contains(tagName);
     }
 
-    private static bool IsTableItem(string? tagName)
+    private static bool IsTableCell(string? tagName, out bool isHeader)
     {
+        isHeader = IsTagNameEqual(tagName, "th");
+
         return !string.IsNullOrEmpty(tagName) &&
-               Elements.TableDataElements.Contains(tagName);
+               Elements.TableCellElements.Contains(tagName);
     }
 }

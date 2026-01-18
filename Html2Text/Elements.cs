@@ -13,7 +13,9 @@ internal static class Elements
             "colgroup",
             "thead",
             "tbody",
-            "tfoot");
+            "tfoot",
+            "tr",
+            "th");
 
     // block-level elements that should introduce line breaks when rendering
     public static readonly ImmutableHashSet<string> BlockElements =
@@ -117,7 +119,7 @@ internal static class Elements
             "dl");
 
     // table data cells that get a | separator when rendering
-    public static readonly ImmutableHashSet<string> TableDataElements =
+    public static readonly ImmutableHashSet<string> TableCellElements =
         ImmutableHashSet.Create(
             StringComparer.OrdinalIgnoreCase,
             "th",

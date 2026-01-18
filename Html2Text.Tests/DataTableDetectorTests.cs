@@ -1,7 +1,7 @@
 ﻿using Html2Text.Parsing;
-using Html2Text.Rendering;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Html2Text.Rendering.Tables;
 
 namespace Html2Text.Tests;
 

@@ -1,9 +1,8 @@
-﻿using Html2Text.Parsing;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using Html2Text.Parsing;
 
-namespace Html2Text.Rendering;
+namespace Html2Text.Rendering.Tables;
 
 internal static class DataTableDetector
 {
