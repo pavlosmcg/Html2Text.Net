@@ -25,25 +25,6 @@ string text = Html2Text.Convert(html);
 
 <img width="1670" height="836" alt="image" src="https://github.com/user-attachments/assets/2bdcca01-644f-4053-9b32-ff20ee475f9b" />
 
-## Install, build, test
-
-When I've published to NuGet (coming soon!), you will be able to:
-```
-dotnet add package Html2Text
-```
-
-Or, for now, download or submodule the repo and reference the project directly.
-
-Build with: 
-```
-dotnet build
-```
-
-Run unit tests and regression tests: 
-```
-dotnet test
-```
-
 ## How it works
 
 ### Pipeline
@@ -94,6 +75,24 @@ Or check out the latest automated perf test results here: https://pavlosmcg.gith
 
 <img width="1638" height="732" alt="Screenshot 2026-01-18 213121" src="https://github.com/user-attachments/assets/43cea001-ab45-4ddd-9cd2-27396d80dbfe" />
 
+## Install, build, test
+
+When I've published to NuGet (coming soon!), you will be able to:
+```
+dotnet add package Html2Text
+```
+
+Or, for now, download or submodule the repo and reference the project directly.
+
+Build with: 
+```
+dotnet build
+```
+
+Run unit tests and regression tests: 
+```
+dotnet test
+```
 
 ## Regression tests
 
