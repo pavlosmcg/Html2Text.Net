@@ -55,7 +55,7 @@ internal static class Parser
                 {
                     if (nodeStack.TryPeek(out Node? currentNode))
                     {
-                        if (!string.Equals(currentNode.TagName, current.TagName.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (!current.TagName.Equals(currentNode.TagName, StringComparison.OrdinalIgnoreCase))
                         {
                             // mismatched closing tag, ignore it
                             break;
@@ -103,10 +103,8 @@ internal static class Parser
             .Replace("\u00AD", ""); // soft hyphen -> remove
     }
 
-    private static void AddToParent(Node? parentNode, Node? childNode)
+    private static void AddToParent(Node parentNode, Node childNode)
     {
-        if (parentNode == null || childNode == null) return;
-
         if (parentNode.Children == null)
         {
             parentNode.Children = [childNode];
