@@ -94,13 +94,77 @@ internal static class Parser
             return null;
         }
 
-        var rawText = inputHtml.Slice(token.StartIndex, token.Length).ToString();
-        var decoded = WebUtility.HtmlDecode(rawText.Normalize(NormalizationForm.FormC));
-        return decoded
-            .Replace("\u00A0", " ") // nbsp -> space
-            .Replace("\u2009", " ") // thin space -> space
-            .Replace("\u200B", "")  // zero width space -> remove
-            .Replace("\u00AD", ""); // soft hyphen -> remove
+        var text = inputHtml.Slice(token.StartIndex, token.Length);
+
+        // only do html escape character decoding and funky unicode space replacing if necessary
+        // a singe pass here just to check is cheaper than always doing the decoding for every tag name
+        var needsDecoding = false;
+        var needsUnicodeSpacesReplacing = false;
+        foreach (char character in text)
+        {
+            if (character == '&')
+            {
+                needsDecoding = true;
+            }
+
+            if (character == '\u00A0' ||    // nbsp
+                character == '\u2009' ||    // thin space
+                character == '\u200B' ||    // zero width space
+                character == '\u00AD')      // soft hyphen
+            {
+                needsUnicodeSpacesReplacing = true;
+            }
+
+            if (needsDecoding && needsUnicodeSpacesReplacing)
+            {
+                break;
+            }
+        }
+
+        // if we don't need it, don't do it. Only a single string allocation here:
+        var result = text.ToString();
+        if (!needsDecoding && !needsUnicodeSpacesReplacing)
+        {
+            return result;
+        }
+
+        if (needsDecoding)
+        {
+            result = WebUtility.HtmlDecode(result.Normalize(NormalizationForm.FormC));
+        }
+
+        // do replacement after decoding, which can apparently cause these spaces to appear
+        // so basically we may have had more of them appear in addition to those detected earlier
+        if (needsUnicodeSpacesReplacing)
+        {
+            char[] buffer = new char[result.Length];
+
+            int i = 0;
+            for (int j = 0; j < result.Length; j++)
+            {
+                if (result[j] == '\u00A0' ||        // nbsp -> space
+                    result[j] == '\u2009')          // thin space -> space
+                {
+                    buffer[i] = ' ';
+                    i++;
+                }
+                else if (result[j] == '\u200B' ||   // zero width space -> remove
+                         result[j] == '\u00AD')     // soft hyphen -> remove
+                {
+                    // skip
+                }
+                else
+                {
+                    // add all normal characters
+                    buffer[i] = result[j];
+                    i++;
+                }
+            }
+
+            result = new string(buffer, startIndex: 0, length: i);
+        }
+
+        return result;
     }
 
     private static void AddToParent(Node parentNode, Node childNode)
