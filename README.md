@@ -73,7 +73,8 @@ Or check out the latest automated perf test results here: https://pavlosmcg.gith
 
 <img width="1028" height="487" alt="image" src="https://github.com/user-attachments/assets/4cbea709-71a2-4bee-a29a-d9493b0841da" />
 
-<img width="1638" height="732" alt="Screenshot 2026-01-18 213121" src="https://github.com/user-attachments/assets/43cea001-ab45-4ddd-9cd2-27396d80dbfe" />
+<img width="1804" height="871" alt="image" src="https://github.com/user-attachments/assets/fd988896-e603-4aae-8281-0aa17edbd51f" />
+
 
 ## Install, build, test
 
