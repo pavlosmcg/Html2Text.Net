@@ -18,18 +18,6 @@ internal static class Parser
         var nodeStack = new Stack<Node>();
         var results = new List<Node>();
 
-        void AddNode(Node node)
-        {
-            if (nodeStack.TryPeek(out Node? parentNode))
-            {
-                AddToParent(parentNode, node);
-            }
-            else
-            {
-                results.Add(node);
-            }
-        }
-
         var lexer = new Lexer(html);
         
         while (lexer.MoveNext())
@@ -41,7 +29,7 @@ internal static class Parser
                 // text content
                 case TokenType.Text:
                 {
-                    AddNode(new Node { Text = DecodeTextContent(current, html) });
+                    AddNode(results, nodeStack, new Node { Text = DecodeTextContent(current, html) });
                     break;
                 }
                 // start of a new node
@@ -64,7 +52,7 @@ internal static class Parser
 
                     if (nodeStack.TryPop(out Node? nodeClosing))
                     {
-                        AddNode(nodeClosing);
+                        AddNode(results, nodeStack, nodeClosing);
                     }
 
                     break;
@@ -72,7 +60,7 @@ internal static class Parser
                 // self-closing node
                 case TokenType.SelfClosing:
                 {
-                    AddNode(new Node { TagName = current.TagName.ToString() });
+                    AddNode(results, nodeStack, new Node { TagName = current.TagName.ToString() });
                     break;
                 }
             }
@@ -81,7 +69,7 @@ internal static class Parser
         // if we still have nodes in the stack, but we are out of html, that means that some are unclosed, so close them now
         while (nodeStack.TryPop(out Node? nodeClosing))
         {
-            AddNode(nodeClosing);
+            AddNode(results, nodeStack, nodeClosing);
         }
 
         return results;
@@ -166,6 +154,18 @@ internal static class Parser
         }
 
         return result;
+    }
+
+    private static void AddNode(List<Node> results, Stack<Node> nodeStack, Node nodeToAdd)
+    {
+        if (nodeStack.TryPeek(out Node? parentNode))
+        {
+            AddToParent(parentNode, nodeToAdd);
+        }
+        else
+        {
+            results.Add(nodeToAdd);
+        }
     }
 
     private static void AddToParent(Node parentNode, Node childNode)
