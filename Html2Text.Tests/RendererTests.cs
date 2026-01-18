@@ -564,7 +564,7 @@ public class RendererTests
         var expected = """
                        very interesting
 
-                       -----------------
+                       --------------------------------------------------------------------------------
 
                        text here
                        """;

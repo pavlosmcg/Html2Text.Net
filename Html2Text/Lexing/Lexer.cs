@@ -23,21 +23,6 @@ internal ref struct Lexer
 
     public Lexer GetEnumerator() => this;
 
-    private static bool ShouldBeSelfClosingTag(ReadOnlySpan<char> tagName)
-    {
-        foreach (string selfClosingName in Elements.SelfClosingNames)
-        {
-            if (tagName.Equals(selfClosingName, StringComparison.OrdinalIgnoreCase))
-                return true;
-        }
-        return false;
-    }
-
-    private static bool IsAllowedTagNameCharacter(char character)
-    {
-        return char.IsLetterOrDigit(character) || character == '-' || character == ':';
-    }
-
     private enum State
     {
         OutsideTag,
@@ -120,6 +105,21 @@ internal ref struct Lexer
 
         _tokenStart = _cursor;
         return true;
+    }
+
+    private static bool ShouldBeSelfClosingTag(ReadOnlySpan<char> tagName)
+    {
+        foreach (string selfClosingName in Elements.SelfClosingNames)
+        {
+            if (tagName.Equals(selfClosingName, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+        return false;
+    }
+
+    private static bool IsAllowedTagNameCharacter(char character)
+    {
+        return char.IsLetterOrDigit(character) || character == '-' || character == ':';
     }
 
     private bool TryEnterDocType()

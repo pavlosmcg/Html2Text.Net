@@ -16,179 +16,192 @@ internal static class Renderer
 
         var resultBuilder = new StringBuilder();
         var workStack = new Stack<RenderWorkItem>();
-        workStack.Push(new RenderWorkItem(RenderWorkType.BeforeTag, new Node { Children = nodes }));
+        var state = new RendererState();
 
-        int pendingNewLines = 0;
-        bool pendingSpace = false;
-        bool atLineStart = true;
-        bool atDocumentStart = true;
-        int verbatimTagDepth = 0;
-        int listNestingDepth = 0;
-        int tableNestingDepth = 0;
+        var root = new Node { TagName = "#document", Children = nodes };
+        workStack.Push(new RenderWorkItem(RenderWorkType.BeforeTag, root));
 
-        void RequestSpace()
+
+        void QueueSpace()
         {
-            if (atDocumentStart) return;
+            if (state.AtDocumentStart) return;
 
-            if (pendingNewLines == 0 && !atLineStart)
-                pendingSpace = true;
+            if (!state.HasPendingNewLines && !state.AtLineStart)
+            {
+                state.PendingSpace = true;
+            }
         }
 
-        void RequestNewLine(int count)
+        void QueueNewLines(int count)
         {
-            if (atDocumentStart) return;
+            if (state.AtDocumentStart) return;
 
-            pendingNewLines = Math.Max(pendingNewLines, count);
+            state.PendingNewLines = Math.Max(state.PendingNewLines, count);
         }
 
         void FlushPendingWhitespace()
         {
-            while (pendingNewLines > 0)
+            while (state.HasPendingNewLines)
             {
                 resultBuilder.AppendLine();
-                pendingNewLines--;
-                atLineStart = true;
-                pendingSpace = false;
+                state.PendingNewLines--;
+                state.AtLineStart = true;
+                state.PendingSpace = false;
             }
 
-            if (pendingSpace)
+            if (state.PendingSpace)
             {
                 resultBuilder.Append(' ');
-                pendingSpace = false;
+                state.PendingSpace = false;
             }
         }
 
         while (workStack.TryPop(out RenderWorkItem? item))
         {
-            if (item.WorkType == RenderWorkType.BeforeTag)
+            switch (item.WorkType)
             {
-                // any block elements required leading new lines
-                if (IsBlockElement(item.Node.TagName))
-                {
-                    RequestNewLine(1);
-                }
+                case RenderWorkType.BeforeTag:
+                    HandleBeforeTag(item);
+                    break;
 
-                // check for verbatim tag start
-                if (IsVerbatimElement(item.Node.TagName))
-                {
-                    verbatimTagDepth++;
-                }
+                case RenderWorkType.AfterTag:
+                    HandleAfterTag(item);
+                    break;
+            }
+        }
 
-                // update list nesting depth
-                if (IsListElement(item.Node.TagName))
-                {
-                    listNestingDepth++;
-                }
-
-                // entering a table
-                if (DataTableDetector.IsDataTable(item.Node))
-                {
-                    tableNestingDepth++;
-                }
-
-                // table column separator (only for top-level tables)
-                if (tableNestingDepth == 1 &&
-                    !atLineStart &&
-                    pendingNewLines == 0 &&
-                    IsTableItem(item.Node.TagName))
-                {
-                    resultBuilder.Append("\t |");
-                }
-
-                // request space before table items
-                if (IsTableItem(item.Node.TagName))
-                {
-                    RequestSpace();
-                }
-
-                // add to stack to process after children
-                workStack.Push(item with { WorkType = RenderWorkType.AfterTag });
-
-                // add any children to work stack
-                if (item.Node.Children != null)
-                {
-                    for (int i = item.Node.Children.Count - 1; i >= 0; i--)
-                    {
-                        workStack.Push(new RenderWorkItem(RenderWorkType.BeforeTag, item.Node.Children[i]));
-                    }
-                }
+        void HandleBeforeTag(RenderWorkItem item)
+        {
+            // any block elements required leading new lines
+            if (IsBlockElement(item.Node.TagName))
+            {
+                QueueNewLines(1);
             }
 
-            if (item.WorkType == RenderWorkType.AfterTag)
+            // check for verbatim tag start
+            if (IsVerbatimElement(item.Node.TagName))
             {
-                string text = item.Node.Text ?? string.Empty;
+                state.VerbatimTagDepth++;
+            }
 
-                // special handling for hr tag
-                if (item.Node.TagName != null &&
-                    item.Node.TagName.Equals("hr", StringComparison.OrdinalIgnoreCase))
+            // update list nesting depth
+            if (IsListElement(item.Node.TagName))
+            {
+                state.ListNestingDepth++;
+            }
+
+            // entering a table
+            if (DataTableDetector.IsDataTable(item.Node))
+            {
+                state.TableNestingDepth++;
+            }
+
+            // table column separator (only for top-level tables)
+            if (state.InsideTable &&
+                !state.AtLineStart &&
+                !state.HasPendingNewLines &&
+                IsTableItem(item.Node.TagName))
+            {
+                resultBuilder.Append("\t |");
+            }
+
+            // request space before table items
+            if (IsTableItem(item.Node.TagName))
+            {
+                QueueSpace();
+            }
+
+            // add to stack to process after children
+            workStack.Push(item with { WorkType = RenderWorkType.AfterTag });
+
+            // add any children to work stack
+            if (item.Node.Children != null)
+            {
+                for (int i = item.Node.Children.Count - 1; i >= 0; i--)
                 {
-                    RequestNewLine(2);
-                    text = new string('-', 17);
-                }
-
-                // only for top-level tables, render a separator line for table head
-                if (tableNestingDepth == 1 &&
-                    item.Node.TagName != null &&
-                    item.Node.TagName.Equals("thead", StringComparison.OrdinalIgnoreCase))
-                {
-                    text = new string('-', 17);
-                }
-
-                // text node writing time
-                foreach (char character in text)
-                {
-                    if (verbatimTagDepth == 0 && char.IsWhiteSpace(character))
-                    {
-                        RequestSpace();
-                        continue;
-                    }
-
-                    FlushPendingWhitespace();
-
-                    if (atLineStart && listNestingDepth > 0)
-                    {
-                        resultBuilder.Append(new string(' ', (listNestingDepth - 1) * 2));
-                        resultBuilder.Append(" - ");
-                    }
-
-                    resultBuilder.Append(character);
-                    atDocumentStart = false;
-                    atLineStart = false;
-                }
-
-                // check for verbatim tag finish
-                if (IsVerbatimElement(item.Node.TagName))
-                {
-                    verbatimTagDepth = Math.Max(0, verbatimTagDepth - 1);
-                }
-
-                // update list nesting depth
-                if (IsListElement(item.Node.TagName))
-                {
-                    listNestingDepth = Math.Max(0, listNestingDepth - 1);
-                }
-
-                // exiting a table
-                if (DataTableDetector.IsDataTable(item.Node))
-                {
-                    tableNestingDepth = Math.Max(0, tableNestingDepth - 1);
-                }
-
-                // block element required new lines before next element
-                if (IsBlockElement(item.Node.TagName))
-                {
-                    RequestNewLine(1);
-                }
-
-                // paragraph-like elements require a newline and a clear blank line after them
-                if (RequiresBlankLineAfter(item.Node.TagName, listNestingDepth))
-                {
-                    RequestNewLine(2);
+                    workStack.Push(new RenderWorkItem(RenderWorkType.BeforeTag, item.Node.Children[i]));
                 }
             }
         }
 
+        void HandleAfterTag(RenderWorkItem item)
+        {
+            string text = item.Node.Text ?? string.Empty;
+            
+            // special handling for hr tag
+            if (IsTag(item.Node, "hr"))
+            {
+                QueueNewLines(2);
+                text = new string('-', Constants.HorizontalRuleWidth);
+            }
+
+            // only for top-level tables, render a separator line for table head
+            if (state.InsideTable &&
+            IsTag(item.Node, "thead"))
+            {
+                text = new string('-', 17);
+            }
+
+            // text node writing time
+            foreach (char character in text)
+            {
+                if (!state.InsideVerbatimBlock && char.IsWhiteSpace(character))
+                {
+                    QueueSpace();
+                    continue;
+                }
+
+                FlushPendingWhitespace();
+
+                if (state.AtLineStart && state.InsideList)
+                {
+                    resultBuilder.Append(new string(' ', (state.ListNestingDepth - 1) * 2));
+                    resultBuilder.Append(" - ");
+                }
+
+                resultBuilder.Append(character);
+                state.AtDocumentStart = false;
+                state.AtLineStart = false;
+            }
+
+            // check for verbatim tag finish
+            if (IsVerbatimElement(item.Node.TagName))
+            {
+                state.VerbatimTagDepth = Math.Max(0, state.VerbatimTagDepth - 1);
+            }
+
+            // update list nesting depth
+            if (IsListElement(item.Node.TagName))
+            {
+                state.ListNestingDepth = Math.Max(0, state.ListNestingDepth - 1);
+            }
+
+            // exiting a table
+            if (DataTableDetector.IsDataTable(item.Node))
+            {
+                state.TableNestingDepth = Math.Max(0, state.TableNestingDepth - 1);
+            }
+
+            // block element required new lines before next element
+            if (IsBlockElement(item.Node.TagName))
+            {
+                QueueNewLines(1);
+            }
+
+            // paragraph-like elements require a newline and a clear blank line after them
+            if (RequiresBlankLineAfter(item.Node.TagName, state.InsideList))
+            {
+                QueueNewLines(2);
+            }
+        }
+
         return resultBuilder.ToString();
+    }
+
+    private static bool IsTag(Node node, string name)
+    {
+        return node.TagName != null &&
+               node.TagName.Equals(name, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsBlockElement(string? tagName)
@@ -197,10 +210,10 @@ internal static class Renderer
                Elements.BlockElements.Contains(tagName);
     }
 
-    private static bool RequiresBlankLineAfter(string? tagName, int listNestingDepth)
+    private static bool RequiresBlankLineAfter(string? tagName, bool insideList)
     {
         // nested list elements do not require blank lines after them
-        if (listNestingDepth > 0 && IsListElement(tagName))
+        if (insideList && IsListElement(tagName))
         {
             return false;
         }
