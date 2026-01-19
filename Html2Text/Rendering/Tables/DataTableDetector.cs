@@ -38,7 +38,7 @@ internal static class DataTableDetector
             return false;
         }
 
-        bool hasCaption = nonTextChildren.Any(c => c.TagName!.Equals("caption", StringComparison.OrdinalIgnoreCase));
+        bool hasCaption = nonTextChildren.Any(c => string.Equals(c.TagName, "caption", StringComparison.OrdinalIgnoreCase));
 
         // if it has a caption, it's very likely to be a proper table of data
         if (hasCaption)
@@ -46,12 +46,28 @@ internal static class DataTableDetector
             return true;
         }
 
-        bool hasTableHead = nonTextChildren.Any(c => c.TagName!.Equals("thead", StringComparison.OrdinalIgnoreCase));
-        bool hasTableBody = nonTextChildren.Any(c => c.TagName!.Equals("tbody", StringComparison.OrdinalIgnoreCase));
-
-        if (hasTableHead && hasTableBody)
+        // head and body being present means we treat it as a data table
+        var head = nonTextChildren.FirstOrDefault(c => string.Equals(c.TagName, "thead", StringComparison.OrdinalIgnoreCase));
+        var body = nonTextChildren.FirstOrDefault(c => string.Equals(c.TagName, "tbody", StringComparison.OrdinalIgnoreCase));
+        if (head != null && body !=null)
         {
             return true;
+        }
+
+        // if we have a body -> tr -> th, we count it as a data table
+        if (body?.Children == null)
+        {
+            return false;
+        }
+
+        var bodyRows = body.Children.Where(c => string.Equals(c.TagName, "tr", StringComparison.OrdinalIgnoreCase));
+
+        foreach (var row in bodyRows)
+        {
+            if (row.Children != null && row.Children.Any(c => string.Equals(c.TagName, "th", StringComparison.OrdinalIgnoreCase)))
+            {
+                return true;
+            }
         }
 
         return false;

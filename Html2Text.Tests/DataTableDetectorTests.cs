@@ -132,4 +132,26 @@ public class DataTableDetectorTests
         // assert
         Assert.That(result, Is.True);
     }
+
+    [Test]
+    public void IsDataTable_Returns_True_For_TableWithBodyAndHeaderCells()
+    {
+        // arrange
+        var html = """
+                   <table>
+                     <tbody>
+                       <tr><th>Name</th><th>Age</th></tr>
+                       <tr><td>Paul</td><td>34</td></tr>
+                       <tr><td>Liv</td><td>26</td></tr>
+                     </tbody>
+                   </table>
+                   """;
+        List<Node> nodes = Parser.ParseHtml(html);
+
+        // act
+        var result = DataTableDetector.IsDataTable(nodes[0]);
+
+        // assert
+        Assert.That(result, Is.True);
+    }
 }
