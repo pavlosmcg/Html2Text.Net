@@ -25,6 +25,8 @@ string text = Html2Text.Convert(html);
 
 <img width="1670" height="836" alt="image" src="https://github.com/user-attachments/assets/2bdcca01-644f-4053-9b32-ff20ee475f9b" />
 
+<img width="1781" height="734" alt="image" src="https://github.com/user-attachments/assets/cecb2990-8afe-40bd-bae6-c37744d57d39" />
+
 ## How it works
 
 ### Pipeline
