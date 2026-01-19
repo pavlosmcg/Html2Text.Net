@@ -8,6 +8,12 @@
 
 Lightweight, hand rolled, high-performance HTML to plain text conversion for .NET.
 
+- [Usage](#usage)
+- [How it works](#how-it-works)
+- [Performance notes](#performance-notes)
+- [Install, build, test](#install-build-test)
+- [Regression tests](#regression-tests)
+
 ## Usage
 
 Simple as possible:
@@ -17,15 +23,14 @@ using Html2Text;
 string html = "<h1>Hello</h1><p>World</p>";
 
 string text = Html2Text.Convert(html);
-
-// Hello
-//
-// World
 ```
 
-<img width="1670" height="836" alt="image" src="https://github.com/user-attachments/assets/2bdcca01-644f-4053-9b32-ff20ee475f9b" />
+Output:
+```text
+Hello
 
-<img width="1781" height="734" alt="image" src="https://github.com/user-attachments/assets/cecb2990-8afe-40bd-bae6-c37744d57d39" />
+World
+```
 
 ## How it works
 
@@ -39,11 +44,36 @@ HTML document -> Lexer (tokens) -> Parser (AST nodes) -> Renderer (string text)
 - Whitespace is normalized to produce readable plain text.
 
 Minimal formatting is added to make the plain text output readable:
-- HTML tables are given cell separators (|) and horizontal lines (---) under column headers .
-- The `<hr/>` element adds a horizontal line of dashes (---).
-- The `<title>` element also gets a horizontal underline.
-
-Formatting logic can be found in [Html2Text/Rendering](Html2Text/Rendering). 
+- HTML tables are given cell separators `|` and horizontal lines `---` under column headers:
+```text
+| Chart                  | Record Holder     | Record       |
+| ---------------------- | ----------------- | ------------ |
+| Opening Days           | Avengers: Endgame | $157,461,641 |
+| Top Single Day Grosses | Avengers: Endgame | $157,461,641 |
+```
+- Lists and nested lists are indented and given a leading `-` like so:
+```text
+ - 1 Early life
+ - 2 Enigma machine
+ - 3 Solving the wiring
+ - Toggle Solving the wiring subsection
+   - 3.1 French help
+ - 4 Solving daily settings
+ - Toggle Solving daily settings subsection
+   - 4.1 Early methods
+   - 4.2 Bomba and sheets
+   - 4.3 Allies informed
+```
+- In preformatted areas `<pre>` whitespace is preserved:
+```text
+private int GetSmallestNonNegative(int x, int y) {
+    return x < 0 && y < 0 ? 0
+        : x < 0 ? y
+        : y < 0 ? x
+        : Math.Min(x, y);
+}
+```
+- The `<hr/>` element adds a horizontal line of dashes `---`.
 
 ### Goals
 This project is focused on:
@@ -96,6 +126,16 @@ Run unit tests and regression tests:
 ```
 dotnet test
 ```
+
+Run the example console app:
+```
+dotnet build
+dotnet run --project Html2Text.Example Samples/scottallen.html
+```
+
+<img width="1670" height="836" alt="image" src="https://github.com/user-attachments/assets/2bdcca01-644f-4053-9b32-ff20ee475f9b" />
+
+<img width="1781" height="734" alt="image" src="https://github.com/user-attachments/assets/cecb2990-8afe-40bd-bae6-c37744d57d39" />
 
 ## Regression tests
 
