@@ -1,0 +1,46 @@
+﻿All-Time Charts - Box Office Mojo
+
+DomesticInternationalWorldwideCalendarAll TimeShowdownsIndices
+OverallWeekend Records
+Daily Records
+
+Miscellaneous Records
+All-Time Charts
+
+| Chart                  | Record Holder     | Record       |
+| ---------------------- | ----------------- | ------------ |
+| Opening Days           | Avengers: Endgame | $157,461,641 |
+| Top Single Day Grosses | Avengers: Endgame | $157,461,641 |
+
+| Top Holiday Single Day Grosses |                                            |             |
+| ------------------------------ | ------------------------------------------ | ----------- |
+| Christmas Day                  | Star Wars: Episode VII - The Force Awakens | $49,325,663 |
+| New Year's Day                 | Star Wars: Episode VII - The Force Awakens | $34,394,152 |
+
+| Top Single Day Grosses By Day Of The Week |                                              |              |
+| ----------------------------------------- | -------------------------------------------- | ------------ |
+| Friday                                    | Avengers: Endgame                            | $157,461,641 |
+| Saturday                                  | Avengers: Endgame                            | $109,264,122 |
+| Sunday                                    | Avengers: Endgame                            | $90,389,244  |
+| Monday                                    | Black Panther                                | $40,151,729  |
+| Tuesday                                   | Spider-Man: Far from Home                    | $39,255,628  |
+| Wednesday                                 | The Twilight Saga: Eclipse                   | $68,533,840  |
+| Thursday                                  | Star Wars: Episode III - Revenge of the Sith | $50,013,859  |
+
+| Top Single Day Non-Opening Grosses by Day of the Week |                                               |              |
+| ----------------------------------------------------- | --------------------------------------------- | ------------ |
+| Friday                                                | Wicked: For Good                              | $69,117,615  |
+| Saturday                                              | Avengers: Endgame                             | $109,264,122 |
+| Sunday                                                | Avengers: Endgame                             | $90,389,244  |
+| Monday                                                | Black Panther                                 | $40,151,729  |
+| Tuesday                                               | Star Wars: Episode VII - The Force Awakens    | $37,361,729  |
+| Wednesday                                             | Star Wars: Episode VII - The Force Awakens    | $38,022,183  |
+| Thursday                                              | Star Wars: Episode IX - The Rise of Skywalker | $30,586,950  |
+
+Latest Updates: News | Daily | Weekend | All Time | International | Showdowns
+
+Glossary | User Guide | License IMDb Data | Help
+
+BoxOfficeMojo.com by IMDbPro - an IMDb company.
+
+© IMDb.com, Inc. or its affiliates. All rights reserved. Box Office Mojo and IMDb are trademarks or registered trademarks of IMDb.com, Inc. or its affiliates. Conditions of Use and Privacy Policy under which this service is provided to you.

@@ -170,54 +170,36 @@ In other projects
 From Wikipedia, the free encyclopedia
 Polish mathematician and cryptologist (1905–1980)
 
-Marian Rejewski
-Rejewski, c. 1932
-Born
-Marian Adam Rejewski
-(1905-08-16)16 August 1905
-Bromberg, German Empire (now Bydgoszcz, Poland)
-Died 13 February 1980(1980-02-13) (aged 74)
-Warsaw, Poland
-Occupations Mathematician and cryptologist
-Known for Solving the Enigma-machine cipher
-Awards
- - Order of Polonia Restituta, Grand Cross[1]
- - War Medal 1939–1945[2]
- - Knowlton Award[3]
- - IEEE Milestone Award.[4][5]
+| Marian Rejewski   |                                                                                                                            |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Rejewski, c. 1932 |                                                                                                                            |
+| Born              | Marian Adam Rejewski (1905-08-16)16 August 1905 Bromberg, German Empire (now Bydgoszcz, Poland)                            |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Died              | 13 February 1980(1980-02-13) (aged 74) Warsaw, Poland                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Occupations       | Mathematician and cryptologist                                                                                             |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Known for         | Solving the Enigma-machine cipher                                                                                          |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Awards            | - Order of Polonia Restituta, Grand Cross[1]  - War Medal 1939–1945[2]  - Knowlton Award[3]  - IEEE Milestone Award.[4][5] |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Signature         |                                                                                                                            |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
+|                   |                                                                                                                            |
 
-Signature
-
-The Enigma cipher machine
-Enigma machine
- - Enigma rotors
-
-Breaking Enigma
- - Polish Cipher Bureau
-   - Doubles
-   - Grill
-   - Clock
-   - Cyclometer
-   - Bomba
-   - Zygalski sheets
- - Bletchley Park
-   - Banburismus
-   - Herivel tip
-   - Crib
-   - Bombe
-   - Hut 3
-   - Hut 4
-   - Hut 6
-   - Hut 8
- - PC Bruno
- - Cadix
-
-Related
- - Ultra
-
- - v
- - t
- - e
+| The Enigma cipher machine                                                                                                                                                                                                                           |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|                                                                                                                                                                                                                                                     |
+| Enigma machine                                                                                                                                                                                                                                      |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| - Enigma rotors                                                                                                                                                                                                                                     |
+| Breaking Enigma                                                                                                                                                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| - Polish Cipher Bureau    - Doubles    - Grill    - Clock    - Cyclometer    - Bomba    - Zygalski sheets  - Bletchley Park    - Banburismus    - Herivel tip    - Crib    - Bombe    - Hut 3    - Hut 4    - Hut 6    - Hut 8  - PC Bruno  - Cadix |
+| Related                                                                                                                                                                                                                                             |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| - Ultra                                                                                                                                                                                                                                             |
+| - v  - t  - e                                                                                                                                                                                                                                       |
 
 Marian Adam Rejewski (Polish: [ˈmarjan rɛˈjɛfskʲi] ⓘ; 16 August 1905 – 13 February 1980) was a Polish mathematician and cryptologist who in late 1932 reconstructed the sight-unseen German military Enigma cipher machine, aided by limited documents obtained by French military intelligence.
 
@@ -610,34 +592,18 @@ External links
  - Marian Rejewski and the First Break into Enigma
  - Plaque location
 
-hide
-Authority control databases
-International
- - ISNI
- - VIAF
- - GND
- - FAST
- - WorldCat
-
-National
- - United States
- - France
- - BnF data
- - Poland
- - Israel
-
-Academics
- - zbMATH
- - DBLP
- - MathSciNet
-
-People
- - Deutsche Biographie
- - DDB
-
-Other
- - IdRef
- - Yale LUX
+| hide Authority control databases |                                                           |
+| -------------------------------- | --------------------------------------------------------- |
+| International                    | - ISNI  - VIAF  - GND  - FAST  - WorldCat                 |
+| -------------------------------- | --------------------------------------------------------- |
+| National                         | - United States  - France  - BnF data  - Poland  - Israel |
+| -------------------------------- | --------------------------------------------------------- |
+| Academics                        | - zbMATH  - DBLP  - MathSciNet                            |
+| -------------------------------- | --------------------------------------------------------- |
+| People                           | - Deutsche Biographie  - DDB                              |
+| -------------------------------- | --------------------------------------------------------- |
+| Other                            | - IdRef  - Yale LUX                                       |
+| -------------------------------- | --------------------------------------------------------- |
 
 Retrieved from "https://en.wikipedia.org/w/index.php?title=Marian_Rejewski&oldid=1324749034"
 Categories:
