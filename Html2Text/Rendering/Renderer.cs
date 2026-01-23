@@ -267,14 +267,12 @@ internal static class Renderer
 
     private static bool IsTagNameEqual(string? tagName, string otherTagName)
     {
-        return tagName != null &&
-               tagName.Equals(otherTagName, StringComparison.OrdinalIgnoreCase);
+        return tagName != null && tagName.Equals(otherTagName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsBlockElement(string? tagName)
     {
-        return !string.IsNullOrEmpty(tagName) &&
-               Elements.BlockElements.Contains(tagName);
+        return tagName != null && Elements.BlockElements.Contains(tagName);
     }
 
     private static bool RequiresBlankLineAfter(string? tagName, bool insideList)
@@ -285,27 +283,23 @@ internal static class Renderer
             return false;
         }
 
-        return !string.IsNullOrEmpty(tagName) &&
-               Elements.ParagraphElements.Contains(tagName);
+        return tagName != null && Elements.ParagraphElements.Contains(tagName);
     }
 
     private static bool IsVerbatimElement(string? tagName)
     {
-        return !string.IsNullOrEmpty(tagName) &&
-               Elements.VerbatimElements.Contains(tagName);
+        return tagName != null && Elements.VerbatimElements.Contains(tagName);
     }
 
     private static bool IsListElement(string? tagName)
     {
-        return !string.IsNullOrEmpty(tagName) &&
-               Elements.ListElements.Contains(tagName);
+        return tagName != null && Elements.ListElements.Contains(tagName);
     }
 
     private static bool IsTableCell(string? tagName, out bool isHeader)
     {
         isHeader = IsTagNameEqual(tagName, "th");
 
-        return !string.IsNullOrEmpty(tagName) &&
-               Elements.TableCellElements.Contains(tagName);
+        return tagName != null && Elements.TableCellElements.Contains(tagName);
     }
 }

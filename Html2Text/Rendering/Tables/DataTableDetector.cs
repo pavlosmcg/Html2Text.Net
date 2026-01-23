@@ -8,12 +8,13 @@ internal static class DataTableDetector
 {
     public static bool IsDataTable(Node node)
     {
-        if (string.IsNullOrWhiteSpace(node.TagName))
+        var tagName = node.TagName;
+        if (tagName == null)
         {
             return false;
         }
 
-        if (!node.TagName.Equals("table", StringComparison.OrdinalIgnoreCase))
+        if (!tagName.Equals("table", StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }
