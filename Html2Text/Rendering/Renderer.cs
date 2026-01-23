@@ -83,8 +83,9 @@ internal static class Renderer
             state.AtLineStart = false;
         }
 
-        while (workStack.TryPop(out RenderWorkItem? item))
+        while (workStack.Count > 0)
         {
+            RenderWorkItem item = workStack.Pop();
             switch (item.WorkType)
             {
                 case RenderWorkType.BeforeTag:

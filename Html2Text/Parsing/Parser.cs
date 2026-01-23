@@ -43,18 +43,17 @@ internal static class Parser
                 // end of a node or end of html string
                 case TokenType.Closing:
                 {
-                    if (nodeStack.TryPeek(out Node? currentNode))
+                    if (nodeStack.Count > 0)
                     {
+                        Node currentNode = nodeStack.Peek();
                         if (currentNode != null && !current.TagName.Equals(currentNode.TagName.AsSpan(),
                                 StringComparison.OrdinalIgnoreCase))
                         {
                             // mismatched closing tag, ignore it
                             break;
                         }
-                    }
 
-                    if (nodeStack.TryPop(out Node? nodeClosing))
-                    {
+                        Node nodeClosing = nodeStack.Pop();
                         AddNode(results, nodeStack, nodeClosing);
                     }
 
@@ -70,8 +69,9 @@ internal static class Parser
         }
 
         // if we still have nodes in the stack, but we are out of html, that means that some are unclosed, so close them now
-        while (nodeStack.TryPop(out Node? nodeClosing))
+        while (nodeStack.Count > 0)
         {
+            Node nodeClosing = nodeStack.Pop();
             AddNode(results, nodeStack, nodeClosing);
         }
 
@@ -161,8 +161,9 @@ internal static class Parser
 
     private static void AddNode(List<Node> results, Stack<Node> nodeStack, Node nodeToAdd)
     {
-        if (nodeStack.TryPeek(out Node? parentNode))
+        if (nodeStack.Count > 0)
         {
+            Node parentNode = nodeStack.Peek();
             AddToParent(parentNode, nodeToAdd);
         }
         else
