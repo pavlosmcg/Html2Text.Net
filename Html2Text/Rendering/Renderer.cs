@@ -162,7 +162,7 @@ internal static class Renderer
             }
 
             // add to stack to process after children
-            workStack.Push(item with { WorkType = RenderWorkType.AfterTag });
+            workStack.Push(new RenderWorkItem(RenderWorkType.AfterTag, item.Node));
 
             // add any children to work stack
             if (item.Node.Children != null)

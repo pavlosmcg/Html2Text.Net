@@ -2,15 +2,24 @@
 
 namespace Html2Text.Lexing;
 
-internal readonly ref struct Token()
+internal readonly ref struct Token
 {
-    public TokenType TokenType { get; init; } = TokenType.Text;
+    public Token(
+        TokenType tokenType,
+        int startIndex,
+        int length,
+        ReadOnlySpan<char> tagName)
+    {
+        TokenType = tokenType;
+        StartIndex = startIndex;
+        Length = length;
+        TagName = tagName;
+    }
 
-    public int StartIndex { get; init; } = 0;
-
-    public int Length { get; init; } = 0;
+    public TokenType TokenType { get; }
+    public int StartIndex { get; }
+    public int Length { get; }
+    public ReadOnlySpan<char> TagName { get; }
 
     public bool HasText => Length > 0;
-
-    public ReadOnlySpan<char> TagName { get; init; } = ReadOnlySpan<char>.Empty;
 }

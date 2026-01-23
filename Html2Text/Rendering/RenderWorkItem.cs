@@ -2,4 +2,14 @@
 
 namespace Html2Text.Rendering;
 
-internal record RenderWorkItem(RenderWorkType WorkType, Node Node);
+internal class RenderWorkItem
+{
+    internal RenderWorkItem(RenderWorkType workType, Node node)
+    {
+        WorkType = workType;
+        Node = node;
+    }
+
+    public RenderWorkType WorkType { get; set; }
+    public Node Node { get; set; }
+}

@@ -8,6 +8,8 @@ namespace Html2Text.Parsing;
 
 internal static class Parser
 {
+    public static List<Node> ParseHtml(string html) => ParseHtml(html.AsSpan());
+
     public static List<Node> ParseHtml(ReadOnlySpan<char> html)
     {
         if (html.IsEmpty)
@@ -43,7 +45,8 @@ internal static class Parser
                 {
                     if (nodeStack.TryPeek(out Node? currentNode))
                     {
-                        if (!current.TagName.Equals(currentNode.TagName, StringComparison.OrdinalIgnoreCase))
+                        if (currentNode != null && !current.TagName.Equals(currentNode.TagName.AsSpan(),
+                                StringComparison.OrdinalIgnoreCase))
                         {
                             // mismatched closing tag, ignore it
                             break;

@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <LangVersion>12.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -9,7 +10,11 @@
     <InternalsVisibleTo Include="Html2Text.Tests" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Memory" Version="4.6.3" />
+  </ItemGroup>
+
+    <ItemGroup>
     <None Include="../LICENSE.txt" Pack="true" PackagePath="" />
     <None Include="../README.md" Pack="true" PackagePath="" />
     <None Include="../icon.png" Pack="true" PackagePath="" />

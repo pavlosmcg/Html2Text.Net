@@ -10,7 +10,7 @@ internal ref struct Lexer
     private State _state = State.OutsideTag;
     private TokenType _tokenType = TokenType.Text;
 
-    private ReadOnlySpan<char> RemainingHtml => _html[_cursor..];
+    private ReadOnlySpan<char> RemainingHtml => _html.Slice(_cursor);
 
     public Lexer(ReadOnlySpan<char> html)
     {
@@ -95,13 +95,7 @@ internal ref struct Lexer
         if (_cursor <= _tokenStart)
             return false;
 
-        Current = new Token
-        {
-            TokenType = type,
-            TagName = tagName,
-            StartIndex = _tokenStart,
-            Length = _cursor - _tokenStart
-        };
+        Current = new Token(tokenType: type, tagName: tagName, startIndex: _tokenStart, length: _cursor - _tokenStart);
 
         _tokenStart = _cursor;
         return true;
@@ -111,8 +105,11 @@ internal ref struct Lexer
     {
         foreach (string selfClosingName in Elements.SelfClosingNames)
         {
-            if (tagName.Equals(selfClosingName, StringComparison.OrdinalIgnoreCase))
+            if (tagName.Equals(selfClosingName.AsSpan(),
+                    StringComparison.OrdinalIgnoreCase))
+            {
                 return true;
+            }
         }
         return false;
     }
@@ -124,7 +121,7 @@ internal ref struct Lexer
 
     private bool TryEnterDocType()
     {
-        if (RemainingHtml.StartsWith("<!DOCTYPE ", StringComparison.OrdinalIgnoreCase))
+        if (RemainingHtml.StartsWith("<!DOCTYPE ".AsSpan(), StringComparison.OrdinalIgnoreCase))
         {
             _tokenType = TokenType.DocType;
             _state = State.InsideTag;
@@ -137,7 +134,7 @@ internal ref struct Lexer
 
     private bool TryEnterProcessingInstruction()
     {
-        if (RemainingHtml.StartsWith("<?", StringComparison.Ordinal))
+        if (RemainingHtml.StartsWith("<?".AsSpan(), StringComparison.Ordinal))
         {
             _tokenType = TokenType.ProcessingInstruction;
             _state = State.InsideTag;
@@ -150,7 +147,7 @@ internal ref struct Lexer
 
     private bool TryEnterClosingTag()
     {
-        if (RemainingHtml.StartsWith("</", StringComparison.Ordinal))
+        if (RemainingHtml.StartsWith("</".AsSpan(), StringComparison.Ordinal))
         {
             _tokenType = TokenType.Closing;
             _state = State.InsideTag;
@@ -177,7 +174,7 @@ internal ref struct Lexer
             _cursor++;
         }
 
-        return _html[nameStart.._cursor];
+        return _html.Slice(nameStart, _cursor - nameStart);
     }
 
     private bool TryCompleteTag(ReadOnlySpan<char> tagName)
@@ -267,7 +264,7 @@ internal ref struct Lexer
 
     private bool TrySkipComment()
     {
-        if (!RemainingHtml.StartsWith("<!--", StringComparison.Ordinal))
+        if (!RemainingHtml.StartsWith("<!--".AsSpan(), StringComparison.Ordinal))
         {
             return false;
         }
@@ -296,8 +293,14 @@ internal ref struct Lexer
     private bool IsIgnoredTag(ReadOnlySpan<char> tagName)
     {
         foreach (var ignored in Elements.IgnoredElements)
-            if (tagName.Equals(ignored, StringComparison.OrdinalIgnoreCase))
+        {
+            if (tagName.Equals(ignored.AsSpan(),
+                    StringComparison.OrdinalIgnoreCase))
+            {
                 return true;
+            }
+        }
+
         return false;
     }
 
