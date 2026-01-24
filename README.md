@@ -1,5 +1,6 @@
 # Html2Text.Net
 
+[![NuGet](https://img.shields.io/nuget/v/Html2Text.Net.svg)](https://www.nuget.org/packages/Html2Text.Net/)
 [![CI](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml/badge.svg)](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml)
 [![Benchmarks](https://img.shields.io/badge/benchmarks-charts-blue)](https://pavlosmcg.github.io/Html2Text.Net/dev/bench/)
 [![License](https://img.shields.io/github/license/pavlosmcg/Html2Text.Net)](LICENSE.txt)
@@ -9,9 +10,10 @@
 Lightweight, hand rolled, high-performance HTML to plain text conversion for .NET.
 
 - [Usage](#usage)
-- [How it works](#how-it-works)
-- [Performance notes](#performance-notes)
 - [Install, build, test](#install-build-test)
+- [How it works](#how-it-works)
+  - [Goals](#goals)
+- [Performance notes](#performance-notes)
 - [Regression tests](#regression-tests)
 
 ## Usage
@@ -32,6 +34,41 @@ Hello
 World
 ```
 
+## Install, build, test, contribute
+
+[![NuGet](https://img.shields.io/nuget/v/Html2Text.Net.svg)](https://www.nuget.org/packages/Html2Text.Net/)
+
+Install using NuGet (recommended):
+```
+dotnet add package Html2Text.Net
+```
+
+### Supported frameworks
+- .Net 8+
+- .Net Framework 4.6.2+
+- .Net Standard 2.0 for compatibility with other frameworks, including .Net 5/6/7
+
+For .Net Framework users, PackageReference style dependencies are recommended. Also ensure binding redirects are enabled.
+
+### Contributing
+
+Contributions and pull requests are welcome! To build locally: 
+```
+dotnet build
+```
+
+To run unit and regression tests: 
+```
+(windows): dotnet test
+(linux/mac): dotnet test -f net8.0
+```
+
+To run the example console app:
+```
+dotnet build
+dotnet run --project Html2Text.Example Samples/scottallen.html
+```
+
 ## How it works
 
 ### Pipeline
@@ -43,15 +80,15 @@ HTML document -> Lexer (tokens) -> Parser (AST nodes) -> Renderer (string text)
 - Basic block separation is preserved (e.g., paragraphs/headings insert newlines).
 - Whitespace is normalized to produce readable plain text.
 
-Minimal formatting is added to make the plain text output readable:
-- HTML tables are given cell separators `|` and horizontal lines `---` under column headers:
+Minimal formatting is added to make the plain text output readable in only 4 cases:
+1. HTML tables are given cell separators `|` and horizontal lines `---` under column headers:
 ```text
 | Chart                  | Record Holder     | Record       |
 | ---------------------- | ----------------- | ------------ |
 | Opening Days           | Avengers: Endgame | $157,461,641 |
 | Top Single Day Grosses | Avengers: Endgame | $157,461,641 |
 ```
-- Lists and nested lists are indented and given a leading `-` like so:
+2. Lists and nested lists are indented and given a leading `-` like so:
 ```text
  - 1 Early life
  - 2 Enigma machine
@@ -64,7 +101,7 @@ Minimal formatting is added to make the plain text output readable:
    - 4.2 Bomba and sheets
    - 4.3 Allies informed
 ```
-- In preformatted areas `<pre>` whitespace is preserved:
+3. In preformatted areas `<pre>` whitespace is preserved:
 ```text
 private int GetSmallestNonNegative(int x, int y) {
     return x < 0 && y < 0 ? 0
@@ -73,7 +110,7 @@ private int GetSmallestNonNegative(int x, int y) {
         : Math.Min(x, y);
 }
 ```
-- The `<hr/>` element adds a horizontal line of dashes `---`.
+4. The `<hr/>` element adds a horizontal line of dashes `---`.
 
 ### Goals
 This project is focused on:
@@ -107,36 +144,6 @@ Or check out the latest automated perf test results here: https://pavlosmcg.gith
 
 <img width="1804" height="871" alt="image" src="https://github.com/user-attachments/assets/fd988896-e603-4aae-8281-0aa17edbd51f" />
 
-
-## Install, build, test
-
-When I've published to NuGet (coming soon!), you will be able to:
-```
-dotnet add package Html2Text
-```
-
-Or, for now, download or submodule the repo and reference the project directly.
-
-Build with: 
-```
-dotnet build
-```
-
-Run unit tests and regression tests: 
-```
-dotnet test
-```
-
-Run the example console app:
-```
-dotnet build
-dotnet run --project Html2Text.Example Samples/scottallen.html
-```
-
-<img width="1670" height="836" alt="image" src="https://github.com/user-attachments/assets/2bdcca01-644f-4053-9b32-ff20ee475f9b" />
-
-<img width="1781" height="734" alt="image" src="https://github.com/user-attachments/assets/cecb2990-8afe-40bd-bae6-c37744d57d39" />
-
 ## Regression tests
 
 Each file in the `Samples/` directory acts as an acceptance/regression test. The results of converting these HTML files to plain text are saved in `Html2Text.RegressionTests/*.verified.txt`:
@@ -158,10 +165,4 @@ For example [scottallen.html](Samples/scottallen.html) -> [scottallen.verified.t
 - `Html2Text.PerfTests/`: performance benchmarking console app
 - `Samples/`: sample HTML files used during development and automated regression testing
 
-## Target frameworks
-
-- .NET 8+
-
-## License
-
-MPL-2.0 see [LICENSE.txt](LICENSE.txt)
+_Distributed under MPL-2.0 see [LICENSE.txt](LICENSE.txt)_
