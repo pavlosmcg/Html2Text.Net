@@ -63,11 +63,7 @@ jobs:
           path: .
 
       - name: Unit tests
-        run: |
-          dotnet test ./Html2Text.Tests/Html2Text.Tests.csproj \
-            --configuration Release --no-build --no-restore \
-            --logger "trx;LogFileName=unit-tests.trx" \
-            --results-directory ./TestResults
+        run: dotnet test ./Html2Text.Tests/Html2Text.Tests.csproj --configuration Release --no-build --no-restore --logger "trx;LogFileName=unit-tests.trx" --results-directory ./TestResults
 
       - name: Unit test report
         if: always()
@@ -93,11 +89,7 @@ jobs:
           path: .
 
       - name: Regression tests
-        run: |
-          dotnet test ./Html2Text.RegressionTests/Html2Text.RegressionTests.csproj \
-            --configuration Release --no-build --no-restore \
-            --logger "trx;LogFileName=regression-tests.trx" \
-            --results-directory ./TestResults
+        run: dotnet test ./Html2Text.RegressionTests/Html2Text.RegressionTests.csproj --configuration Release --no-build --no-restore --logger "trx;LogFileName=regression-tests.trx" --results-directory ./TestResults
 
       - name: Regression test report
         if: always()
