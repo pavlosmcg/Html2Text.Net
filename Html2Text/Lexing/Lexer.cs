@@ -101,24 +101,6 @@ internal ref struct Lexer
         return true;
     }
 
-    private static bool ShouldBeSelfClosingTag(ReadOnlySpan<char> tagName)
-    {
-        foreach (string selfClosingName in Elements.SelfClosingNames)
-        {
-            if (tagName.Equals(selfClosingName.AsSpan(),
-                    StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static bool IsAllowedTagNameCharacter(char character)
-    {
-        return char.IsLetterOrDigit(character) || character == '-' || character == ':';
-    }
-
     private bool TryEnterDocType()
     {
         if (RemainingHtml.StartsWith("<!DOCTYPE ".AsSpan(), StringComparison.OrdinalIgnoreCase))
@@ -290,20 +272,6 @@ internal ref struct Lexer
         return true;
     }
 
-    private bool IsIgnoredTag(ReadOnlySpan<char> tagName)
-    {
-        foreach (var ignored in Elements.IgnoredElements)
-        {
-            if (tagName.Equals(ignored.AsSpan(),
-                    StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private void SkipIgnoredContent(ReadOnlySpan<char> tagName)
     {
         if (_tokenType == TokenType.Closing || _tokenType == TokenType.SelfClosing)
@@ -349,5 +317,37 @@ internal ref struct Lexer
         // EOF without closing tag
         _cursor = _html.Length;
         _tokenStart = _cursor;
+    }
+
+    private static bool ShouldBeSelfClosingTag(ReadOnlySpan<char> tagName)
+    {
+        foreach (string selfClosingName in Elements.SelfClosingNames)
+        {
+            if (tagName.Equals(selfClosingName.AsSpan(),
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static bool IsAllowedTagNameCharacter(char character)
+    {
+        return char.IsLetterOrDigit(character) || character == '-' || character == ':';
+    }
+
+    private static bool IsIgnoredTag(ReadOnlySpan<char> tagName)
+    {
+        foreach (var ignored in Elements.IgnoredElements)
+        {
+            if (tagName.Equals(ignored.AsSpan(),
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

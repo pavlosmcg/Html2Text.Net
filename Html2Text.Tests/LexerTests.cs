@@ -9,13 +9,27 @@ namespace Html2Text.Tests;
 [TestFixture]
 public class LexerTests
 {
-    internal record Chunk(TokenType TokenType, string Content, int StartIndex, int Length);
+    private record Chunk
+    {
+        public Chunk(TokenType TokenType, string Content, int StartIndex, int Length)
+        {
+            this.TokenType = TokenType;
+            this.Content = Content;
+            this.StartIndex = StartIndex;
+            this.Length = Length;
+        }
 
-    internal List<Chunk> CollectTestOutput(string input)
+        public TokenType TokenType { get; }
+        public string Content { get; }
+        public int StartIndex { get; }
+        public int Length { get; }
+    }
+
+    private static List<Chunk> CollectTestOutput(string input)
     {
         var results = new List<Chunk>();
 
-        foreach (Token token in new Lexer(input))
+        foreach (Token token in new Lexer(input.AsSpan()))
         {
             var content = token.TagName.IsEmpty
                 ? input.Substring(token.StartIndex, token.Length)
@@ -26,12 +40,12 @@ public class LexerTests
         return results;
     }
 
-    internal IEnumerable<string> DisplayTestOutputWithPositions(List<Chunk> result)
+    private static IEnumerable<string> DisplayTestOutputWithPositions(List<Chunk> result)
     {
         return result.Select(r => $"{r.TokenType}:{r.Content} @Start:{r.StartIndex},Length:{r.Length}");
     }
 
-    internal IEnumerable<string> DisplayTestOutput(List<Chunk> result)
+    private static IEnumerable<string> DisplayTestOutput(List<Chunk> result)
     {
         return result.Select(r => $"{r.TokenType}:{r.Content}");
     }
@@ -54,7 +68,7 @@ public class LexerTests
     {
         // arrange
         var input = "z";
-        var unit = new Lexer(input);
+        var unit = new Lexer(input.AsSpan());
 
         // act
         var result = unit.MoveNext();
@@ -63,7 +77,7 @@ public class LexerTests
         // assert
         Assert.That(result, Is.True);
         Assert.That(output.TokenType, Is.EqualTo(TokenType.Text));
-        Assert.That(output.StartIndex, Is.EqualTo(0));
+        Assert.That(output.StartIndex, Is.Zero);
         Assert.That(output.Length, Is.EqualTo(1));
     }
 
@@ -72,7 +86,7 @@ public class LexerTests
     {
         // arrange
         var input = "hello";
-        var unit = new Lexer(input);
+        var unit = new Lexer(input.AsSpan());
 
         // act first read
         var result = unit.MoveNext();
@@ -96,7 +110,7 @@ public class LexerTests
     {
         // arrange
         var input = "blorgfester";
-        var unit = new Lexer(input);
+        var unit = new Lexer(input.AsSpan());
 
         // act
         var result = unit.MoveNext();
@@ -107,7 +121,7 @@ public class LexerTests
         Assert.That(output.TokenType, Is.EqualTo(TokenType.Text));
         var content = input.Substring(output.StartIndex, output.Length);
         Assert.That(content, Is.EqualTo("blorgfester"));
-        Assert.That(output.StartIndex, Is.EqualTo(0));
+        Assert.That(output.StartIndex, Is.Zero);
         Assert.That(output.Length, Is.EqualTo(input.Length));
     }
 
@@ -116,7 +130,7 @@ public class LexerTests
     {
         // arrange
         var input = "<p>";
-        var unit = new Lexer(input);
+        var unit = new Lexer(input.AsSpan());
 
         // act
         var result = unit.MoveNext();
@@ -134,7 +148,7 @@ public class LexerTests
         // arrange
         var input = "</p>";
 
-        var unit = new Lexer(input);
+        var unit = new Lexer(input.AsSpan());
 
         // act
         var result = unit.MoveNext();
@@ -156,7 +170,7 @@ public class LexerTests
         List<Chunk> result = CollectTestOutput(input);
 
         // assert
-        Assert.That(result.Count, Is.EqualTo(3));
+        Assert.That(result, Has.Count.EqualTo(3));
         Assert.That(
             DisplayTestOutputWithPositions(result),
             Is.EqualTo([
@@ -499,7 +513,7 @@ public class LexerTests
     public void MoveNext_Returns_False_WhenInput_ContainsOnlyScriptElement()
     {
         // arrange
-        var unit = new Lexer("<script>var a = 1 / 2; b = 3 < c >= 4;</script>");
+        var unit = new Lexer("<script>var a = 1 / 2; b = 3 < c >= 4;</script>".AsSpan());
 
         // act
         var result = unit.MoveNext();
