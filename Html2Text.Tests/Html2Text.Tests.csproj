@@ -19,6 +19,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Html2Text\Html2Text.csproj" />
   </ItemGroup>

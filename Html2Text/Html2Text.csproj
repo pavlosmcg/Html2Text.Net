@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net462;netstandard2.0;net8.0</TargetFrameworks>
@@ -14,7 +14,11 @@
     <PackageReference Include="System.Memory" Version="4.6.3" />
   </ItemGroup>
 
-    <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="../LICENSE.txt" Pack="true" PackagePath="" />
     <None Include="../README.md" Pack="true" PackagePath="" />
     <None Include="../icon.png" Pack="true" PackagePath="" />

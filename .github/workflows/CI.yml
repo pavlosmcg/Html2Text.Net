@@ -47,7 +47,7 @@ jobs:
             **/obj/**
 
   unit-tests:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     steps:
       - uses: actions/checkout@v4
@@ -77,7 +77,7 @@ jobs:
           results-path: TestResults/unit-tests.trx
 
   regression-tests:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     steps:
       - uses: actions/checkout@v4
