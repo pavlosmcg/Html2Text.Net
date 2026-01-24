@@ -2,6 +2,7 @@
 using Html2Text.Parsing;
 using Html2Text.Rendering;
 using NUnit.Framework;
+using static Html2Text.Tests.TestHelpers;
 
 namespace Html2Text.Tests;
 
@@ -156,11 +157,11 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result.Replace("\r\n", "\n"),
-            Is.EqualTo("""
+        var expected = """
                        This will be trimmed at the start, but this won't be.
                        This will be on a new line and trimmed both ends!
-                       """.Replace("\r\n", "\n")));
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -174,11 +175,11 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result.Replace("\r\n", "\n"),
-            Is.EqualTo("""
+        var expected = """
                        Text before a div.
                        This is inside a div.
-                       """.Replace("\r\n", "\n")));
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -192,12 +193,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result.Replace("\r\n", "\n"),
-            Is.EqualTo("""
+        var expected = """
                        This is a paragraph.
 
                        And some final free text.
-                       """.Replace("\r\n", "\n")));
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -211,12 +212,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result.Replace("\r\n", "\n"),
-            Is.EqualTo("""
+        var expected = """
                        This is a paragraph.
 
                        And another.
-                       """.Replace("\r\n", "\n")));
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -230,12 +231,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result.Replace("\r\n", "\n"),
-            Is.EqualTo("""
+        var expected = """
                        This is a paragraph.
 
                        And some final free text.
-                       """.Replace("\r\n", "\n")));
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -257,8 +258,7 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result.Replace("\r\n", "\n"),
-            Is.EqualTo("""
+        var expected = """
                        Text before a div.
                        This is inside a div.
                        Some stuff between them.
@@ -272,7 +272,8 @@ public class RendererTests
                        with a paragraph inside.
 
                        And some final free text.
-                       """.Replace("\r\n", "\n")));
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -293,12 +294,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result.Replace("\r\n", "\n"),
-            Is.EqualTo("""
+        var expected = """
                        John Doe
                        123 Elm Street
                        Springfield, IL 62701
-                       """.Replace("\r\n", "\n")));
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -316,12 +317,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result.Replace("\r\n", "\n"),
-            Is.EqualTo("""
+        var expected = """
                        First line
                        some free text
                        Last line
-                       """.Replace("\r\n", "\n")));
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -335,12 +336,12 @@ public class RendererTests
         var result = Renderer.GetText(nodes);
 
         // assert
-        Assert.That(result.Replace("\r\n", "\n"),
-            Is.EqualTo("""
+        var expected = """
                        First line
                        spaces on the end here
                        Last line
-                       """.Replace("\r\n", "\n")));
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -479,7 +480,7 @@ public class RendererTests
                        if (i < 10 && i > 0)
                          return "Single Digit Number"
                        """;
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -520,7 +521,7 @@ public class RendererTests
                        }
                        
                        """;
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -547,14 +548,14 @@ public class RendererTests
 
                        text
                        """;
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
     public void GetText_Returns_TextWithAddedHorizontalLines_WhenInput_ContainsHr()
     {
         // arrange
-        var html ="<div>very interesting</div><hr/><div>text here</div>";
+        var html = "<div>very interesting</div><hr/><div>text here</div>";
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
@@ -569,7 +570,7 @@ public class RendererTests
                        text here
                        """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -602,7 +603,7 @@ public class RendererTests
                         - Juice
                        """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -633,7 +634,7 @@ public class RendererTests
                        | Liv  | 26  |
                        """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -667,7 +668,7 @@ public class RendererTests
                        | Foo  | Hello world |
                        """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -694,7 +695,7 @@ public class RendererTests
                        | 15 Yemen Road Yemen |
                        """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -723,7 +724,7 @@ public class RendererTests
                        | Liv  | 26  | Yemen |
                        """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -750,7 +751,7 @@ public class RendererTests
                        | Foo  | Ok     |
                        """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -799,7 +800,7 @@ public class RendererTests
                        after
                        """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -836,7 +837,7 @@ public class RendererTests
                        | February | £50     |
                        """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
 
@@ -864,7 +865,7 @@ public class RendererTests
                    Email message text
                    """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -883,6 +884,6 @@ public class RendererTests
                        Released 1980
                        """;
 
-        Assert.That(result.Replace("\r\n", "\n"), Is.EqualTo(expected.Replace("\r\n", "\n")));
+        AssertAreEqualNormalised(result, expected);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Html2Text.Rendering.Tables;
 using NUnit.Framework;
-using System.Text;
+using static Html2Text.Tests.TestHelpers;
 
 namespace Html2Text.Tests;
 
@@ -51,12 +51,11 @@ public class TableBuilderTests
         var result = unit.Build();
 
         // assert
-        Assert.That(result,
-            Is.EqualTo(
-                """
-                | A | B | C |
-                | D | E | F |
-                """));
+        var expected = """
+                       | A | B | C |
+                       | D | E | F |
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -77,12 +76,11 @@ public class TableBuilderTests
         var result = unit.Build();
 
         // assert
-        Assert.That(result,
-            Is.EqualTo(
-                """
-                |   | B | C |
-                | D |   | F |
-                """));
+        var expected = """
+                       |   | B | C |
+                       | D |   | F |
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -103,13 +101,12 @@ public class TableBuilderTests
         var result = unit.Build();
 
         // assert
-        Assert.That(result,
-            Is.EqualTo(
-                """
-                | A | B | C |
-                | - | - | - |
-                | 1 | 2 | 3 |
-                """));
+        var expected = """
+                       | A | B | C |
+                       | - | - | - |
+                       | 1 | 2 | 3 |
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -130,16 +127,16 @@ public class TableBuilderTests
         var result = unit.Build();
 
         // assert
-        Assert.That(result,
-            Is.EqualTo(
-                """
-                | Column A | Column B | Column C           |
-                | -------- | -------- | ------------------ |
-                | blorg    | fester   | framistan-bedoulia |
-                """));
+        var expected = """
+                       | Column A | Column B | Column C           |
+                       | -------- | -------- | ------------------ |
+                       | blorg    | fester   | framistan-bedoulia |
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
-    [Test] public void Render_Returns_RowsPaddedToMaxColumnCount()
+    [Test]
+    public void Render_Returns_RowsPaddedToMaxColumnCount()
     {
         // arrange
         var unit = new TableBuilder()
@@ -161,14 +158,13 @@ public class TableBuilderTests
         var result = unit.Build();
 
         // assert
-        Assert.That(result,
-            Is.EqualTo(
-                """
-                | Column A | Column B | Column C |            |
-                | -------- | -------- | -------- | ---------- |
-                | data 1   | data 2   | data 3   |            |
-                | data 4   | data 5   | data 6   | extra data |
-                """));
+        var expected = """
+                       | Column A | Column B | Column C |            |
+                       | -------- | -------- | -------- | ---------- |
+                       | data 1   | data 2   | data 3   |            |
+                       | data 4   | data 5   | data 6   | extra data |
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -193,14 +189,13 @@ public class TableBuilderTests
         var result = unit.Build();
 
         // assert
-        Assert.That(result,
-            Is.EqualTo(
-                """
-                | Column A | Column B | Column C |
-                | -------- | -------- | -------- |
-                |          |          |          |
-                | second 1 | second 2 | second 3 |
-                """));
+        var expected = """
+                       | Column A | Column B | Column C |
+                       | -------- | -------- | -------- |
+                       |          |          |          |
+                       | second 1 | second 2 | second 3 |
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -228,14 +223,13 @@ public class TableBuilderTests
         var result = unit.Build();
 
         // assert
-        Assert.That(result,
-            Is.EqualTo(
-                """
-                | Column A | Column B |   | Column D |
-                | -------- | -------- | - | -------- |
-                | first 1  | first 2  |   | first 4  |
-                | second 1 | second 2 |   | second 4 |
-                """));
+        var expected = """
+                       | Column A | Column B |   | Column D |
+                       | -------- | -------- | - | -------- |
+                       | first 1  | first 2  |   | first 4  |
+                       | second 1 | second 2 |   | second 4 |
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 
     [Test]
@@ -272,17 +266,16 @@ public class TableBuilderTests
         var result = unit.Build();
 
         // assert
-        Assert.That(result,
-            Is.EqualTo(
-                """
-                | Header A | Header B | Header C |
-                | -------- | -------- | -------- |
-                | data 1   | data 2   | data 3   |
-                | data 4   | data 5   | data 6   |
-                | Header D | Header E | Header F |
-                | -------- | -------- | -------- |
-                | data 7   | data 8   | data 9   |
-                | data 10  | data 11  | data 12  |
-                """));
+        var expected = """
+                       | Header A | Header B | Header C |
+                       | -------- | -------- | -------- |
+                       | data 1   | data 2   | data 3   |
+                       | data 4   | data 5   | data 6   |
+                       | Header D | Header E | Header F |
+                       | -------- | -------- | -------- |
+                       | data 7   | data 8   | data 9   |
+                       | data 10  | data 11  | data 12  |
+                       """;
+        AssertAreEqualNormalised(result, expected);
     }
 }
