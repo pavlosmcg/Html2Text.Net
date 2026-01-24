@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1769225713147,
+  "lastUpdate": 1769226249423,
   "repoUrl": "https://github.com/pavlosmcg/Html2Text.Net",
   "entries": {
     "Benchmark": [
@@ -2872,6 +2872,120 @@ window.BENCHMARK_DATA = {
             "value": 1528625.9127604167,
             "unit": "ns",
             "range": "± 485.9101329977637"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pavlosmcg@users.noreply.github.com",
+            "name": "pavlosmcg",
+            "username": "pavlosmcg"
+          },
+          "committer": {
+            "email": "pavlosmcg@users.noreply.github.com",
+            "name": "pavlosmcg",
+            "username": "pavlosmcg"
+          },
+          "distinct": true,
+          "id": "e020f1104aa11966baf4894152bd00095aec0526",
+          "message": "Powershell, of course",
+          "timestamp": "2026-01-24T16:39:46+13:00",
+          "tree_id": "f4ff8756dcf2ae1831ee463419cf5c95f201fc86",
+          "url": "https://github.com/pavlosmcg/Html2Text.Net/commit/e020f1104aa11966baf4894152bd00095aec0526"
+        },
+        "date": 1769226248490,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"boxoffice\")",
+            "value": 244023.06762695312,
+            "unit": "ns",
+            "range": "± 344.65149444535274"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"clampdown\")",
+            "value": 1652974.4166666667,
+            "unit": "ns",
+            "range": "± 14117.088755007826"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"education\")",
+            "value": 22239909.854166668,
+            "unit": "ns",
+            "range": "± 214542.37267032365"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"email1\")",
+            "value": 29992.616271972656,
+            "unit": "ns",
+            "range": "± 161.7774668351321"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"email2\")",
+            "value": 132958.48836263022,
+            "unit": "ns",
+            "range": "± 1321.6264570832673"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"email3\")",
+            "value": 148593.310546875,
+            "unit": "ns",
+            "range": "± 1754.7219674115615"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"email4\")",
+            "value": 45572.64385986328,
+            "unit": "ns",
+            "range": "± 203.51590463435133"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"email5\")",
+            "value": 59553.55330403646,
+            "unit": "ns",
+            "range": "± 660.2270953731165"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"kubernetes\")",
+            "value": 220246.3243815104,
+            "unit": "ns",
+            "range": "± 666.2493050145937"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"rejewski\")",
+            "value": 2900305.01953125,
+            "unit": "ns",
+            "range": "± 7740.507823816193"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"sciphus\")",
+            "value": 95927.01586914062,
+            "unit": "ns",
+            "range": "± 391.93598311449625"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"scottallen\")",
+            "value": 239415.16243489584,
+            "unit": "ns",
+            "range": "± 575.3404864624471"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"stackoverflow\")",
+            "value": 3416872.0338541665,
+            "unit": "ns",
+            "range": "± 36686.67576204467"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"udhr\")",
+            "value": 608843.9143880209,
+            "unit": "ns",
+            "range": "± 1624.2852078275394"
+          },
+          {
+            "name": "Html2Text.PerfTests.PageBenchmarks.Convert(FileName: \"weather\")",
+            "value": 1410140.4524739583,
+            "unit": "ns",
+            "range": "± 7152.217912524125"
           }
         ]
       }
