@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Text;
+using Html2Text.Compatibility;
 using Html2Text.Parsing;
 using Html2Text.Rendering;
 using NUnit.Framework;
@@ -15,7 +17,7 @@ public class RendererTests
         List<Node> nodes = [];
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.Empty);
@@ -28,7 +30,7 @@ public class RendererTests
         List<Node>? nodes = null;
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.Empty);
@@ -42,7 +44,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(text);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo(text));
@@ -56,7 +58,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("hello"));
@@ -70,7 +72,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("blorgfester"));
@@ -84,7 +86,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("firstsecondthirdfourth"));
@@ -98,7 +100,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("forgotten closing tag..."));
@@ -112,7 +114,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("This paragraph is really interesting, so you should read it!"));
@@ -126,7 +128,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("This should have whitespace trimmed off"));
@@ -140,7 +142,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("Not trimmed, at all over here"));
@@ -154,7 +156,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -172,7 +174,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -190,7 +192,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -209,7 +211,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -228,7 +230,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -255,7 +257,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -291,7 +293,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -314,7 +316,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -333,7 +335,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -355,7 +357,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("Container Start inline element Container End"));
@@ -373,7 +375,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("First bit, then a middle bit and then the last part. And a whole other line over here."));
@@ -387,7 +389,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("framistan bedoulia"));
@@ -428,7 +430,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo(capybara));
@@ -447,7 +449,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         Assert.That(result, Is.EqualTo("""
@@ -470,7 +472,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -504,7 +506,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -537,7 +539,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -559,7 +561,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -592,7 +594,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -624,7 +626,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -660,7 +662,7 @@ public class RendererTests
 
         List<Node> nodes = Parser.ParseHtml(html);
 
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         var expected = """
                        | Item | Notes       |
@@ -687,7 +689,7 @@ public class RendererTests
 
         List<Node> nodes = Parser.ParseHtml(html);
 
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         var expected = """
                        | Address             |
@@ -715,7 +717,7 @@ public class RendererTests
 
         List<Node> nodes = Parser.ParseHtml(html);
 
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         var expected = """
                        | Name | Age | City  |
@@ -743,7 +745,7 @@ public class RendererTests
 
         List<Node> nodes = Parser.ParseHtml(html);
 
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         var expected = """
                        | Item | Status |
@@ -783,7 +785,7 @@ public class RendererTests
 
         List<Node> nodes = Parser.ParseHtml(html);
 
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         var expected = """
                        before
@@ -826,7 +828,7 @@ public class RendererTests
 
         List<Node> nodes = Parser.ParseHtml(html);
 
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         var expected = """
                        Monthly savings
@@ -856,7 +858,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -876,7 +878,7 @@ public class RendererTests
         List<Node> nodes = Parser.ParseHtml(html);
 
         // act
-        var result = Renderer.GetText(nodes);
+        var result = GetText(nodes);
 
         // assert
         var expected = """
@@ -885,5 +887,18 @@ public class RendererTests
                        """;
 
         AssertAreEqualNormalised(result, expected);
+    }
+
+    static string GetText(List<Node>? nodes)
+    {
+        if (nodes == null || nodes.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        var builder = new StringBuilder();
+        var writer = new StringBuilderBufferWriter(builder);
+        Renderer.WriteText(nodes, writer);
+        return builder.ToString();
     }
 }

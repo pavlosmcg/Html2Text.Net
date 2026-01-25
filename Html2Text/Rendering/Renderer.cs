@@ -4,19 +4,21 @@ using System.Collections.Generic;
 using System.Text;
 using Html2Text.Rendering.Tables;
 using Html2Text.Compatibility;
+using System.Buffers;
+using Html2Text.Extensions;
 
 namespace Html2Text.Rendering;
 
 internal static class Renderer
 {
-    public static string GetText(List<Node>? nodes)
+
+    public static void WriteText(List<Node>? nodes, IBufferWriter<char> documentBuilder)
     {
         if (nodes == null || nodes.Count == 0)
         {
-            return string.Empty;
+            return;
         }
 
-        var documentBuilder = new StringBuilder();
         var workStack = new Stack<RenderWorkItem>();
         var state = new RendererState();
         TableBuilder? tableBuilder = null;
@@ -127,7 +129,7 @@ internal static class Renderer
                     // if we are moving from document mode to table mode, emit pending
                     // whitespace before the TableBuilder starts capturing output
                     FlushPendingWhitespace();
-                    tableBuilder = new TableBuilder(new StringBuilderBufferWriter(documentBuilder));
+                    tableBuilder = new TableBuilder(documentBuilder);
                 }
 
                 state.TableNestingDepth++;
@@ -262,8 +264,6 @@ internal static class Renderer
                 QueueNewLines(2);
             }
         }
-
-        return documentBuilder.ToString();
     }
 
     private static bool IsTagNameEqual(string? tagName, string otherTagName)
