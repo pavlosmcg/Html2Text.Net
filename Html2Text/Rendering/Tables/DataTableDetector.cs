@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Html2Text.Parsing;
 
@@ -8,13 +9,13 @@ internal static class DataTableDetector
 {
     public static bool IsDataTable(Node node)
     {
-        var tagName = node.TagName;
-        if (tagName == null)
+        var tagChars = node.TagChars.Span;
+        if (tagChars.IsEmpty)
         {
             return false;
         }
 
-        if (!tagName.Equals("table", StringComparison.OrdinalIgnoreCase))
+        if (!tagChars.Equals("table".AsSpan(), StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }
@@ -31,15 +32,15 @@ internal static class DataTableDetector
             return false;
         }
 
-        var nonTextChildren = node.Children.Where(child => child.TagName != null).ToList();
+        var nonTextChildren = node.Children.Where(child => !child.TagChars.IsEmpty).ToList();
 
         // no other markup is expected in a data table
-        if (nonTextChildren.Any(child => !Elements.TableChildElements.Contains(child.TagName!)))
+        if (nonTextChildren.Any(child => !ContainsElement(Elements.TableChildElements, child.TagChars.Span)))
         {
             return false;
         }
 
-        bool hasCaption = nonTextChildren.Any(c => string.Equals(c.TagName, "caption", StringComparison.OrdinalIgnoreCase));
+        bool hasCaption = nonTextChildren.Any(c => c.TagChars.Span.Equals("caption".AsSpan(), StringComparison.OrdinalIgnoreCase));
 
         // if it has a caption, it's very likely to be a proper table of data
         if (hasCaption)
@@ -48,9 +49,9 @@ internal static class DataTableDetector
         }
 
         // head and body being present means we treat it as a data table
-        var head = nonTextChildren.FirstOrDefault(c => string.Equals(c.TagName, "thead", StringComparison.OrdinalIgnoreCase));
-        var body = nonTextChildren.FirstOrDefault(c => string.Equals(c.TagName, "tbody", StringComparison.OrdinalIgnoreCase));
-        if (head != null && body !=null)
+        var head = nonTextChildren.FirstOrDefault(c => c.TagChars.Span.Equals("thead".AsSpan(), StringComparison.OrdinalIgnoreCase));
+        var body = nonTextChildren.FirstOrDefault(c => c.TagChars.Span.Equals("tbody".AsSpan(), StringComparison.OrdinalIgnoreCase));
+        if (head?.TagChars.IsEmpty == false && body?.TagChars.IsEmpty == false)
         {
             return true;
         }
@@ -61,16 +62,31 @@ internal static class DataTableDetector
             return false;
         }
 
-        var bodyRows = body.Children.Where(c => string.Equals(c.TagName, "tr", StringComparison.OrdinalIgnoreCase));
+        var bodyRows = body.Children.Where(c => c.TagChars.Span.Equals("tr".AsSpan(), StringComparison.OrdinalIgnoreCase));
 
         foreach (var row in bodyRows)
         {
-            if (row.Children != null && row.Children.Any(c => string.Equals(c.TagName, "th", StringComparison.OrdinalIgnoreCase)))
+            if (row.Children != null && row.Children.Any(c => c.TagChars.Span.Equals("th".AsSpan(), StringComparison.OrdinalIgnoreCase)))
             {
                 return true;
             }
         }
 
+        return false;
+    }
+
+    private static bool ContainsElement(HashSet<string> elements, ReadOnlySpan<char> tagChars)
+    {
+        if (tagChars.IsEmpty) return false;
+        
+        Span<char> buffer = stackalloc char[tagChars.Length];
+        tagChars.ToLowerInvariant(buffer);
+        
+        foreach (var element in elements)
+        {
+            if (buffer.SequenceEqual(element.AsSpan()))
+                return true;
+        }
         return false;
     }
 }

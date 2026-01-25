@@ -23,7 +23,7 @@ internal static class Renderer
         var state = new RendererState();
         TableBuilder? tableBuilder = null;
 
-        var root = new Node { TagName = "#document", Children = nodes };
+        var root = new Node { TagChars = "#document".AsMemory(), Children = nodes };
         workStack.Push(new RenderWorkItem(RenderWorkType.BeforeTag, root));
 
         void QueueSpace()
@@ -104,19 +104,19 @@ internal static class Renderer
         void HandleBeforeTag(RenderWorkItem item)
         {
             // any block elements required leading new lines
-            if (IsBlockElement(item.Node.TagName))
+            if (IsBlockElement(item.Node.TagChars.Span))
             {
                 QueueNewLines(1);
             }
 
             // check for verbatim tag start
-            if (IsVerbatimElement(item.Node.TagName))
+            if (IsVerbatimElement(item.Node.TagChars.Span))
             {
                 state.VerbatimTagDepth++;
             }
 
             // update list nesting depth
-            if (IsListElement(item.Node.TagName))
+            if (IsListElement(item.Node.TagChars.Span))
             {
                 state.ListNestingDepth++;
             }
@@ -139,18 +139,18 @@ internal static class Renderer
             if (state.RenderingTable)
             {
                 // check for caption
-                if (IsTagNameEqual(item.Node.TagName, "caption"))
+                if (IsTagCharsEqual(item.Node.TagChars.Span, "caption".AsSpan()))
                 {
                     state.InsideTableCaption = true;
                 }
 
                 // start a new row
-                if (IsTagNameEqual(item.Node.TagName, "tr"))
+                if (IsTagCharsEqual(item.Node.TagChars.Span, "tr".AsSpan()))
                 {
                     tableBuilder?.AppendRow();
                 }
                 // add a cell
-                else if (IsTableCell(item.Node.TagName, out bool isHeader))
+                else if (IsTableCell(item.Node.TagChars.Span, out bool isHeader))
                 {
                     tableBuilder?.AppendCell(isHeader);
                     state.InsideTableCell = true;
@@ -159,7 +159,7 @@ internal static class Renderer
             else
             {
                 // queue space for layout table cells
-                if (IsTableCell(item.Node.TagName, out _))
+                if (IsTableCell(item.Node.TagChars.Span, out _))
                 {
                     QueueSpace();
                 }
@@ -183,7 +183,7 @@ internal static class Renderer
             ReadOnlySpan<char> text = item.Node.Chars.Span;
             
             // special handling for hr tag
-            if (IsTagNameEqual(item.Node.TagName, "hr"))
+            if (IsTagCharsEqual(item.Node.TagChars.Span, "hr".AsSpan()))
             {
                 QueueNewLines(2);
                 text = new string('-', Constants.HorizontalRuleWidth).AsSpan();
@@ -216,25 +216,25 @@ internal static class Renderer
             }
 
             // check for verbatim tag finish
-            if (IsVerbatimElement(item.Node.TagName))
+            if (IsVerbatimElement(item.Node.TagChars.Span))
             {
                 state.VerbatimTagDepth = Math.Max(0, state.VerbatimTagDepth - 1);
             }
 
             // update list nesting depth
-            if (IsListElement(item.Node.TagName))
+            if (IsListElement(item.Node.TagChars.Span))
             {
                 state.ListNestingDepth = Math.Max(0, state.ListNestingDepth - 1);
             }
 
             // finish table caption
-            if (state.RenderingTable && IsTagNameEqual(item.Node.TagName, "caption"))
+            if (state.RenderingTable && IsTagCharsEqual(item.Node.TagChars.Span, "caption".AsSpan()))
             {
                 state.InsideTableCaption = false;
             }
 
             // finishing table cell
-            if (state.RenderingTable && IsTableCell(item.Node.TagName, out _))
+            if (state.RenderingTable && IsTableCell(item.Node.TagChars.Span, out _))
             {
                 state.InsideTableCell = false;
             }
@@ -253,54 +253,106 @@ internal static class Renderer
             }
 
             // block element required new lines before next element
-            if (IsBlockElement(item.Node.TagName))
+            if (IsBlockElement(item.Node.TagChars.Span))
             {
                 QueueNewLines(1);
             }
 
             // paragraph-like elements require a newline and a clear blank line after them
-            if (RequiresBlankLineAfter(item.Node.TagName, state.RenderingList))
+            if (RequiresBlankLineAfter(item.Node.TagChars.Span, state.RenderingList))
             {
                 QueueNewLines(2);
             }
         }
     }
 
-    private static bool IsTagNameEqual(string? tagName, string otherTagName)
+    private static bool IsTagCharsEqual(ReadOnlySpan<char> tagChars, ReadOnlySpan<char> otherTagName)
     {
-        return tagName != null && tagName.Equals(otherTagName, StringComparison.OrdinalIgnoreCase);
+        return !tagChars.IsEmpty && tagChars.Equals(otherTagName, StringComparison.OrdinalIgnoreCase);
     }
 
-    private static bool IsBlockElement(string? tagName)
+    private static bool IsBlockElement(ReadOnlySpan<char> tagChars)
     {
-        return tagName != null && Elements.BlockElements.Contains(tagName);
+        if (tagChars.IsEmpty) return false;
+        
+        // Use stack allocation for small tag names
+        Span<char> buffer = stackalloc char[tagChars.Length];
+        tagChars.ToLowerInvariant(buffer);
+        
+        // Check against known block elements
+        foreach (var element in Elements.BlockElements)
+        {
+            if (buffer.SequenceEqual(element.AsSpan()))
+                return true;
+        }
+        return false;
     }
 
-    private static bool RequiresBlankLineAfter(string? tagName, bool insideList)
+    private static bool RequiresBlankLineAfter(ReadOnlySpan<char> tagChars, bool insideList)
     {
         // nested list elements do not require blank lines after them
-        if (insideList && IsListElement(tagName))
+        if (insideList && IsListElement(tagChars))
         {
             return false;
         }
 
-        return tagName != null && Elements.ParagraphElements.Contains(tagName);
+        if (tagChars.IsEmpty) return false;
+        
+        Span<char> buffer = stackalloc char[tagChars.Length];
+        tagChars.ToLowerInvariant(buffer);
+        
+        foreach (var element in Elements.ParagraphElements)
+        {
+            if (buffer.SequenceEqual(element.AsSpan()))
+                return true;
+        }
+        return false;
     }
 
-    private static bool IsVerbatimElement(string? tagName)
+    private static bool IsVerbatimElement(ReadOnlySpan<char> tagChars)
     {
-        return tagName != null && Elements.VerbatimElements.Contains(tagName);
+        if (tagChars.IsEmpty) return false;
+        
+        Span<char> buffer = stackalloc char[tagChars.Length];
+        tagChars.ToLowerInvariant(buffer);
+        
+        foreach (var element in Elements.VerbatimElements)
+        {
+            if (buffer.SequenceEqual(element.AsSpan()))
+                return true;
+        }
+        return false;
     }
 
-    private static bool IsListElement(string? tagName)
+    private static bool IsListElement(ReadOnlySpan<char> tagChars)
     {
-        return tagName != null && Elements.ListElements.Contains(tagName);
+        if (tagChars.IsEmpty) return false;
+        
+        Span<char> buffer = stackalloc char[tagChars.Length];
+        tagChars.ToLowerInvariant(buffer);
+        
+        foreach (var element in Elements.ListElements)
+        {
+            if (buffer.SequenceEqual(element.AsSpan()))
+                return true;
+        }
+        return false;
     }
 
-    private static bool IsTableCell(string? tagName, out bool isHeader)
+    private static bool IsTableCell(ReadOnlySpan<char> tagChars, out bool isHeader)
     {
-        isHeader = IsTagNameEqual(tagName, "th");
+        isHeader = IsTagCharsEqual(tagChars, "th".AsSpan());
 
-        return tagName != null && Elements.TableCellElements.Contains(tagName);
+        if (tagChars.IsEmpty) return false;
+        
+        Span<char> buffer = stackalloc char[tagChars.Length];
+        tagChars.ToLowerInvariant(buffer);
+        
+        foreach (var element in Elements.TableCellElements)
+        {
+            if (buffer.SequenceEqual(element.AsSpan()))
+                return true;
+        }
+        return false;
     }
 }

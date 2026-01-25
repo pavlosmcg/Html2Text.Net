@@ -5,8 +5,9 @@ namespace Html2Text.Parsing;
 
 internal class Node
 {
-    public string? TagName { get; set; }
-    public ReadOnlyMemory<char> Chars { get; set; }
+    public ReadOnlyMemory<char> TagChars { get; init; }
+    public string? TagName => !TagChars.IsEmpty ? TagChars.ToString() : null;
+    public ReadOnlyMemory<char> Chars { get; init; }
     public string? Text
     {
         get

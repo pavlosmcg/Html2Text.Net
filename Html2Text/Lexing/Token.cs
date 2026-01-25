@@ -8,7 +8,7 @@ internal readonly ref struct Token
         TokenType tokenType,
         int startIndex,
         int length,
-        ReadOnlySpan<char> tagName)
+        ReadOnlyMemory<char> tagName)
     {
         TokenType = tokenType;
         StartIndex = startIndex;
@@ -19,7 +19,7 @@ internal readonly ref struct Token
     public TokenType TokenType { get; }
     public int StartIndex { get; }
     public int Length { get; }
-    public ReadOnlySpan<char> TagName { get; }
+    public ReadOnlyMemory<char> TagName { get; }
 
     public bool HasText => Length > 0;
 }

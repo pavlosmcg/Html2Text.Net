@@ -20,7 +20,7 @@ internal static class Parser
         var nodeStack = new Stack<Node>();
         var results = new List<Node>();
 
-        var lexer = new Lexer(html.Span);
+        var lexer = new Lexer(html);
         
         while (lexer.MoveNext())
         {
@@ -37,7 +37,7 @@ internal static class Parser
                 // start of a new node
                 case TokenType.Opening:
                 {
-                    nodeStack.Push(new Node { TagName = current.TagName.ToString() });
+                    nodeStack.Push(new Node { TagChars = current.TagName });
                     break;
                 }
                 // end of a node or end of html string
@@ -46,7 +46,7 @@ internal static class Parser
                     if (nodeStack.Count > 0)
                     {
                         Node currentNode = nodeStack.Peek();
-                        if (currentNode != null && !current.TagName.Equals(currentNode.TagName.AsSpan(),
+                        if (!current.TagName.Span.Equals(currentNode.TagChars.Span,
                                 StringComparison.OrdinalIgnoreCase))
                         {
                             // mismatched closing tag, ignore it
@@ -62,7 +62,7 @@ internal static class Parser
                 // self-closing node
                 case TokenType.SelfClosing:
                 {
-                    AddNode(results, nodeStack, new Node { TagName = current.TagName.ToString() });
+                    AddNode(results, nodeStack, new Node { TagChars = current.TagName });
                     break;
                 }
             }
@@ -164,8 +164,9 @@ internal static class Parser
     {
         if (nodeStack.Count > 0)
         {
-            Node parentNode = nodeStack.Peek();
-            AddToParent(parentNode, nodeToAdd);
+            Node parentNode = nodeStack.Pop();
+            AddToParent(ref parentNode, nodeToAdd);
+            nodeStack.Push(parentNode);
         }
         else
         {
@@ -173,7 +174,7 @@ internal static class Parser
         }
     }
 
-    private static void AddToParent(Node parentNode, Node childNode)
+    private static void AddToParent(ref Node parentNode, Node childNode)
     {
         if (parentNode.Children == null)
         {

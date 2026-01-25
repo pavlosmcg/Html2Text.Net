@@ -4,15 +4,15 @@ namespace Html2Text.Lexing;
 
 internal ref struct Lexer
 {
-    private ReadOnlySpan<char> _html;
+    private ReadOnlyMemory<char> _html;
     private int _cursor;
     private int _tokenStart = 0;
     private State _state = State.OutsideTag;
     private TokenType _tokenType = TokenType.Text;
 
-    private ReadOnlySpan<char> RemainingHtml => _html.Slice(_cursor);
+    private ReadOnlyMemory<char> RemainingHtml => _html.Slice(_cursor);
 
-    public Lexer(ReadOnlySpan<char> html)
+    public Lexer(ReadOnlyMemory<char> html)
     {
         _html = html;
         _cursor = 0;
@@ -44,7 +44,7 @@ internal ref struct Lexer
                 case State.OutsideTag:
                 {
                     // keep scanning until we see '<'
-                    if (_html[_cursor] != '<')
+                    if (_html.Span[_cursor] != '<')
                     {
                         _cursor++;
                         continue;
@@ -66,7 +66,7 @@ internal ref struct Lexer
 
                 case State.InsideTag:
                 {
-                    ReadOnlySpan<char> tagName = GetTagName();
+                    ReadOnlyMemory<char> tagName = GetTagName();
                     bool isValidTag = TryCompleteTag(tagName);
                     _state = State.OutsideTag;
 
@@ -77,9 +77,9 @@ internal ref struct Lexer
                     }
 
                     // If ignored and opening (not self-closing), skip content + closing tag, and emit nothing
-                    if (IsIgnoredTag(tagName))
+                    if (IsIgnoredTag(tagName.Span))
                     {
-                        SkipIgnoredContent(tagName);
+                        SkipIgnoredContent(tagName.Span);
                         continue;
                     }
 
@@ -90,7 +90,7 @@ internal ref struct Lexer
         }
     }
 
-    private bool TryEmitToken(TokenType type, ReadOnlySpan<char> tagName = default)
+    private bool TryEmitToken(TokenType type, ReadOnlyMemory<char> tagName = default)
     {
         if (_cursor <= _tokenStart)
             return false;
@@ -103,7 +103,7 @@ internal ref struct Lexer
 
     private bool TryEnterDocType()
     {
-        if (RemainingHtml.StartsWith("<!DOCTYPE ".AsSpan(), StringComparison.OrdinalIgnoreCase))
+        if (RemainingHtml.Span.StartsWith("<!DOCTYPE ".AsSpan(), StringComparison.OrdinalIgnoreCase))
         {
             _tokenType = TokenType.DocType;
             _state = State.InsideTag;
@@ -116,7 +116,7 @@ internal ref struct Lexer
 
     private bool TryEnterProcessingInstruction()
     {
-        if (RemainingHtml.StartsWith("<?".AsSpan(), StringComparison.Ordinal))
+        if (RemainingHtml.Span.StartsWith("<?".AsSpan(), StringComparison.Ordinal))
         {
             _tokenType = TokenType.ProcessingInstruction;
             _state = State.InsideTag;
@@ -129,7 +129,7 @@ internal ref struct Lexer
 
     private bool TryEnterClosingTag()
     {
-        if (RemainingHtml.StartsWith("</".AsSpan(), StringComparison.Ordinal))
+        if (RemainingHtml.Span.StartsWith("</".AsSpan(), StringComparison.Ordinal))
         {
             _tokenType = TokenType.Closing;
             _state = State.InsideTag;
@@ -147,11 +147,11 @@ internal ref struct Lexer
         _cursor += 1; // advance past '<' so that we are at the tag name
     }
 
-    private ReadOnlySpan<char> GetTagName()
+    private ReadOnlyMemory<char> GetTagName()
     {
         int nameStart = _cursor;
 
-        while (_cursor < _html.Length && IsAllowedTagNameCharacter(_html[_cursor]))
+        while (_cursor < _html.Length && IsAllowedTagNameCharacter(_html.Span[_cursor]))
         {
             _cursor++;
         }
@@ -159,10 +159,10 @@ internal ref struct Lexer
         return _html.Slice(nameStart, _cursor - nameStart);
     }
 
-    private bool TryCompleteTag(ReadOnlySpan<char> tagName)
+    private bool TryCompleteTag(ReadOnlyMemory<char> tagName)
     {
         // tag names must be followed by whitespace, '/>', '?>, or '>' to be valid
-        char afterName = _cursor < _html.Length ? _html[_cursor] : char.MinValue;
+        char afterName = _cursor < _html.Length ? _html.Span[_cursor] : char.MinValue;
         if (!(char.IsWhiteSpace(afterName)
             || afterName == '>'
             || afterName == '/'
@@ -173,10 +173,10 @@ internal ref struct Lexer
 
         bool containsBadChars = false;
 
-        while (_cursor < _html.Length && _html[_cursor] != '>')
+        while (_cursor < _html.Length && _html.Span[_cursor] != '>')
         {
             // check that we do not have '<' character present in the tag
-            if (_html[_cursor] == '<')
+            if (_html.Span[_cursor] == '<')
             {
                 containsBadChars = true;
             }
@@ -190,7 +190,7 @@ internal ref struct Lexer
             return false;
         }
 
-        char previous = _cursor - 1 >= 0 ? _html[_cursor - 1] : char.MinValue;
+        char previous = _cursor - 1 >= 0 ? _html.Span[_cursor - 1] : char.MinValue;
         _cursor += 1; // move past '>'
 
         // empty tag name or malformed
@@ -201,7 +201,7 @@ internal ref struct Lexer
         }
 
         // check for tag that should have been self-closing
-        if (ShouldBeSelfClosingTag(tagName))
+        if (ShouldBeSelfClosingTag(tagName.Span))
         {
             if (_tokenType == TokenType.Closing) // invalid tag e.g. </br>, </img>
             {
@@ -246,17 +246,17 @@ internal ref struct Lexer
 
     private bool TrySkipComment()
     {
-        if (!RemainingHtml.StartsWith("<!--".AsSpan(), StringComparison.Ordinal))
+        if (!RemainingHtml.Span.StartsWith("<!--".AsSpan(), StringComparison.Ordinal))
         {
             return false;
         }
         _cursor += 4; // advance past '<!--'
 
-        while (_cursor + 2 < _html.Length)
+        while (_cursor + 2 < _html.Span.Length)
         {
-            if (_html[_cursor] == '-' &&
-                _html[_cursor + 1] == '-' &&
-                _html[_cursor + 2] == '>')
+            if (_html.Span[_cursor] == '-' &&
+                _html.Span[_cursor + 1] == '-' &&
+                _html.Span[_cursor + 2] == '>')
             {
                 // skip comments and move past end of "-->"
                 _cursor += 3;
@@ -286,23 +286,23 @@ internal ref struct Lexer
 
         // _cursor is just past the end of the opening tag
         // move forward to find matching </tagName>
-        while (_cursor + 2 + tagName.Length < _html.Length)
+        while (_cursor + 2 + tagName.Length < _html.Span.Length)
         {
-            if (_html[_cursor] == '<' &&
-                _html[_cursor + 1] == '/' &&
-                _html.Slice(_cursor + 2, tagName.Length).Equals(tagName, StringComparison.OrdinalIgnoreCase))
+            if (_html.Span[_cursor] == '<' &&
+                _html.Span[_cursor + 1] == '/' &&
+                _html.Span.Slice(_cursor + 2, tagName.Length).Equals(tagName, StringComparison.OrdinalIgnoreCase))
             {
                 // skip past '</tagName'
                 _cursor += 2 + tagName.Length;
 
                 // allow whitespace before '>' ? (HTML allows it for some reason)
-                while (_cursor < _html.Length && char.IsWhiteSpace(_html[_cursor]))
+                while (_cursor < _html.Span.Length && char.IsWhiteSpace(_html.Span[_cursor]))
                 {
                     _cursor++;
                 }
 
                 // found the end
-                if (_cursor < _html.Length && _html[_cursor] == '>')
+                if (_cursor < _html.Span.Length && _html.Span[_cursor] == '>')
                 {
                     _cursor += 1; // move past '>'
                     _tokenStart = _cursor;

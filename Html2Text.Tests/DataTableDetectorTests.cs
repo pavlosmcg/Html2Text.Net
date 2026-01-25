@@ -26,7 +26,7 @@ public class DataTableDetectorTests
     public void IsDataTable_Returns_False_For_NonTableNode()
     {
         // arrange
-        var node = new Node { TagName = "div" };
+        var node = new Node { TagChars = "div".AsMemory() };
 
         // act
         var result = DataTableDetector.IsDataTable(node);
@@ -39,7 +39,7 @@ public class DataTableDetectorTests
     public void IsDataTable_Returns_False_For_TableWithNoChildNodes()
     {
         // arrange
-        var node = new Node { TagName = "table" };
+        var node = new Node { TagChars = "table".AsMemory() };
 
         // act
         var result = DataTableDetector.IsDataTable(node);
