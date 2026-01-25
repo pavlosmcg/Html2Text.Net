@@ -180,13 +180,13 @@ internal static class Renderer
 
         void HandleAfterTag(RenderWorkItem item)
         {
-            string text = item.Node.Text ?? string.Empty;
+            ReadOnlySpan<char> text = item.Node.Chars.Span;
             
             // special handling for hr tag
             if (IsTagNameEqual(item.Node.TagName, "hr"))
             {
                 QueueNewLines(2);
-                text = new string('-', Constants.HorizontalRuleWidth);
+                text = new string('-', Constants.HorizontalRuleWidth).AsSpan();
             }
 
             // text node writing time

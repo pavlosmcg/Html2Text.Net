@@ -26,7 +26,7 @@ internal static class DataTableDetector
 
         // if there are any direct text children, it's unlikely to be a proper data table
         // newline and whitespace text nodes are ignored here allowing for source formatting
-        if (node.Children.Any(child => !string.IsNullOrWhiteSpace(child.Text)))
+        if (node.Children.Any(child => !child.Chars.Span.IsWhiteSpace()))
         {
             return false;
         }

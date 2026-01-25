@@ -8,9 +8,9 @@ namespace Html2Text.Parsing;
 
 internal static class Parser
 {
-    public static List<Node> ParseHtml(string html) => ParseHtml(html.AsSpan());
+    public static List<Node> ParseHtml(string html) => ParseHtml(html.AsMemory());
 
-    public static List<Node> ParseHtml(ReadOnlySpan<char> html)
+    public static List<Node> ParseHtml(ReadOnlyMemory<char> html)
     {
         if (html.IsEmpty)
         {
@@ -20,7 +20,7 @@ internal static class Parser
         var nodeStack = new Stack<Node>();
         var results = new List<Node>();
 
-        var lexer = new Lexer(html);
+        var lexer = new Lexer(html.Span);
         
         while (lexer.MoveNext())
         {
@@ -31,7 +31,7 @@ internal static class Parser
                 // text content
                 case TokenType.Text:
                 {
-                    AddNode(results, nodeStack, new Node { Text = DecodeTextContent(current, html) });
+                    AddNode(results, nodeStack, new Node { Chars = DecodeTextContent(current, html) });
                     break;
                 }
                 // start of a new node
@@ -78,20 +78,21 @@ internal static class Parser
         return results;
     }
 
-    private static string? DecodeTextContent(Token token, ReadOnlySpan<char> inputHtml)
+    private static ReadOnlyMemory<char> DecodeTextContent(Token token, ReadOnlyMemory<char> inputHtml)
     {
         if (!token.HasText || token.StartIndex + token.Length > inputHtml.Length)
         {
-            return null;
+            return default;
         }
 
         var text = inputHtml.Slice(token.StartIndex, token.Length);
+        var textSpan = text.Span;
 
         // only do html escape character decoding and funky unicode space replacing if necessary
         // a singe pass here just to check is cheaper than always doing the decoding for every tag name
         var needsDecoding = false;
         var needsUnicodeSpacesReplacing = false;
-        foreach (char character in text)
+        foreach (char character in textSpan)
         {
             if (character == '&')
             {
@@ -112,13 +113,13 @@ internal static class Parser
             }
         }
 
-        // if we don't need it, don't do it. Only a single string allocation here:
-        var result = text.ToString();
+        // if we don't need it, don't do it. ZERO allocations here:
         if (!needsDecoding && !needsUnicodeSpacesReplacing)
         {
-            return result;
+            return text;
         }
 
+        var result = textSpan.ToString();
         if (needsDecoding)
         {
             result = WebUtility.HtmlDecode(result.Normalize(NormalizationForm.FormC));
@@ -156,7 +157,7 @@ internal static class Parser
             result = new string(buffer, startIndex: 0, length: i);
         }
 
-        return result;
+        return result.AsMemory();
     }
 
     private static void AddNode(List<Node> results, Stack<Node> nodeStack, Node nodeToAdd)

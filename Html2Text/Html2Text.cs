@@ -28,7 +28,7 @@ public static class Html2Text
     }
 
 #if NET8_0_OR_GREATER
-    public static string Convert(ReadOnlySpan<char> html)
+    public static string Convert(ReadOnlyMemory<char> html)
     {
         var nodes = Parser.ParseHtml(html);
         var writer = new ArrayBufferWriter<char>(html.Length);
@@ -36,7 +36,7 @@ public static class Html2Text
         return writer.WrittenSpan.ToString();
     }
 
-    public static void Convert(ReadOnlySpan<char> html, IBufferWriter<char> output)
+    public static void Convert(ReadOnlyMemory<char> html, IBufferWriter<char> output)
     {
         var nodes = Parser.ParseHtml(html);
         Renderer.WriteText(nodes, output);

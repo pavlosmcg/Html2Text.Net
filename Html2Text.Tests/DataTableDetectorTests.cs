@@ -1,4 +1,5 @@
-﻿using Html2Text.Parsing;
+﻿using System;
+using Html2Text.Parsing;
 using NUnit.Framework;
 using System.Collections.Generic;
 using Html2Text.Rendering.Tables;
@@ -12,7 +13,7 @@ public class DataTableDetectorTests
     public void IsDataTable_Returns_False_For_TextNode()
     {
         // arrange
-        var node = new Node { Text = "some text" };
+        var node = new Node { Chars = "some text".AsMemory() };
 
         // act
         var result = DataTableDetector.IsDataTable(node);
