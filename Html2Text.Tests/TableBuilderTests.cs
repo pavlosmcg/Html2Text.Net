@@ -11,22 +11,20 @@ public class TableBuilderTests
 {
     // TODO datatable detector should get datatable if we have th cells
     // TODO datatable should also check number of rows - 1 is not a datatable
-    private StringBuilder _builder;
     private StringBuilderBufferWriter _writer;
     private TableBuilder _unit;
 
     [SetUp]
     public void SetUp()
     {
-        _builder = new StringBuilder();
-        _writer = new StringBuilderBufferWriter(_builder);
+        _writer = new StringBuilderBufferWriter();
         _unit = new TableBuilder(_writer);
     }
 
     private string GetResult()
     {
         _unit.Build();
-        return _builder.ToString();
+        return _writer.ToString();
     }
 
     [Test]

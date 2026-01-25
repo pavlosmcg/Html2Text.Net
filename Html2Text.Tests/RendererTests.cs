@@ -896,9 +896,8 @@ public class RendererTests
             return string.Empty;
         }
 
-        var builder = new StringBuilder();
-        var writer = new StringBuilderBufferWriter(builder);
-        Renderer.WriteText(nodes, writer);
+        var builder = new StringBuilderBufferWriter();
+        Renderer.WriteText(nodes, builder);
         return builder.ToString();
     }
 }

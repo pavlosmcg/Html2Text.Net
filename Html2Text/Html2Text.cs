@@ -11,8 +11,8 @@ public static class Html2Text
 {
     public static string Convert(string html)
     {
-        var builder = new StringBuilder();
-        Convert(html, new StringBuilderBufferWriter(builder));
+        var builder = new StringBuilderBufferWriter();
+        Convert(html, builder);
         return builder.ToString();
     }
 

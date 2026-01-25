@@ -11,15 +11,16 @@ namespace Html2Text.Compatibility;
 /// Targets: net462, netstandard2.0
 /// Can be removed when support for these frameworks is dropped.
 /// </summary>
-internal class StringBuilderBufferWriter(StringBuilder builder) : IBufferWriter<char>
+internal class StringBuilderBufferWriter : IBufferWriter<char>
 {
+    private readonly StringBuilder _builder = new();
     private char[]? _buffer;
 
     public void Advance(int count)
     {
         if (_buffer != null)
         {
-            builder.Append(_buffer, 0, count);
+            _builder.Append(_buffer, 0, count);
         }
     }
 
@@ -34,4 +35,6 @@ internal class StringBuilderBufferWriter(StringBuilder builder) : IBufferWriter<
         }
         return _buffer;
     }
+
+    public override string ToString() => _builder.ToString();
 }
