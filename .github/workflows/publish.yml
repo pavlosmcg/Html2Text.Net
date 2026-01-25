@@ -1,0 +1,60 @@
+name: Publish NuGet
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Optional package version override (leave blank to use csproj/Directory.Build.props)"
+        required: false
+        type: string
+      dry_run:
+        description: "Build + pack only (don't push)"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    if: github.actor == 'pavlosmcg'
+    runs-on: ubuntu-latest
+    environment: nuget-publish
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build (Release)
+        run: dotnet build ./Html2Text/Html2Text.csproj -c Release --no-restore
+
+      - name: Pack
+        run: |
+          if [ -n "${{ inputs.version }}" ]; then
+            dotnet pack ./Html2Text/Html2Text.csproj -c Release --no-build -p:PackageVersion=${{ inputs.version }} -o ./nupkgs
+          else
+            dotnet pack ./Html2Text/Html2Text.csproj -c Release --no-build -o ./nupkgs
+          fi
+
+      - name: Upload nupkgs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkgs
+          path: ./nupkgs/*.nupkg
+
+      - name: Push to NuGet
+        if: ${{ inputs.dry_run == false }}
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          dotnet nuget push "./nupkgs/*.nupkg" \
+            --api-key "$NUGET_API_KEY" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate

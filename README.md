@@ -35,7 +35,7 @@ Hello
 World
 ```
 
-Check out the [live webassembly single page app](https://html2text.net)!
+Check out the [LIVE DEMO](https://html2text.net)!
 
 ## Install, build, test, contribute
 

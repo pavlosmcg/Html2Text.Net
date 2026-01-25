@@ -26,7 +26,7 @@
 
   <PropertyGroup>
     <PackageId>Html2Text.Net</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.0.0-dev</Version>
     <Authors>pavlosmcg</Authors>
     <Description>Converts HTML to plain text with sensible formatting.</Description>
     <PackageProjectUrl>https://github.com/pavlosmcg/Html2Text.Net</PackageProjectUrl>
