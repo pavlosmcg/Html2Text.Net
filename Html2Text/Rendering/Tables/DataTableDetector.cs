@@ -35,7 +35,7 @@ internal static class DataTableDetector
         var nonTextChildren = node.Children.Where(child => !child.TagChars.IsEmpty).ToList();
 
         // no other markup is expected in a data table
-        if (nonTextChildren.Any(child => !ContainsElement(Elements.TableChildElements, child.TagChars.Span)))
+        if (nonTextChildren.Any(child => !Elements.TableChildElements.Contains(child.TagChars.Span)))
         {
             return false;
         }
@@ -72,21 +72,6 @@ internal static class DataTableDetector
             }
         }
 
-        return false;
-    }
-
-    private static bool ContainsElement(HashSet<string> elements, ReadOnlySpan<char> tagChars)
-    {
-        if (tagChars.IsEmpty) return false;
-        
-        Span<char> buffer = stackalloc char[tagChars.Length];
-        tagChars.ToLowerInvariant(buffer);
-        
-        foreach (var element in elements)
-        {
-            if (buffer.SequenceEqual(element.AsSpan()))
-                return true;
-        }
         return false;
     }
 }

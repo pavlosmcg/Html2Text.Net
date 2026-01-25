@@ -274,18 +274,7 @@ internal static class Renderer
     private static bool IsBlockElement(ReadOnlySpan<char> tagChars)
     {
         if (tagChars.IsEmpty) return false;
-        
-        // Use stack allocation for small tag names
-        Span<char> buffer = stackalloc char[tagChars.Length];
-        tagChars.ToLowerInvariant(buffer);
-        
-        // Check against known block elements
-        foreach (var element in Elements.BlockElements)
-        {
-            if (buffer.SequenceEqual(element.AsSpan()))
-                return true;
-        }
-        return false;
+        return Elements.BlockElements.Contains(tagChars);
     }
 
     private static bool RequiresBlankLineAfter(ReadOnlySpan<char> tagChars, bool insideList)
@@ -297,46 +286,19 @@ internal static class Renderer
         }
 
         if (tagChars.IsEmpty) return false;
-        
-        Span<char> buffer = stackalloc char[tagChars.Length];
-        tagChars.ToLowerInvariant(buffer);
-        
-        foreach (var element in Elements.ParagraphElements)
-        {
-            if (buffer.SequenceEqual(element.AsSpan()))
-                return true;
-        }
-        return false;
+        return Elements.ParagraphElements.Contains(tagChars);
     }
 
     private static bool IsVerbatimElement(ReadOnlySpan<char> tagChars)
     {
         if (tagChars.IsEmpty) return false;
-        
-        Span<char> buffer = stackalloc char[tagChars.Length];
-        tagChars.ToLowerInvariant(buffer);
-        
-        foreach (var element in Elements.VerbatimElements)
-        {
-            if (buffer.SequenceEqual(element.AsSpan()))
-                return true;
-        }
-        return false;
+        return Elements.VerbatimElements.Contains(tagChars);
     }
 
     private static bool IsListElement(ReadOnlySpan<char> tagChars)
     {
         if (tagChars.IsEmpty) return false;
-        
-        Span<char> buffer = stackalloc char[tagChars.Length];
-        tagChars.ToLowerInvariant(buffer);
-        
-        foreach (var element in Elements.ListElements)
-        {
-            if (buffer.SequenceEqual(element.AsSpan()))
-                return true;
-        }
-        return false;
+        return Elements.ListElements.Contains(tagChars);
     }
 
     private static bool IsTableCell(ReadOnlySpan<char> tagChars, out bool isHeader)
@@ -344,15 +306,6 @@ internal static class Renderer
         isHeader = IsTagCharsEqual(tagChars, "th".AsSpan());
 
         if (tagChars.IsEmpty) return false;
-        
-        Span<char> buffer = stackalloc char[tagChars.Length];
-        tagChars.ToLowerInvariant(buffer);
-        
-        foreach (var element in Elements.TableCellElements)
-        {
-            if (buffer.SequenceEqual(element.AsSpan()))
-                return true;
-        }
-        return false;
+        return Elements.TableCellElements.Contains(tagChars);
     }
 }

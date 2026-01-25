@@ -77,9 +77,9 @@ internal ref struct Lexer
                     }
 
                     // If ignored and opening (not self-closing), skip content + closing tag, and emit nothing
-                    if (IsIgnoredTag(tagName.Span))
+                    if (IsIgnoredTag(tagName))
                     {
-                        SkipIgnoredContent(tagName.Span);
+                        SkipIgnoredContent(tagName);
                         continue;
                     }
 
@@ -201,7 +201,7 @@ internal ref struct Lexer
         }
 
         // check for tag that should have been self-closing
-        if (ShouldBeSelfClosingTag(tagName.Span))
+        if (ShouldBeSelfClosingTag(tagName))
         {
             if (_tokenType == TokenType.Closing) // invalid tag e.g. </br>, </img>
             {
@@ -272,7 +272,7 @@ internal ref struct Lexer
         return true;
     }
 
-    private void SkipIgnoredContent(ReadOnlySpan<char> tagName)
+    private void SkipIgnoredContent(ReadOnlyMemory<char> tagName)
     {
         if (_tokenType == TokenType.Closing || _tokenType == TokenType.SelfClosing)
         {
@@ -290,7 +290,7 @@ internal ref struct Lexer
         {
             if (_html.Span[_cursor] == '<' &&
                 _html.Span[_cursor + 1] == '/' &&
-                _html.Span.Slice(_cursor + 2, tagName.Length).Equals(tagName, StringComparison.OrdinalIgnoreCase))
+                _html.Span.Slice(_cursor + 2, tagName.Length).Equals(tagName.Span, StringComparison.OrdinalIgnoreCase))
             {
                 // skip past '</tagName'
                 _cursor += 2 + tagName.Length;
@@ -319,17 +319,9 @@ internal ref struct Lexer
         _tokenStart = _cursor;
     }
 
-    private static bool ShouldBeSelfClosingTag(ReadOnlySpan<char> tagName)
+    private static bool ShouldBeSelfClosingTag(ReadOnlyMemory<char> tagName)
     {
-        foreach (string selfClosingName in Elements.SelfClosingNames)
-        {
-            if (tagName.Equals(selfClosingName.AsSpan(),
-                    StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-        }
-        return false;
+        return Elements.SelfClosingNames.Contains(tagName);
     }
 
     private static bool IsAllowedTagNameCharacter(char character)
@@ -337,17 +329,8 @@ internal ref struct Lexer
         return char.IsLetterOrDigit(character) || character == '-' || character == ':';
     }
 
-    private static bool IsIgnoredTag(ReadOnlySpan<char> tagName)
+    private static bool IsIgnoredTag(ReadOnlyMemory<char> tagName)
     {
-        foreach (var ignored in Elements.IgnoredElements)
-        {
-            if (tagName.Equals(ignored.AsSpan(),
-                    StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return Elements.IgnoredElements.Contains(tagName);
     }
 }
