@@ -3,10 +3,6 @@ name: Benchmark
 on:
   push:
     branches: [ "master" ]
-  
-  schedule:
-    # 1am UTC
-    - cron: "0 1 * * *"
 
 permissions:
   # deployments permission to deploy GitHub pages website
