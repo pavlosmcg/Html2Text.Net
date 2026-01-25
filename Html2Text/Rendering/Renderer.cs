@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Html2Text.Rendering.Tables;
+using Html2Text.Compatibility;
 
 namespace Html2Text.Rendering;
 
@@ -126,7 +127,7 @@ internal static class Renderer
                     // if we are moving from document mode to table mode, emit pending
                     // whitespace before the TableBuilder starts capturing output
                     FlushPendingWhitespace();
-                    tableBuilder = new TableBuilder();
+                    tableBuilder = new TableBuilder(new StringBuilderBufferWriter(documentBuilder));
                 }
 
                 state.TableNestingDepth++;
@@ -244,7 +245,7 @@ internal static class Renderer
                 if (!state.RenderingTable && tableBuilder != null)
                 {
                     // we are now outside the table, render it with the table builder
-                    documentBuilder.Append(tableBuilder.Build());
+                    tableBuilder.Build();
                     tableBuilder = null;
                 }
             }

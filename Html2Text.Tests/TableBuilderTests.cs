@@ -1,4 +1,6 @@
-﻿using Html2Text.Rendering.Tables;
+﻿using System.Text;
+using Html2Text.Compatibility;
+using Html2Text.Rendering.Tables;
 using NUnit.Framework;
 using static Html2Text.Tests.TestHelpers;
 
@@ -9,24 +11,39 @@ public class TableBuilderTests
 {
     // TODO datatable detector should get datatable if we have th cells
     // TODO datatable should also check number of rows - 1 is not a datatable
+    private StringBuilder _builder;
+    private StringBuilderBufferWriter _writer;
+    private TableBuilder _unit;
+
+    [SetUp]
+    public void SetUp()
+    {
+        _builder = new StringBuilder();
+        _writer = new StringBuilderBufferWriter(_builder);
+        _unit = new TableBuilder(_writer);
+    }
+
+    private string GetResult()
+    {
+        _unit.Build();
+        return _builder.ToString();
+    }
 
     [Test]
     public void Render_Returns_SimpleRowCorrectly()
     {
         // arrange
-        var unit = new TableBuilder();
+        _unit.AppendCell();
+        _unit.Append('A');
 
-        unit.AppendCell();
-        unit.Append('A');
+        _unit.AppendCell();
+        _unit.Append('B');
 
-        unit.AppendCell();
-        unit.Append('B');
-
-        unit.AppendCell();
-        unit.Append('C');
+        _unit.AppendCell();
+        _unit.Append('C');
 
         // act
-        var result = unit.Build();
+        var result = GetResult();
 
         // assert
         Assert.That(result,
@@ -36,8 +53,8 @@ public class TableBuilderTests
     [Test]
     public void Render_Returns_MultipleRowsCorrectly()
     {
-        // arrange
-        var unit = new TableBuilder()
+        // arrange / act
+        _unit
             .AppendRow() // first row
             .AppendCell("A")
             .AppendCell("B")
@@ -47,8 +64,7 @@ public class TableBuilderTests
             .AppendCell("E")
             .AppendCell("F");
 
-        // act
-        var result = unit.Build();
+        var result = GetResult();
 
         // assert
         var expected = """
@@ -61,8 +77,8 @@ public class TableBuilderTests
     [Test]
     public void Render_Returns_RowsWithEmptyCells()
     {
-        // arrange
-        var unit = new TableBuilder()
+        // arrange / act
+        _unit
             .AppendRow() // first row
             .AppendCell()
             .AppendCell("B")
@@ -72,8 +88,7 @@ public class TableBuilderTests
             .AppendCell()
             .AppendCell("F");
 
-        // act
-        var result = unit.Build();
+        var result = GetResult();
 
         // assert
         var expected = """
@@ -86,8 +101,8 @@ public class TableBuilderTests
     [Test]
     public void Render_Returns_TableHeadersWithRowSeparator()
     {
-        // arrange
-        var unit = new TableBuilder()
+        // arrange / act
+        _unit
             .AppendRow() // header row
             .AppendHeaderCell("A")
             .AppendHeaderCell("B")
@@ -97,8 +112,7 @@ public class TableBuilderTests
             .AppendCell("2")
             .AppendCell("3");
 
-        // act
-        var result = unit.Build();
+        var result = GetResult();
 
         // assert
         var expected = """
@@ -112,8 +126,8 @@ public class TableBuilderTests
     [Test]
     public void Render_Returns_ColumnsFormattedToContentWidth()
     {
-        // arrange
-        var unit = new TableBuilder()
+        // arrange / act
+        _unit
             .AppendRow() // header row
             .AppendHeaderCell("Column A")
             .AppendHeaderCell("Column B")
@@ -123,8 +137,7 @@ public class TableBuilderTests
             .AppendCell("fester")
             .AppendCell("framistan-bedoulia");
 
-        // act
-        var result = unit.Build();
+        var result = GetResult();
 
         // assert
         var expected = """
@@ -138,8 +151,8 @@ public class TableBuilderTests
     [Test]
     public void Render_Returns_RowsPaddedToMaxColumnCount()
     {
-        // arrange
-        var unit = new TableBuilder()
+        // arrange / act
+        _unit
             .AppendRow() // header row
             .AppendHeaderCell("Column A")
             .AppendHeaderCell("Column B")
@@ -154,8 +167,7 @@ public class TableBuilderTests
             .AppendCell("data 6")
             .AppendCell("extra data");
 
-        // act
-        var result = unit.Build();
+        var result = GetResult();
 
         // assert
         var expected = """
@@ -170,8 +182,8 @@ public class TableBuilderTests
     [Test]
     public void Render_Returns_RowsIncludingEmpty()
     {
-        // arrange
-        var unit = new TableBuilder()
+        // arrange / act
+        _unit
             .AppendRow() // header row
             .AppendHeaderCell("Column A")
             .AppendHeaderCell("Column B")
@@ -185,8 +197,7 @@ public class TableBuilderTests
             .AppendCell("second 2")
             .AppendCell("second 3");
 
-        // act
-        var result = unit.Build();
+        var result = GetResult();
 
         // assert
         var expected = """
@@ -201,8 +212,8 @@ public class TableBuilderTests
     [Test]
     public void Render_Returns_ColumnsIncludingEmpty()
     {
-        // arrange
-        var unit = new TableBuilder()
+        // arrange / act
+        _unit
             .AppendRow()
             .AppendHeaderCell("Column A")
             .AppendHeaderCell("Column B")
@@ -219,8 +230,7 @@ public class TableBuilderTests
             .AppendCell() //empty column
             .AppendCell("second 4");
 
-        // act
-        var result = unit.Build();
+        var result = GetResult();
 
         // assert
         var expected = """
@@ -235,8 +245,8 @@ public class TableBuilderTests
     [Test]
     public void Render_Returns_MultipleHeaderRows_IfThatIsWhatYouReallyReallyWant()
     {
-        // arrange
-        var unit = new TableBuilder()
+        // arrange / act
+        _unit
             .AppendRow() // header row
             .AppendHeaderCell("Header A")
             .AppendHeaderCell("Header B")
@@ -262,8 +272,7 @@ public class TableBuilderTests
             .AppendCell("data 11")
             .AppendCell("data 12");
 
-        // act
-        var result = unit.Build();
+        var result = GetResult();
 
         // assert
         var expected = """
