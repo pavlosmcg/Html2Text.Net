@@ -1,8 +1,9 @@
 # Html2Text.Net
 
-[![NuGet](https://img.shields.io/nuget/v/Html2Text.Net.svg)](https://www.nuget.org/packages/Html2Text.Net/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-🚀-blue)](https://html2text.net)
 [![CI](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml/badge.svg)](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml)
 [![Benchmarks](https://img.shields.io/badge/benchmarks-charts-blue)](https://pavlosmcg.github.io/Html2Text.Net/dev/bench/)
+[![NuGet](https://img.shields.io/nuget/v/Html2Text.Net.svg)](https://www.nuget.org/packages/Html2Text.Net/)
 [![License](https://img.shields.io/github/license/pavlosmcg/Html2Text.Net)](LICENSE.txt)
 
 **Just fast HTML -> plain text.**
@@ -33,6 +34,8 @@ Hello
 
 World
 ```
+
+Check out the [live webassembly single page app](https://html2text.net)!
 
 ## Install, build, test, contribute
 
@@ -140,9 +143,8 @@ dotnet run -c Release --project Html2Text.PerfTests
 
 Or check out the latest automated perf test results here: https://pavlosmcg.github.io/Html2Text.Net/dev/bench/
 
-<img width="1028" height="487" alt="image" src="https://github.com/user-attachments/assets/4cbea709-71a2-4bee-a29a-d9493b0841da" />
-
-<img width="1804" height="871" alt="image" src="https://github.com/user-attachments/assets/fd988896-e603-4aae-8281-0aa17edbd51f" />
+![perf-test-console](https://raw.githubusercontent.com/pavlosmcg/Html2Text.Net/master/perftests-console.png)
+![perf-test-chart](https://raw.githubusercontent.com/pavlosmcg/Html2Text.Net/master/perftests-chart.png)
 
 ## Regression tests
 
