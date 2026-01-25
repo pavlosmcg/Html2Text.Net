@@ -15,10 +15,10 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   publish:
-    if: github.actor == 'pavlosmcg'
     runs-on: ubuntu-latest
     environment: nuget-publish
 
@@ -38,23 +38,27 @@ jobs:
       - name: Pack
         run: |
           if [ -n "${{ inputs.version }}" ]; then
-            dotnet pack ./Html2Text/Html2Text.csproj -c Release --no-build -p:PackageVersion=${{ inputs.version }} -o ./nupkgs
+            dotnet pack ./Html2Text/Html2Text.csproj -c Release --no-build -p:PackageVersion=${{ inputs.version }} -o ./package
           else
-            dotnet pack ./Html2Text/Html2Text.csproj -c Release --no-build -o ./nupkgs
+            dotnet pack ./Html2Text/Html2Text.csproj -c Release --no-build -o ./package
           fi
 
-      - name: Upload nupkgs artifact
+      - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:
-          name: nupkgs
-          path: ./nupkgs/*.nupkg
+          name: package
+          path: ./package/*.nupkg
+
+      - name: NuGet login (1hr temp token)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: pavlosmcg
 
       - name: Push to NuGet
         if: ${{ inputs.dry_run == false }}
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
-          dotnet nuget push "./nupkgs/*.nupkg" \
-            --api-key "$NUGET_API_KEY" \
+          dotnet nuget push "./package/*.nupkg" \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
             --source "https://api.nuget.org/v3/index.json" \
             --skip-duplicate
