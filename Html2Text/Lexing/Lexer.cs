@@ -286,32 +286,29 @@ internal ref struct Lexer
 
         // _cursor is just past the end of the opening tag
         // move forward to find matching </tagName>
-        while (_cursor + 2 + tagName.Length < _html.Span.Length)
+        var remainingHtml = _html.Span.Slice(_cursor);
+        while (remainingHtml.Length > 2 + tagName.Length)
         {
-            if (_html.Span[_cursor] == '<' &&
-                _html.Span[_cursor + 1] == '/' &&
-                _html.Span.Slice(_cursor + 2, tagName.Length).Equals(tagName.Span, StringComparison.OrdinalIgnoreCase))
+            var endTagIndex = remainingHtml.IndexOf("</".AsSpan());
+            if (endTagIndex == -1) break;
+
+            // skip anything up to and including the first '</'
+            remainingHtml = remainingHtml.Slice(endTagIndex + 2);
+
+            if (remainingHtml.StartsWith(tagName.Span, StringComparison.OrdinalIgnoreCase))
             {
-                // skip past '</tagName'
-                _cursor += 2 + tagName.Length;
+                // skip tag name and any amount of whitespace
+                remainingHtml = remainingHtml.Slice(tagName.Length).TrimStart();
 
-                // allow whitespace before '>' ? (HTML allows it for some reason)
-                while (_cursor < _html.Span.Length && char.IsWhiteSpace(_html.Span[_cursor]))
+                // found the correct closing tag
+                if (!remainingHtml.IsEmpty && remainingHtml[0] == '>')
                 {
-                    _cursor++;
-                }
-
-                // found the end
-                if (_cursor < _html.Span.Length && _html.Span[_cursor] == '>')
-                {
-                    _cursor += 1; // move past '>'
+                    var charsAfterCloseTag = remainingHtml.Slice(1).Length;
+                    _cursor = _html.Length - charsAfterCloseTag;
                     _tokenStart = _cursor;
                     return;
                 }
             }
-
-            // not at the closing tag yet, keep moving
-            _cursor++;
         }
 
         // EOF without closing tag
