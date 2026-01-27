@@ -55,7 +55,7 @@ For .Net Framework users, PackageReference style dependencies are recommended. A
 
 ### Contributing
 
-Contributions and pull requests are welcome! To build locally: 
+Contributions and pull requests are welcome! With .Net 10 SDK installed, to build locally: 
 ```
 dotnet build
 ```
@@ -63,7 +63,7 @@ dotnet build
 To run unit and regression tests: 
 ```
 (windows): dotnet test
-(linux/mac): dotnet test -f net8.0
+(linux/mac): dotnet test -f net10.0
 ```
 
 To run the example console app:
@@ -71,6 +71,15 @@ To run the example console app:
 dotnet build
 dotnet run --project Html2Text.Example Samples/scottallen.html
 ```
+
+## Use cases
+
+- **Search / indexing pipelines**: Strip HTML down to text for full-text search, indexing, classification, or deduping.
+  - Example: convert HTML to text before indexing in Elasticsearch / OpenSearch
+- **Batch processing**: Convert large archives of HTML (docs, KB articles, CMS exports) into text efficiently.
+- **Email & notification processing**: Get a readable text version of HTML emails for previews, logs, or plain-text fallbacks.
+- **LLM / NLP preprocessing**: Normalize HTML into clean text before chunking, embedding, or extraction.
+- **Logging / auditing**: Store a text representation of HTML content for review or compliance.
 
 ## How it works
 
