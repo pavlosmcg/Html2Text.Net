@@ -66,7 +66,7 @@ jobs:
         run: dotnet test ./Html2Text.Tests/Html2Text.Tests.csproj --configuration Release --no-build --no-restore --logger "trx;LogFileName=unit-tests-{TargetFramework}.trx" --results-directory ./TestResults
 
       - name: Unit test report
-        if: always()
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: bibipkins/dotnet-test-reporter@v1.6.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -92,7 +92,7 @@ jobs:
         run: dotnet test ./Html2Text.RegressionTests/Html2Text.RegressionTests.csproj --configuration Release --no-build --no-restore --logger "trx;LogFileName=regression-tests-{TargetFramework}.trx" --results-directory ./TestResults
 
       - name: Regression test report
-        if: always()
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: bibipkins/dotnet-test-reporter@v1.6.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
