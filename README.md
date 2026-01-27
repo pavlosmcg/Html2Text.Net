@@ -10,12 +10,24 @@
 
 Lightweight, hand rolled, high-performance HTML to plain text conversion for .NET.
 
+Check out the [LIVE DEMO](https://html2text.net)!
+
+- [Use cases](#use-cases)
 - [Usage](#usage)
 - [Install, build, test](#install-build-test)
 - [How it works](#how-it-works)
   - [Goals](#goals)
 - [Performance notes](#performance-notes)
 - [Regression tests](#regression-tests)
+
+## Use cases
+
+- **Search / indexing pipelines**: Strip HTML down to text for full-text search, indexing, classification, or deduping.
+  - Example: convert HTML to text before indexing in Elasticsearch / OpenSearch
+- **Batch processing**: Convert large archives of HTML (docs, KB articles, CMS exports) into text efficiently.
+- **Email & notification processing**: Get a readable text version of HTML emails for previews, logs, or plain-text fallbacks.
+- **LLM / NLP preprocessing**: Normalize HTML into clean text before chunking, embedding, or extraction.
+- **Logging / auditing**: Store a text representation of HTML content for review or compliance.
 
 ## Usage
 
@@ -34,8 +46,6 @@ Hello
 
 World
 ```
-
-Check out the [LIVE DEMO](https://html2text.net)!
 
 ## Install, build, test, contribute
 
@@ -71,15 +81,6 @@ To run the example console app:
 dotnet build
 dotnet run --project Html2Text.Example Samples/scottallen.html
 ```
-
-## Use cases
-
-- **Search / indexing pipelines**: Strip HTML down to text for full-text search, indexing, classification, or deduping.
-  - Example: convert HTML to text before indexing in Elasticsearch / OpenSearch
-- **Batch processing**: Convert large archives of HTML (docs, KB articles, CMS exports) into text efficiently.
-- **Email & notification processing**: Get a readable text version of HTML emails for previews, logs, or plain-text fallbacks.
-- **LLM / NLP preprocessing**: Normalize HTML into clean text before chunking, embedding, or extraction.
-- **Logging / auditing**: Store a text representation of HTML content for review or compliance.
 
 ## How it works
 
