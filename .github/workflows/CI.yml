@@ -63,14 +63,14 @@ jobs:
           path: .
 
       - name: Unit tests
-        run: dotnet test ./Html2Text.Tests/Html2Text.Tests.csproj --configuration Release --no-build --no-restore --logger "trx;LogFileName=unit-tests-{TargetFramework}.trx" --results-directory ./TestResults
+        run: dotnet test ./Html2Text.Tests/Html2Text.Tests.csproj --configuration Release --no-build --no-restore --logger trx --results-directory ./UnitTestResults
 
       - name: Unit test report
         if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: bibipkins/dotnet-test-reporter@v1.6.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          results-path: TestResults/unit-tests-*.trx
+          results-path: UnitTestResults/*.trx
 
   regression-tests:
     runs-on: windows-latest
@@ -89,11 +89,11 @@ jobs:
           path: .
 
       - name: Regression tests
-        run: dotnet test ./Html2Text.RegressionTests/Html2Text.RegressionTests.csproj --configuration Release --no-build --no-restore --logger "trx;LogFileName=regression-tests-{TargetFramework}.trx" --results-directory ./TestResults
+        run: dotnet test ./Html2Text.RegressionTests/Html2Text.RegressionTests.csproj --configuration Release --no-build --no-restore --logger trx --results-directory ./RegressionTestResults
 
       - name: Regression test report
         if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: bibipkins/dotnet-test-reporter@v1.6.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          results-path: TestResults/regression-tests-*.trx
+          results-path: RegressionTestResults/*.trx
