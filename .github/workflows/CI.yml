@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: "10.0.x"
 
       - name: Cache NuGet packages
         uses: actions/cache@v4
@@ -54,7 +54,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: "10.0.x"
 
       - name: Download build outputs
         uses: actions/download-artifact@v4
@@ -63,14 +63,14 @@ jobs:
           path: .
 
       - name: Unit tests
-        run: dotnet test ./Html2Text.Tests/Html2Text.Tests.csproj --configuration Release --no-build --no-restore --logger "trx;LogFileName=unit-tests.trx" --results-directory ./TestResults
+        run: dotnet test ./Html2Text.Tests/Html2Text.Tests.csproj --configuration Release --no-build --no-restore --logger "trx;LogFileName=unit-tests-{TargetFramework}.trx" --results-directory ./TestResults
 
       - name: Unit test report
         if: always()
         uses: bibipkins/dotnet-test-reporter@v1.6.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          results-path: TestResults/unit-tests.trx
+          results-path: TestResults/unit-tests-*.trx
 
   regression-tests:
     runs-on: windows-latest
@@ -80,7 +80,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Download build outputs
         uses: actions/download-artifact@v4
@@ -89,11 +89,11 @@ jobs:
           path: .
 
       - name: Regression tests
-        run: dotnet test ./Html2Text.RegressionTests/Html2Text.RegressionTests.csproj --configuration Release --no-build --no-restore --logger "trx;LogFileName=regression-tests.trx" --results-directory ./TestResults
+        run: dotnet test ./Html2Text.RegressionTests/Html2Text.RegressionTests.csproj --configuration Release --no-build --no-restore --logger "trx;LogFileName=regression-tests-{TargetFramework}.trx" --results-directory ./TestResults
 
       - name: Regression test report
         if: always()
         uses: bibipkins/dotnet-test-reporter@v1.6.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          results-path: TestResults/regression-tests.trx
+          results-path: TestResults/regression-tests-*.trx
