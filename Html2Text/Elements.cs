@@ -6,158 +6,40 @@ namespace Html2Text;
 internal static class Elements
 {
     // only the following are expected as direct child elements of a true data table
-    public static readonly HashSet<string> TableChildElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-    {
-        "caption",
-        "colgroup",
-        "thead",
-        "tbody",
-        "tfoot",
-        "tr",
-        "th"
-    };
+    public static readonly ReadOnlyMemoryCharSet TableChildElements = new ReadOnlyMemoryCharSet(
+        ["caption", "colgroup", "thead", "tbody", "tfoot", "tr", "th"]);
 
     // block-level elements that should introduce line breaks when rendering
-    public static readonly HashSet<string> BlockElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-    {
-        "address",
-        "article",
-        "aside",
-        "blockquote",
-        "body",
-        "canvas",
-        "dd",
-        "details",
-        "div",
-        "dl",
-        "dt",
-        "fieldset",
-        "figcaption",
-        "figure",
-        "footer",
-        "form",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "header",
-        "hr",
-        "br",
-        "li",
-        "main",
-        "nav",
-        "noscript",
-        "ol",
-        "p",
-        "pre",
-        "section",
-        "table",
-        "thead",
-        "tbody",
-        "tfoot",
-        "tr",
-        "caption",
-        "ul",
-        "legend",
-        "summary",
-        "audio",
-        "video",
-        "iframe",
-        "embed",
-        "object"
-    };
+    public static readonly ReadOnlyMemoryCharSet BlockElements = new ReadOnlyMemoryCharSet(
+        ["address", "article", "aside", "blockquote", "body", "canvas", "dd", "details", "div", "dl", "dt",
+         "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6",
+         "header", "hr", "br", "li", "main", "nav", "noscript", "ol", "p", "pre", "section", "table",
+         "thead", "tbody", "tfoot", "tr", "caption", "ul", "legend", "summary", "audio", "video",
+         "iframe", "embed", "object"]);
 
     // elements that should be given a clear line underneath when rendering
-    public static readonly HashSet<string> ParagraphElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-    {
-        "address",
-        "article",
-        "aside",
-        "blockquote",
-        "details",
-        "fieldset",
-        "figcaption",
-        "figure",
-        "footer",
-        "form",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "header",
-        "hr",
-        "main",
-        "nav",
-        "noscript",
-        "p",
-        "pre",
-        "section",
-        "table",
-        "title",
-        "ol",
-        "ul",
-        "dl"
-    };
+    public static readonly ReadOnlyMemoryCharSet ParagraphElements = new ReadOnlyMemoryCharSet(
+        ["address", "article", "aside", "blockquote", "details", "fieldset", "figcaption", "figure",
+         "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hr", "main", "nav",
+         "noscript", "p", "pre", "section", "table", "title", "ol", "ul", "dl"]);
 
     // whitespace is respected inside these elements
-    public static readonly HashSet<string> VerbatimElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-    {
-        "pre",
-        "textarea"
-    };
+    public static readonly ReadOnlyMemoryCharSet VerbatimElements = new ReadOnlyMemoryCharSet(
+        ["pre", "textarea"]);
 
     // elements that introduce a new list nesting level
-    public static readonly HashSet<string> ListElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-    {
-        "ul",
-        "ol",
-        "dl"
-    };
+    public static readonly ReadOnlyMemoryCharSet ListElements = new ReadOnlyMemoryCharSet(
+        ["ul", "ol", "dl"]);
 
     // table data cells that get a | separator when rendering
-    public static readonly HashSet<string> TableCellElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-    {
-        "th",
-        "td"
-    };
+    public static readonly ReadOnlyMemoryCharSet TableCellElements = new ReadOnlyMemoryCharSet(
+        ["th", "td"]);
 
     // elements that are expected to be self closing
-    public static string[] SelfClosingNames =
-    {
-        "area",
-        "base",
-        "br",
-        "col",
-        "embed",
-        "hr",
-        "img",
-        "input",
-        "link",
-        "meta",
-        "param",
-        "source",
-        "track",
-        "wbr"
-    };
+    public static readonly ReadOnlyMemoryCharSet SelfClosingNames = new ReadOnlyMemoryCharSet(
+        ["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]);
 
     // elements to ignore entirely along with their content
-    public static string[] IgnoredElements =
-    {
-        "script",
-        "style",
-        "template",
-        "meta",
-        "link",
-        "base",
-        "noscript",
-        "canvas",
-        "svg",
-        "iframe",
-        "object",
-        "embed"
-    };
+    public static readonly ReadOnlyMemoryCharSet IgnoredElements = new ReadOnlyMemoryCharSet(
+        ["script", "style", "template", "meta", "link", "base", "noscript", "canvas", "svg", "iframe", "object", "embed"]);
 }

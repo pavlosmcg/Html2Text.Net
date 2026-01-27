@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Html2Text.Extensions;
 
 namespace Html2Text.Rendering.Tables;
 
 internal class TableCell(bool isHeader)
 {
     public readonly StringBuilder Text = new StringBuilder();
-    public string GetText() => Text.ToString();
     public bool IsHeader { get; } = isHeader;
 }
 
-internal class TableBuilder
+internal class TableBuilder(IBufferWriter<char> output)
 {
     private readonly List<List<TableCell>> _rows = new List<List<TableCell>>();
     private List<TableCell>? _currentRow;
@@ -30,6 +31,13 @@ internal class TableBuilder
 
         _currentCell?.Text.Append(c);
         _atCellStart = false;
+        return this;
+    }
+
+    public TableBuilder Append(string? s)
+    {
+        if (s == null) return this;
+        foreach (var c in s) Append(c);
         return this;
     }
 
@@ -51,13 +59,26 @@ internal class TableBuilder
         return this;
     }
 
-    public string Build()
+    public TableBuilder AppendCell(string text)
     {
-        StringBuilder output = new StringBuilder();
+        BeginCell(false);
+        Append(text);
+        return this;
+    }
 
+    public TableBuilder AppendHeaderCell(string text)
+    {
+        BeginCell(true);
+        Append(text);
+        return this;
+    }
+
+    public void Build()
+    {
         if (HasCaption)
         {
-            output.AppendLine(_caption.ToString());
+            output.Append(_caption);
+            output.AppendLine();
             output.AppendLine();
         }
 
@@ -71,19 +92,17 @@ internal class TableBuilder
         // find column widths
         for (int rowIndex = 0; rowIndex < _rows.Count; rowIndex++)
         {
-            for (int columnIndex = 0; columnIndex < _columnCount; columnIndex++)
+            var row = _rows[rowIndex];
+            for (int columnIndex = 0; columnIndex < row.Count; columnIndex++)
             {
-                var cellText = GetCellText(rowIndex, columnIndex);
-                columnWidths[columnIndex] = Math.Max(columnWidths[columnIndex], cellText.Length);
+                columnWidths[columnIndex] = Math.Max(columnWidths[columnIndex], row[columnIndex].Text.Length);
             }
         }
 
         for (int r = 0; r < _rows.Count; r++)
         {
-            WriteRow(output, r, _rows[r], columnWidths);
+            WriteRow(r, _rows[r], columnWidths);
         }
-
-        return output.ToString();
     }
 
     private void BeginRow()
@@ -104,18 +123,18 @@ internal class TableBuilder
         _currentRow!.Add(_currentCell);
     }
 
-    private void WriteRow(StringBuilder output, int rowIndex, List<TableCell> row, int[] columnWidths)
+    private void WriteRow(int rowIndex, List<TableCell> row, int[] columnWidths)
     {
         // if any cells are headers, format whole row
         bool isHeaderRow = row.Any(c => c.IsHeader);
 
         // write out row contents
-        FlushPendingNewLine(output);
+        FlushPendingNewLine();
         output.Append('|');
         for (int columnIndex = 0; columnIndex < _columnCount; columnIndex++)
         {
             output.Append(' ');
-            output.Append(GetFormattedCellText(rowIndex, columnIndex, columnWidths));
+            WriteFormattedCellText(rowIndex, columnIndex, columnWidths);
             output.Append(' ');
             output.Append('|');
         }
@@ -124,36 +143,34 @@ internal class TableBuilder
         if (!isHeaderRow) return;
 
         // write out header separator
-        FlushPendingNewLine(output);
+        FlushPendingNewLine();
         output.Append('|');
         for (int columnIndex = 0; columnIndex < _columnCount; columnIndex++)
         {
             output.Append(' ');
-            output.Append('-', columnWidths[columnIndex]);
+            output.AppendRepeated('-', columnWidths[columnIndex]);
             output.Append(' ');
             output.Append('|');
         }
         QueueNewLine();
     }
 
-    private string GetCellText(int row, int column)
+    private void WriteFormattedCellText(int rowIndex, int columnIndex, int[] columnWidths)
     {
-        return column < _rows[row].Count
-            ? _rows[row][column].GetText()
-            : string.Empty;
-    }
-
-    private string GetFormattedCellText(int row, int column, int[] columnWidths)
-    {
-        string text = GetCellText(row, column);
-        return PadStringToLength(text, columnWidths[column]);
-    }
-
-    private string PadStringToLength(string text, int columnWidth)
-    {
-        return text.Length > columnWidth
-            ? text
-            : text.PadRight(columnWidth);
+        int targetWidth = columnWidths[columnIndex];
+        if (columnIndex < _rows[rowIndex].Count)
+        {
+            var cell = _rows[rowIndex][columnIndex];
+            output.Append(cell.Text);
+            if (cell.Text.Length < targetWidth)
+            {
+                output.AppendRepeated(' ', targetWidth - cell.Text.Length);
+            }
+        }
+        else
+        {
+            output.AppendRepeated(' ', targetWidth);
+        }
     }
 
     private void QueueNewLine()
@@ -161,11 +178,11 @@ internal class TableBuilder
         _pendingNewLine = true;
     }
 
-    private void FlushPendingNewLine(StringBuilder outputBuilder)
+    private void FlushPendingNewLine()
     {
         if (_pendingNewLine)
         {
-            outputBuilder.AppendLine();
+            output.AppendLine();
             _pendingNewLine = false;
         }
     }

@@ -29,7 +29,7 @@ public class LexerTests
     {
         var results = new List<Chunk>();
 
-        foreach (Token token in new Lexer(input.AsSpan()))
+        foreach (Token token in new Lexer(input.AsMemory()))
         {
             var content = token.TagName.IsEmpty
                 ? input.Substring(token.StartIndex, token.Length)
@@ -54,7 +54,7 @@ public class LexerTests
     public void MoveNext_Returns_False_WhenInput_IsEmpty()
     {
         // arrange
-        var unit = new Lexer(ReadOnlySpan<char>.Empty);
+        var unit = new Lexer(ReadOnlyMemory<char>.Empty);
 
         // act
         var result = unit.MoveNext();
@@ -68,7 +68,7 @@ public class LexerTests
     {
         // arrange
         var input = "z";
-        var unit = new Lexer(input.AsSpan());
+        var unit = new Lexer(input.AsMemory());
 
         // act
         var result = unit.MoveNext();
@@ -86,7 +86,7 @@ public class LexerTests
     {
         // arrange
         var input = "hello";
-        var unit = new Lexer(input.AsSpan());
+        var unit = new Lexer(input.AsMemory());
 
         // act first read
         var result = unit.MoveNext();
@@ -110,7 +110,7 @@ public class LexerTests
     {
         // arrange
         var input = "blorgfester";
-        var unit = new Lexer(input.AsSpan());
+        var unit = new Lexer(input.AsMemory());
 
         // act
         var result = unit.MoveNext();
@@ -130,7 +130,7 @@ public class LexerTests
     {
         // arrange
         var input = "<p>";
-        var unit = new Lexer(input.AsSpan());
+        var unit = new Lexer(input.AsMemory());
 
         // act
         var result = unit.MoveNext();
@@ -148,7 +148,7 @@ public class LexerTests
         // arrange
         var input = "</p>";
 
-        var unit = new Lexer(input.AsSpan());
+        var unit = new Lexer(input.AsMemory());
 
         // act
         var result = unit.MoveNext();
@@ -513,7 +513,7 @@ public class LexerTests
     public void MoveNext_Returns_False_WhenInput_ContainsOnlyScriptElement()
     {
         // arrange
-        var unit = new Lexer("<script>var a = 1 / 2; b = 3 < c >= 4;</script>".AsSpan());
+        var unit = new Lexer("<script>var a = 1 / 2; b = 3 < c >= 4;</script>".AsMemory());
 
         // act
         var result = unit.MoveNext();
