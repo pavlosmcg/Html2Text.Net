@@ -1,0 +1,7 @@
+﻿<Solution>
+  <Project Path="Html2Text\Html2Text.csproj" />
+  <Project Path="Html2Text.Example\Html2Text.Example.csproj" />
+  <Project Path="Html2Text.PerfTests\Html2Text.PerfTests.csproj" />
+  <Project Path="Html2Text.RegressionTests\Html2Text.RegressionTests.csproj" />
+  <Project Path="Html2Text.Tests\Html2Text.Tests.csproj" />
+</Solution>
