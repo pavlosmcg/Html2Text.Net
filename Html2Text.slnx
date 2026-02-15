@@ -1,6 +1,7 @@
-﻿<Solution>
+<Solution>
   <Project Path="Html2Text\Html2Text.csproj" />
   <Project Path="Html2Text.Example\Html2Text.Example.csproj" />
+  <Project Path="Html2Text.McpServer/Html2Text.McpServer.csproj" Id="4634d45d-c4ae-455c-919f-d2528763231f" />
   <Project Path="Html2Text.PerfTests\Html2Text.PerfTests.csproj" />
   <Project Path="Html2Text.RegressionTests\Html2Text.RegressionTests.csproj" />
   <Project Path="Html2Text.Tests\Html2Text.Tests.csproj" />
