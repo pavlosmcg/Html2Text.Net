@@ -1,0 +1,75 @@
+name: Release (self-contained binaries)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version. Required."
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build + Upload (${{ matrix.rid }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            ext: ""
+          - os: windows-latest
+            rid: win-x64
+            ext: ".exe"
+          - os: macos-latest
+            rid: osx-arm64
+            ext: ""
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Publish (self-contained)
+        run: >
+          dotnet publish Html2Text.McpServer/Html2Text.McpServer.csproj
+          -c Release
+          -r ${{ matrix.rid }}
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:Version=${{ inputs.version }}
+          -o ./publish/${{ matrix.rid }}
+
+      - name: Package artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT_DIR="publish/${{ matrix.rid }}"
+
+          mkdir -p dist
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            cp "$OUT_DIR/html2text-mcp.exe" "dist/html2text-mcp.exe"
+            (cd dist && 7z a "../html2text-mcp-${{ matrix.rid }}.zip" "html2text-mcp.exe")
+          else
+            cp "$OUT_DIR/html2text-mcp" "dist/html2text-mcp"
+            chmod +x "dist/html2text-mcp"
+            (cd dist && tar -czf "../html2text-mcp-${{ matrix.rid }}.tar.gz" "html2text-mcp")
+          fi
+
+      - name: Upload release asset (zip/tar.gz)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: Html2Text MCP Server v${{ inputs.version }}
+          files: |
+            html2text-mcp-${{ matrix.rid }}.zip
+            html2text-mcp-${{ matrix.rid }}.tar.gz
