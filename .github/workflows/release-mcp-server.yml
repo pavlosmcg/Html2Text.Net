@@ -1,4 +1,4 @@
-name: Release (self-contained binaries)
+name: Release MCP self-contained binaries
 
 on:
   workflow_dispatch:
