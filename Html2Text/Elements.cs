@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Html2Text;
+﻿namespace Html2Text;
 
 internal static class Elements
 {
