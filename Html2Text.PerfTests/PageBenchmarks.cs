@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using Microsoft.VSDiagnostics;
 
 namespace Html2Text.PerfTests;
 
@@ -6,6 +7,7 @@ namespace Html2Text.PerfTests;
 [MemoryDiagnoser]
 [JsonExporterAttribute.Full]
 [JsonExporterAttribute.FullCompressed]
+[CPUUsageDiagnoser]
 public class PageBenchmarks
 {
     private string _html = null!;

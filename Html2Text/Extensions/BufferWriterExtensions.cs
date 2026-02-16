@@ -11,7 +11,7 @@ internal static class BufferWriterExtensions
 {
     public static void Append(this IBufferWriter<char> writer, char c)
     {
-        var span = writer.GetSpan(1);
+        var span = writer.GetSpan(256);
         span[0] = c;
         writer.Advance(1);
     }
