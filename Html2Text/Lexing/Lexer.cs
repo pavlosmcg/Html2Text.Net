@@ -4,7 +4,7 @@ namespace Html2Text.Lexing;
 
 internal ref struct Lexer
 {
-    private ReadOnlyMemory<char> _html;
+    private readonly ReadOnlyMemory<char> _html;
     private int _cursor;
     private int _tokenStart = 0;
     private State _state = State.OutsideTag;
@@ -150,8 +150,10 @@ internal ref struct Lexer
     private ReadOnlyMemory<char> GetTagName()
     {
         int nameStart = _cursor;
+        ReadOnlySpan<char> htmlSpan = _html.Span;
+        var htmlLength = htmlSpan.Length;
 
-        while (_cursor < _html.Length && IsAllowedTagNameCharacter(_html.Span[_cursor]))
+        while (_cursor < htmlLength && IsAllowedTagNameCharacter(htmlSpan[_cursor]))
         {
             _cursor++;
         }
@@ -161,10 +163,12 @@ internal ref struct Lexer
 
     private bool TryCompleteTag(ReadOnlyMemory<char> tagName)
     {
-        var htmlLength = _html.Length;
+        // grab a ReadOnlySpan for efficiency
+        ReadOnlySpan<char> htmlSpan = _html.Span;
+        var htmlLength = htmlSpan.Length;
 
         // tag names must be followed by whitespace, '/>', '?>, or '>' to be valid
-        char afterName = _cursor < htmlLength ? _html.Span[_cursor] : char.MinValue;
+        char afterName = _cursor < htmlLength ? htmlSpan[_cursor] : char.MinValue;
         if (!(char.IsWhiteSpace(afterName)
             || afterName == '>'
             || afterName == '/'
@@ -175,10 +179,10 @@ internal ref struct Lexer
 
         bool containsBadChars = false;
 
-        while (_cursor < htmlLength && _html.Span[_cursor] != '>')
+        while (_cursor < htmlLength && htmlSpan[_cursor] != '>')
         {
             // check that we do not have '<' character present in the tag
-            if (_html.Span[_cursor] == '<')
+            if (htmlSpan[_cursor] == '<')
             {
                 containsBadChars = true;
             }
@@ -192,7 +196,7 @@ internal ref struct Lexer
             return false;
         }
 
-        char previous = _cursor - 1 >= 0 ? _html.Span[_cursor - 1] : char.MinValue;
+        char previous = _cursor - 1 >= 0 ? htmlSpan[_cursor - 1] : char.MinValue;
         _cursor += 1; // move past '>'
 
         // empty tag name or malformed
@@ -254,11 +258,14 @@ internal ref struct Lexer
         }
         _cursor += 4; // advance past '<!--'
 
-        while (_cursor + 2 < _html.Span.Length)
+        // grab a ReadOnlySpan for efficiency
+        ReadOnlySpan<char> htmlSpan = _html.Span;
+        var htmlLength = htmlSpan.Length;
+        while (_cursor + 2 < htmlLength)
         {
-            if (_html.Span[_cursor] == '-' &&
-                _html.Span[_cursor + 1] == '-' &&
-                _html.Span[_cursor + 2] == '>')
+            if (htmlSpan[_cursor] == '-' &&
+                htmlSpan[_cursor + 1] == '-' &&
+                htmlSpan[_cursor + 2] == '>')
             {
                 // skip comments and move past end of "-->"
                 _cursor += 3;
