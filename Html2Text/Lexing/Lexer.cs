@@ -161,8 +161,10 @@ internal ref struct Lexer
 
     private bool TryCompleteTag(ReadOnlyMemory<char> tagName)
     {
+        var htmlLength = _html.Length;
+
         // tag names must be followed by whitespace, '/>', '?>, or '>' to be valid
-        char afterName = _cursor < _html.Length ? _html.Span[_cursor] : char.MinValue;
+        char afterName = _cursor < htmlLength ? _html.Span[_cursor] : char.MinValue;
         if (!(char.IsWhiteSpace(afterName)
             || afterName == '>'
             || afterName == '/'
@@ -173,7 +175,7 @@ internal ref struct Lexer
 
         bool containsBadChars = false;
 
-        while (_cursor < _html.Length && _html.Span[_cursor] != '>')
+        while (_cursor < htmlLength && _html.Span[_cursor] != '>')
         {
             // check that we do not have '<' character present in the tag
             if (_html.Span[_cursor] == '<')
@@ -184,7 +186,7 @@ internal ref struct Lexer
             _cursor++;
         }
 
-        if (_cursor == _html.Length)
+        if (_cursor == htmlLength)
         {
             // reached the end of the document without finding '>'
             return false;
