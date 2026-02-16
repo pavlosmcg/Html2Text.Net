@@ -206,17 +206,6 @@ internal ref struct Lexer
             return false;
         }
 
-        // check for tag that should have been self-closing
-        if (ShouldBeSelfClosingTag(tagName))
-        {
-            if (_tokenType == TokenType.Closing) // invalid tag e.g. </br>, </img>
-            {
-                return false;
-            }
-
-            _tokenType = TokenType.SelfClosing;
-        }
-
         // end of self-closing tags
         if (previous == '/')
         {
@@ -244,6 +233,17 @@ internal ref struct Lexer
             {
                 return false;
             }
+        }
+
+        // check for tag that should have been self-closing
+        if (_tokenType != TokenType.SelfClosing && ShouldBeSelfClosingTag(tagName))
+        {
+            if (_tokenType == TokenType.Closing) // invalid tag e.g. </br>, </img>
+            {
+                return false;
+            }
+
+            _tokenType = TokenType.SelfClosing;
         }
 
         // now we have a valid tag!
