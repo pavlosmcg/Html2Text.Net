@@ -15,6 +15,7 @@ internal class StringBuilderBufferWriter : IBufferWriter<char>
 {
     private readonly StringBuilder _builder = new();
     private char[]? _buffer;
+    private int _bufferLength = 0;
 
     public void Advance(int count)
     {
@@ -29,10 +30,14 @@ internal class StringBuilderBufferWriter : IBufferWriter<char>
     public Span<char> GetSpan(int sizeHint = 0)
     {
         int size = sizeHint > 0 ? sizeHint : 256;
-        if (_buffer == null || _buffer.Length < size)
+        
+        // Only allocate if buffer is null or we need a larger buffer
+        if (_bufferLength < size)
         {
             _buffer = new char[size];
+            _bufferLength = size;
         }
+        
         return _buffer;
     }
 
