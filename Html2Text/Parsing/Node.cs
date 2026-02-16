@@ -5,9 +5,12 @@ namespace Html2Text.Parsing;
 
 internal class Node
 {
-    public ReadOnlyMemory<char> TagChars { get; init; }
+    public ReadOnlyMemory<char> TagChars { get; set; }
+
     public string? TagName => !TagChars.IsEmpty ? TagChars.ToString() : null;
-    public ReadOnlyMemory<char> Chars { get; init; }
+
+    public ReadOnlyMemory<char> Chars { get; set; }
+
     public string? Text
     {
         get
@@ -18,5 +21,6 @@ internal class Node
             return Chars.ToString();
         }
     }
+
     public List<Node>? Children { get; set; }
 }

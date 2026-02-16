@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Buffers;
-using System.Text;
 using Html2Text.Compatibility;
 using Html2Text.Parsing;
 using Html2Text.Rendering;
