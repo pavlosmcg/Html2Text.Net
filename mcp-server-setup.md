@@ -77,7 +77,7 @@ The file is usually found in either `~/.lmstudio/mcp.json` or `%USERPROFILE%\.lm
    Convert this HTML to text please: <h1>Hello</h1><p>World</p>
    ```
 5. LM Studio should automatically:
-   - Discover the `mcp/html-to-text` tool
+   - Discover the `mcp/html-to-text` tools, `convert_html_to_text` and `convert_html_file_to_text`
    - Call the `convert_html_to_text` method
    - Return the plain text output
 
@@ -89,3 +89,10 @@ The file is usually found in either `~/.lmstudio/mcp.json` or `%USERPROFILE%\.lm
    ```
 
 If the response appears without errors, the MCP server is configured correctly.
+
+## The tools
+
+There are currently two methods in the MCP server project, which are the tools exposed when you hook it up:
+
+- `convert_html_to_text`: This method takes a string and returns a string. Fine for small amounts of html, since it requires dealing with the input document and the returned output in the agent's context window.
+- `convert_html_file_to_text`: This method takes a file name and writes the plain text output to a file with a `.txt` extension. This is much more useful for saving token budgets, especially when bulk processing. All that is required is a single file name because conversion and output writing happens inside the MCP tool.
