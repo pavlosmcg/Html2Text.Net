@@ -145,7 +145,7 @@ The following are intentionally out of scope so the library can excel at the goa
 [![Benchmarks](https://img.shields.io/badge/benchmarks-charts-blue)](https://pavlosmcg.github.io/Html2Text.Net/dev/bench/)
 
 High performance is a goal of this project. This library:
-- designed for converting many documents quickly (batch processing, indexing, search pipelines).
+- is designed for converting many documents quickly (batch processing, indexing, search pipelines).
 - avoids DOM dependencies.
 - uses a lightweight, hand rolled lexer/parser/renderer pipeline.
 
