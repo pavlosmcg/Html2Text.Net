@@ -10,7 +10,7 @@
 
 Lightweight, hand rolled, high-performance HTML to plain text conversion for .NET.
 
-Check out the [LIVE DEMO](https://html2text.net)!
+Check out the [live demo](https://html2text.net) and [browser extension](https://chromewebstore.google.com/detail/gkifejnigfkllnlbbeajgenbkjonkoaj).
 
 - [Use cases](#use-cases)
   - [Local MCP server setup](https://github.com/pavlosmcg/Html2Text.Net/blob/master/mcp-server-setup.md)
