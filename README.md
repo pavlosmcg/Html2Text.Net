@@ -4,7 +4,7 @@
 [![CI](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml/badge.svg)](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml)
 [![Benchmarks](https://img.shields.io/badge/benchmarks-charts-blue)](https://pavlosmcg.github.io/Html2Text.Net/dev/bench/)
 [![NuGet](https://img.shields.io/nuget/v/Html2Text.Net.svg)](https://www.nuget.org/packages/Html2Text.Net/)
-[![License](https://img.shields.io/github/license/pavlosmcg/Html2Text.Net)](LICENSE.txt)
+[![License](https://img.shields.io/badge/license-MPL2-green)](LICENSE.txt)
 
 **Just fast HTML -> plain text.**
 
