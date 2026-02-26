@@ -32,7 +32,6 @@ Check out the [live demo](https://html2text.net) and [browser extension](https:/
 - **LLM / NLP preprocessing**: Normalize HTML into clean text before chunking, embedding, or extraction.
 - **LLM cost optimisation**: Use deterministic local HTML -> text conversion instead of spending tokens on markup cleanup. Check out the [MCP server setup](https://github.com/pavlosmcg/Html2Text.Net/blob/master/mcp-server-setup.md).
 
-
 ## Usage
 
 Simple as possible:
@@ -171,14 +170,5 @@ Samples/<file-name>.html -> Html2Text.Convert(<file-contents>) -> <file-name>.ve
 For example [scottallen.html](Samples/scottallen.html) -> [scottallen.verified.txt](Html2Text.RegressionTests/Html2TextTests.Html2Text_Returns_ExpectedOutputFor_filePath=scottallen.verified.txt)
 
 `Html2Text.RegressionTests` uses [Verify](https://github.com/VerifyTests/Verify) to make test assertions against verified output snapshots. If you need to update the outputs please see the Verify docs for snapshot management.
-
-## Projects in this repository
-
-- `Html2Text/`: core library
-- `Html2Text.Example/`: small example app
-- `Html2Text.Tests/`: unit tests
-- `Html2Text.RegressionTests/`: regression/acceptance tests
-- `Html2Text.PerfTests/`: performance benchmarking console app
-- `Samples/`: sample HTML files used during development and automated regression testing
 
 _Distributed under MPL-2.0 see [LICENSE.txt](LICENSE.txt)_
