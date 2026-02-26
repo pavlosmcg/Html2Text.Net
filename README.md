@@ -3,8 +3,9 @@
 [![Live Demo](https://img.shields.io/badge/Live_Demo-🚀-blue)](https://html2text.net)
 [![CI](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml/badge.svg)](https://github.com/pavlosmcg/Html2Text.Net/actions/workflows/CI.yml)
 [![Benchmarks](https://img.shields.io/badge/benchmarks-charts-blue)](https://pavlosmcg.github.io/Html2Text.Net/dev/bench/)
-[![NuGet](https://img.shields.io/nuget/v/Html2Text.Net.svg)](https://www.nuget.org/packages/Html2Text.Net/)
 [![License](https://img.shields.io/badge/license-MPL2-green)](LICENSE.txt)
+[![NuGet](https://img.shields.io/nuget/v/Html2Text.Net.svg)](https://www.nuget.org/packages/Html2Text.Net/)
+[![Extension](https://img.shields.io/chrome-web-store/size/gkifejnigfkllnlbbeajgenbkjonkoaj?logo=chromewebstore&label=browser%20extension)](https://chromewebstore.google.com/detail/html-to-text/gkifejnigfkllnlbbeajgenbkjonkoaj)
 
 **Just fast HTML -> plain text.**
 
